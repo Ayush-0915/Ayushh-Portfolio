@@ -7,16 +7,18 @@ import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 
 const certificates = [
-  "/certificate/aws-academy-graduate-machine-learning-foundations-t.png",
+  "/certificate/AWS.jpeg",
+  "/certificate/AZ900.png",
+  "/certificate/EDUSKILL AWS INTERNSHIP.png",
+  "/certificate/Oracle database .jpeg",
   "/certificate/google-cloud-engineering-certificate.png",
   "/certificate/red-hat-system-administration-ii-rh134-rha-ver-10.png",
   "/certificate/AWS.jpeg",
+  "/certificate/AZ900.png",
+  "/certificate/EDUSKILL AWS INTERNSHIP.png",
   "/certificate/Oracle database .jpeg",
   "/certificate/google-cloud-engineering-certificate.png",
-  "/certificate/aws-academy-graduate-machine-learning-foundations-t.png",
   "/certificate/red-hat-system-administration-ii-rh134-rha-ver-10.png",
-  "/certificate/AWS.jpeg",
-  "/certificate/Oracle database .jpeg",
 ];
 
 function ScrambleButton({ href }: { href: string }) {

@@ -10,7 +10,7 @@ import { portfolioData } from '@/data/portfolio';
 import { Achievement } from '@/types';
 import dynamic from 'next/dynamic';
 
-const FallingText = dynamic(() => import('@/components/effects/FallingText'), {
+const TechnicalUniverse = dynamic(() => import('@/components/effects/TechnicalUniverse'), {
     ssr: false,
     loading: () => <div className="h-[400px] w-full animate-pulse bg-zinc-100/5 dark:bg-zinc-800/5 rounded-xl" />
 });
@@ -211,6 +211,12 @@ const AchievementCard = React.memo(React.forwardRef<HTMLDivElement, {
                             <Building2 className="w-3.5 h-3.5 text-muted-foreground/60" />
                             <span className="text-[11px] text-muted-foreground font-medium">{achievement.issuer}</span>
                         </div>
+
+                        {achievement.description && (
+                            <p className="text-xs text-muted-foreground/75 dark:text-muted-foreground/60 line-clamp-2 mb-4 min-h-[2.5rem] leading-relaxed">
+                                {achievement.description}
+                            </p>
+                        )}
 
                         <div className="flex items-center justify-between pt-4 border-t border-border/20">
                             <div className="flex items-center gap-2">
@@ -505,6 +511,17 @@ function AchievementModal({
                                     )}
                                 </div>
                             </div>
+
+                            {achievement.description && (
+                                <motion.p 
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.1 }}
+                                    className="text-sm text-muted-foreground/80 dark:text-muted-foreground/70 leading-relaxed pl-4 border-l-2 border-border/60"
+                                >
+                                    {achievement.description}
+                                </motion.p>
+                            )}
 
                             <div className="grid grid-cols-1 gap-2.5 font-mono">
                                 <div className="group flex flex-col gap-1 p-4 rounded-xl bg-foreground/[0.03] border border-border/50 hover:bg-foreground/[0.05] transition-all">
@@ -877,32 +894,23 @@ export default function AchievementsPage() {
                             viewport={{ once: true }}
                             className="text-center mb-12"
                         >
-                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-3">
-                                Technical Universe
+                            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black mb-3 uppercase tracking-tight text-foreground">
+                                AI Engineering Universe
                             </h2>
-                            <p className="text-sm text-muted-foreground/60 max-w-lg mx-auto leading-relaxed">
-                                Interact with the core technologies and values that drive my research and development journey.
+                            <p className="text-sm text-muted-foreground/70 max-w-2xl mx-auto leading-relaxed">
+                                The technologies, frameworks, AI models, cloud platforms, and engineering tools I use to build scalable intelligent systems and production-ready applications.
                             </p>
                         </motion.div>
 
-                        {/* Falling text container */}
+                        {/* Technical Universe container */}
                         <motion.div
-                            initial={{ opacity: 0 }}
-                            whileInView={{ opacity: 1 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
-                            className="relative w-full mx-auto h-[400px]"
+                            className="relative w-full mx-auto mt-8"
                         >
                             <ErrorBoundary fallback={<div className="text-center opacity-50">Visuals Unavailable</div>}>
-                                <FallingText
-                                    text="Python TensorFlow LangChain Next.js PyTorch OpenCV Blockchain Kubernetes Docker TypeScript DeepLearning Ultralytics Nodejs MLOps Cloud"
-                                    highlightWords={['Python', 'TensorFlow', 'LangChain', 'Blockchain', 'DeepLearning']}
-                                    trigger="scroll"
-                                    gravity={0.8}
-                                    mouseConstraintStiffness={0.2}
-                                    fontSize="1.5rem"
-                                    fontWeight="900"
-                                    force={true}
-                                />
+                                <TechnicalUniverse />
                             </ErrorBoundary>
                         </motion.div>
                     </div>

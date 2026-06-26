@@ -186,7 +186,7 @@ const formatTimelineDate = (dateStr: string) => {
     return dateStr;
 };
 
-export function ProjectPageContent({ project, isLowPowerMode }: { project: Project; isLowPowerMode?: boolean }) {
+export function ProjectPageContent({ project, allProjects, isLowPowerMode }: { project: Project; allProjects?: Project[]; isLowPowerMode?: boolean }) {
     const t = useTranslations('projects');
     const tCommon = useTranslations('common');
     const router = useRouter();
@@ -200,10 +200,11 @@ export function ProjectPageContent({ project, isLowPowerMode }: { project: Proje
 
     // Get random other projects for "More Projects" section
     const otherProjects = useMemo(() => {
-        const others = portfolioData.projects.filter(p => p.id !== project.id);
+        const pool = allProjects || portfolioData.projects;
+        const others = pool.filter(p => p.id !== project.id);
         const shuffled = [...others].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, 5);
-    }, [project.id]);
+    }, [project.id, allProjects]);
 
     return (
         <div className="min-h-screen bg-background text-foreground pb-24 pt-24 sm:pt-32">

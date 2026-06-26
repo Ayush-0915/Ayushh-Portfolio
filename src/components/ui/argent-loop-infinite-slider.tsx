@@ -87,17 +87,17 @@ const PROJECT_DATA: ProjectData[] = [
     metrics: ["Text Classifiers", "Supervised NLP", "Misinformation Guard"]
   },
   {
-    title: "3D Space Portfolio",
-    image: "/project/spaceportfolio1.png",
-    category: "Frontend Experience",
-    year: "2025",
-    description: "An immersive 3D portfolio experience showcasing modern web design, interactive animations, and responsive user interfaces.",
-    slug: "space-portfolio",
-    impact: "Immersive WebGL space orbitals showcasing premium interactive frontend design.",
-    repoUrl: "https://github.com/Ayush-0915/Space-Portfolio",
+    title: "Car Evaluation",
+    image: "/project/carevaluation1.jpg",
+    category: "Machine Learning",
+    year: "2026",
+    description: "A machine learning project developed to classify vehicle quality based on multiple automotive attributes using Decision Tree and Random Forest.",
+    slug: "car-evaluation",
+    impact: "Automating vehicle evaluation using Decision Tree and Random Forest models.",
+    repoUrl: "https://github.com/Ayush-0915/Car-evaluation",
     demoUrl: "#",
-    techStack: ["React", "Three.js", "Tailwind CSS"],
-    metrics: ["3D Gravitational", "GLSL Shaders", "WebGL Canvas"]
+    techStack: ["Python", "Scikit-learn", "Pandas", "NumPy", "Matplotlib", "Decision Tree", "Random Forest", "Streamlit"],
+    metrics: ["Decision Tree", "Random Forest", "Classification"]
   },
   {
     title: "Netflix Data Analysis",
@@ -124,6 +124,19 @@ const PROJECT_DATA: ProjectData[] = [
     demoUrl: "#",
     techStack: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn", "Plotly", "Jupyter Notebook"],
     metrics: ["DBSCAN Clustering", "Folium Heatmaps", "Demand Forecast"]
+  },
+  {
+    title: "Bitcoin Sentiment Trader Analysis",
+    image: "/project/bitcoinsentimenttraderanalysis1.jpg",
+    category: "AI Trading • Financial Analytics",
+    year: "2026",
+    description: "An AI-powered financial analytics project that combines cryptocurrency market data with sentiment analysis to understand market psychology and identify trading opportunities.",
+    slug: "bitcoin-sentiment-trader-analysis",
+    impact: "Uncovering Bitcoin market psychology through sentiment-driven ML models.",
+    repoUrl: "https://github.com/Ayush-0915/Bitcoin-sentiment-trader-analysis",
+    demoUrl: "#",
+    techStack: ["Python", "Pandas", "NumPy", "Scikit-learn", "XGBoost", "LightGBM", "CatBoost", "Sentiment Analysis", "NLP"],
+    metrics: ["Sentiment Analysis", "Ensemble ML", "Crypto Analytics"]
   }
 ];
 
@@ -398,7 +411,13 @@ export function ArgentLoopInfiniteSlider() {
           <motion.div className="project-list" style={{ y: currentY }}>
             {PROJECT_DATA.map((data, i) => (
               <div key={i} className="project" style={{ top: `${i * 100}vh` }}>
-                <motion.img src={data.image} alt={`${data.title} - ${data.category} Full View`} style={{ y: imageY }} loading="lazy" />
+                {data.image ? (
+                  <motion.img src={data.image} alt={`${data.title} - ${data.category} Full View`} style={{ y: imageY }} loading="lazy" />
+                ) : (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-zinc-950/90 border border-white/5">
+                    <span className="text-zinc-500 font-bold tracking-widest text-lg uppercase">No Preview Available</span>
+                  </div>
+                )}
               </div>
             ))}
           </motion.div>
@@ -415,12 +434,18 @@ export function ArgentLoopInfiniteSlider() {
                   <motion.div style={{ y: contentInternalY }} className="w-full h-full relative">
                     {PROJECT_DATA.map((data, i) => (
                       <div key={i} className="minimap-img-item" style={{ top: `${i * 250}px` }}>
-                        <img 
-                          src={data.image} 
-                          alt={`${data.title} preview`} 
-                          className="block w-full h-full object-cover transition-transform duration-700 ease-out group-hover/minimap:scale-105" 
-                          loading="lazy" 
-                        />
+                        {data.image ? (
+                          <img 
+                            src={data.image} 
+                            alt={`${data.title} preview`} 
+                            className="block w-full h-full object-cover transition-transform duration-700 ease-out group-hover/minimap:scale-105" 
+                            loading="lazy" 
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-zinc-900 border border-white/5 text-zinc-500 font-bold text-xs uppercase select-none">
+                            No Preview
+                          </div>
+                        )}
                       </div>
                     ))}
                   </motion.div>

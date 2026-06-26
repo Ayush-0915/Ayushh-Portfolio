@@ -123,7 +123,7 @@ export async function GET() {
       "CareerNova",
       "Healthcare Risk Management",
       "CreditWise",
-      "Space Portfolio",
+      "Car Evaluation",
       "Fake News Detection",
       "Netflix Analysis",
       "Uber Analysis"
@@ -313,7 +313,7 @@ function getFallbackData(live: boolean, message?: string) {
       { name: "CareerNova", percent: 25, text: "6 hrs 11 mins" },
       { name: "Healthcare Risk Management", percent: 15, text: "3 hrs 42 mins" },
       { name: "CreditWise", percent: 10, text: "2 hrs 28 mins" },
-      { name: "Space Portfolio", percent: 5, text: "1 hr 14 mins" },
+      { name: "Car Evaluation", percent: 5, text: "1 hr 14 mins" },
       { name: "Fake News Detection", percent: 3, text: "45 mins" },
       { name: "Netflix Analysis", percent: 1, text: "15 mins" },
       { name: "Uber Analysis", percent: 1, text: "15 mins" }

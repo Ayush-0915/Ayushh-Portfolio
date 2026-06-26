@@ -1,6 +1,15 @@
 import js from "@eslint/js";
 
 export default [
+  {
+    ignores: [
+      ".next/**/*",
+      "node_modules/**/*",
+      "dist/**/*",
+      "build/**/*",
+      "out/**/*"
+    ]
+  },
   js.configs.recommended,
   {
     files: ["**/*.ts", "**/*.tsx"],

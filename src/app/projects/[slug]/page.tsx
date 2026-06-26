@@ -19,15 +19,19 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         notFound();
     }
 
-    // Fetch dynamic images from public/project folder
-    const galleryImages = await getProjectImages(slug, project.title);
+    // Fetch dynamic images for ALL projects to populate their preview images!
+    const allProjectsWithImages = await Promise.all(
+        portfolioData.projects.map(async (p) => {
+            const images = await getProjectImages(p.slug, p.title);
+            return {
+                ...p,
+                image: images.length > 0 ? images[0] : p.image,
+                galleryImages: images.length > 0 ? images : p.galleryImages
+            };
+        })
+    );
 
-    // If dynamic images found, override the project data
-    const updatedProject = {
-        ...project,
-        image: galleryImages.length > 0 ? galleryImages[0] : project.image, // First image as Hero
-        galleryImages: galleryImages.length > 0 ? galleryImages : project.galleryImages // All images for gallery
-    };
+    const updatedProject = allProjectsWithImages.find((p) => p.slug === slug)!;
 
-    return <ProjectPageContent project={updatedProject} />;
+    return <ProjectPageContent project={updatedProject} allProjects={allProjectsWithImages} />;
 }

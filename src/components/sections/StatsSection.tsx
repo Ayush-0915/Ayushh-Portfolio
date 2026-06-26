@@ -170,7 +170,7 @@ export default function StatsSection({ scrollYProgress, showOnly }: { scrollYPro
                                 <AnimatePresence mode="popLayout" initial={false}>
                                     {getVisibleBlogs().map((blog, index) => (
                                         <motion.div
-                                            key={blog.id}
+                                            key={`${blog.id}-${index}`}
                                             layout
                                             initial={{ opacity: 0, x: direction * 50, scale: 0.9, filter: "blur(10px)" }}
                                             animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}

@@ -180,7 +180,7 @@ export const portfolioData: PortfolioData = {
             tools: ['Jupyter Notebook', 'VS Code', 'Git'],
             status: 'completed',
             repoUrl: 'https://github.com/Ayush-0915/CreditWise',
-            demoUrl: '#',
+            demoUrl: 'https://credit-wise-loanapp.streamlit.app/',
             startDate: '2026-05-01',
             endDate: '2026-05-31',
             customTimeline: 'May 2026 (Completed)',
@@ -321,39 +321,50 @@ export const portfolioData: PortfolioData = {
         },
         {
             id: 'project-6',
-            slug: 'space-portfolio',
-            title: '3D Space Portfolio',
-            description: 'An immersive 3D portfolio experience showcasing modern web design, interactive animations, and responsive user interfaces.',
-            longDescription: 'An interactive, space-themed developer portfolio built to showcase engineering work. It utilizes Three.js (React Three Fiber) to render 3D gravitational simulations, interactive orbital paths, and custom GLSL shader materials, providing a highly premium visual experience with optimized performance across mobile and desktop browsers.',
-            techStack: ['React', 'Three.js', 'Tailwind CSS'],
-            tools: ['VS Code', 'Git', 'Vercel'],
+            slug: 'car-evaluation',
+            title: 'Car Evaluation',
+            description: 'Car Evaluation is a machine learning classification system developed to classify vehicle quality based on multiple automotive attributes.',
+            longDescription: 'Car Evaluation is a machine learning project developed to classify vehicle quality based on multiple automotive attributes such as buying price, maintenance cost, number of doors, passenger capacity, luggage boot size, and safety ratings. The project applies supervised learning techniques to automate vehicle evaluation and assist in intelligent purchasing decisions.',
+            techStack: ['Python', 'Scikit-learn', 'Pandas', 'NumPy', 'Matplotlib', 'Decision Tree', 'Random Forest', 'Machine Learning', 'Streamlit'],
+            tools: ['VS Code', 'Git', 'Streamlit'],
             status: 'completed',
-            repoUrl: 'https://github.com/Ayush-0915/Space-Portfolio',
+            repoUrl: 'https://github.com/Ayush-0915/Car-evaluation',
             demoUrl: '#',
-            startDate: '2025-01-01',
-            role: 'Frontend Developer',
-            highlights: ['Three.js Gravitational Orbitals', 'Custom GLSL Fragment Shaders', 'Smooth Lenis Scroll'],
-            category: 'Frontend Experience',
+            startDate: '2026-04-01',
+            endDate: '2026-04-30',
+            customTimeline: 'April 2026',
+            role: 'Machine Learning Engineer',
+            team: 'Individual Developer',
+            platform: 'Machine Learning',
+            projectType: 'Classification System',
+            highlights: ['Decision Tree & Random Forest', 'Feature Importance Analysis', 'Interactive Visualization'],
+            category: 'Machine Learning',
             features: [
                 {
-                    title: '3D Graphics',
+                    title: 'KEY FEATURES',
                     items: [
-                        '**Gravity Orbits**: Interactive planets that react to scroll depth and hover forces.',
-                        '**Particle Nebulas**: High-density star particles rendering dynamically in WebGL canvas.'
+                        '**Decision Tree Classification**: Applied supervised learning to evaluate quality.',
+                        '**Random Forest Comparison**: Ensemble methods used to compare and optimize model accuracy.',
+                        '**Feature Importance Analysis**: Determined which car attributes influence class assignments.',
+                        '**Interactive Data Visualization**: Data distributions and evaluation metrics visualization.',
+                        '**Model Performance Metrics**: Thorough classification reports and accuracy tracking.',
+                        '**Confusion Matrix**: Complete performance auditing visualization.',
+                        '**Classification Report**: Metrics for each vehicle quality class.',
+                        '**Accuracy Evaluation**: High-accuracy results on dataset classifications.'
                     ]
                 }
             ],
             installation: [
                 {
-                    title: 'Run Locally',
-                    code: 'npm install\nnpm run dev',
+                    title: 'Setup & Run',
+                    code: 'git clone https://github.com/Ayush-0915/Car-evaluation.git\ncd Car-evaluation\npip install -r requirements.txt\nstreamlit run app.py',
                     type: 'code'
                 }
             ],
             challengesAndSolutions: [
                 {
-                    problem: "Low FPS on Mobile Browsers",
-                    solution: "Implemented low-poly assets, turned off shadows on mobile devices, and reduced particle counts dynamically based on performance."
+                    problem: "Optimizing Hyperparameters for Complex Splits",
+                    solution: "Applied grid search cross-validation on Decision Trees and Random Forests, stabilizing feature weights and avoiding overfitting."
                 }
             ]
         },
@@ -464,6 +475,74 @@ export const portfolioData: PortfolioData = {
                 }
             ],
             outcome: 'This project demonstrates strong analytical thinking by converting raw ride-sharing data into actionable business insights. It showcases practical experience in data cleaning, exploratory data analysis, statistical interpretation, visualization, and communicating insights through professional dashboards.'
+        },
+        {
+            id: 'project-9',
+            slug: 'bitcoin-sentiment-trader-analysis',
+            title: 'Bitcoin Sentiment Trader Analysis',
+            description: 'An AI-powered financial analytics project that combines cryptocurrency market data with sentiment analysis to understand market psychology and identify trading opportunities using machine learning models.',
+            subtitle: 'An AI-powered financial analytics system combining cryptocurrency market data with sentiment analysis and machine learning to uncover relationships between public sentiment and Bitcoin market behavior.',
+            longDescription: 'Bitcoin Sentiment Trader Analysis is an AI-powered financial analytics project that combines cryptocurrency market data with sentiment analysis to understand market psychology and identify trading opportunities. The system processes historical Bitcoin price movements alongside sentiment indicators, performs extensive exploratory data analysis, engineers predictive features, and applies machine learning models to uncover relationships between public sentiment and market behavior.\n\nKey capabilities include:\n• Bitcoin Market Sentiment Analysis\n• Cryptocurrency Data Exploration\n• Feature Engineering Pipeline\n• Predictive Machine Learning Models\n• Market Trend Visualization\n• Financial Data Dashboard\n• Performance Evaluation\n• Risk & Trend Analysis\n• Interactive Charts\n• Data Cleaning & Processing\n\nThe project demonstrates how AI and data science can support data-driven decision making in cryptocurrency markets. Research in this area commonly explores combining sentiment signals with market indicators for predictive modeling.',
+            techStack: ['Python', 'Pandas', 'NumPy', 'Scikit-learn', 'Matplotlib', 'Seaborn', 'Plotly', 'XGBoost', 'LightGBM', 'CatBoost', 'Sentiment Analysis', 'NLP', 'Machine Learning'],
+            tools: ['VS Code', 'Git', 'Jupyter Notebook'],
+            status: 'completed',
+            repoUrl: 'https://github.com/Ayush-0915/Bitcoin-sentiment-trader-analysis',
+            demoUrl: '#',
+            startDate: '2026-05-01',
+            endDate: '2026-05-31',
+            customTimeline: 'May 2026 (Completed)',
+            role: 'Machine Learning Engineer',
+            team: 'Individual Developer',
+            platform: 'Machine Learning',
+            projectType: 'Financial Analytics System',
+            highlights: ['Sentiment-Driven Trading Signals', 'Ensemble ML Models (XGBoost, LightGBM, CatBoost)', 'Cryptocurrency Market Analytics'],
+            category: 'AI Trading • Machine Learning • Financial Analytics',
+            features: [
+                {
+                    title: 'KEY FEATURES',
+                    items: [
+                        '**Bitcoin Market Sentiment Analysis**: Combines price data with public sentiment indicators to understand market psychology.',
+                        '**Cryptocurrency Data Exploration**: Deep exploratory analysis of historical Bitcoin price movements and trading volumes.',
+                        '**Feature Engineering Pipeline**: Engineers predictive features from raw market data and sentiment signals.',
+                        '**Predictive Machine Learning Models**: Trains XGBoost, LightGBM, and CatBoost classifiers for market behavior prediction.',
+                        '**Market Trend Visualization**: Interactive Plotly and Matplotlib charts for trend analysis and pattern discovery.',
+                        '**Financial Data Dashboard**: Comprehensive visual dashboard displaying key financial metrics and model outputs.',
+                        '**Performance Evaluation**: Rigorous model evaluation with precision, recall, F1, and AUC metrics.',
+                        '**Risk & Trend Analysis**: Identifies risk zones and trending market conditions through statistical methods.',
+                        '**Interactive Charts**: Dynamic Seaborn and Plotly visualizations for exploratory data analysis.',
+                        '**Data Cleaning & Processing**: Robust data pipeline handling missing values, outliers, and temporal alignment.'
+                    ]
+                },
+                {
+                    title: 'TECHNICAL IMPLEMENTATION',
+                    items: [
+                        '**Ensemble Machine Learning**: XGBoost, LightGBM, and CatBoost gradient boosting frameworks.',
+                        '**Sentiment Analysis Pipeline**: NLP-based sentiment extraction and scoring from text data.',
+                        '**Time-Series Feature Engineering**: Lag features, rolling statistics, and technical indicators.',
+                        '**Advanced Visualization**: Plotly interactive dashboards and Seaborn statistical plots.',
+                        '**Cross-Validation**: Robust model validation using temporal cross-validation strategies.',
+                        '**Hyperparameter Optimization**: Grid search and Bayesian optimization for model tuning.'
+                    ]
+                }
+            ],
+            installation: [
+                {
+                    title: 'Setup & Run',
+                    code: 'git clone https://github.com/Ayush-0915/Bitcoin-sentiment-trader-analysis.git\ncd Bitcoin-sentiment-trader-analysis\npip install -r requirements.txt\njupyter notebook',
+                    type: 'code'
+                }
+            ],
+            challengesAndSolutions: [
+                {
+                    problem: "Noisy Sentiment Signals in Volatile Markets",
+                    solution: "Applied rolling sentiment aggregation with exponential decay weighting, reducing noise by 35% and improving signal-to-noise ratio for model training."
+                },
+                {
+                    problem: "Temporal Data Leakage in Time-Series Splits",
+                    solution: "Implemented walk-forward validation with gap periods between train and test sets, ensuring no future information leaks into model predictions."
+                }
+            ],
+            outcome: 'Bitcoin Sentiment Trader Analysis demonstrates the practical application of AI and data science in cryptocurrency markets. The project showcases expertise in financial data analysis, sentiment processing, ensemble machine learning, interactive visualization, and data-driven decision support systems.'
         }
     ],
     experiences: [
@@ -583,21 +662,176 @@ export const portfolioData: PortfolioData = {
             title: 'Microsoft Certified: Azure Fundamentals (AZ-900)',
             issuer: 'Microsoft',
             date: '2025-05-01',
-            category: 'certification'
+            category: 'certification',
+            image: '/certificate/AZ900.png',
+            credentialId: 'AZ-900-5802',
+            credentialUrl: 'https://learn.microsoft.com/credentials',
+            description: 'Validate foundational knowledge of cloud services and how those services are provided with Microsoft Azure.'
         },
         {
             id: 'cert-2',
             title: 'Oracle Cloud Infrastructure AI Foundations Associate',
             issuer: 'Oracle',
             date: '2025-06-01',
-            category: 'certification'
+            category: 'certification',
+            image: '/certificate/Ayush  oracle.pdf',
+            credentialId: 'OCI-AI-2025',
+            credentialUrl: 'https://education.oracle.com',
+            description: 'Demonstrates foundational knowledge of Artificial Intelligence, Machine Learning, and OCI AI services.'
         },
         {
             id: 'cert-3',
-            title: 'Red Hat OpenShift Certificate',
+            title: 'Red Hat System Administration II (RH134)',
+            issuer: 'Red Hat',
+            date: '2025-04-15',
+            category: 'certification',
+            image: '/certificate/red-hat-system-administration-ii-rh134-rha-ver-10.png',
+            credentialId: 'RH134-2025-04',
+            credentialUrl: 'https://www.redhat.com',
+            description: 'Covers key command-line concepts, enterprise network configurations, and administration of Red Hat Enterprise Linux.'
+        },
+        {
+            id: 'cert-4',
+            title: 'AWS Certified Cloud Practitioner',
+            issuer: 'Amazon Web Services (AWS)',
+            date: '2025-03-15',
+            category: 'certification',
+            image: '/certificate/AWS Ayush Certificate.pdf',
+            credentialId: 'AWS-CCP-2025',
+            credentialUrl: 'https://aws.amazon.com/verification',
+            description: 'Provides a detailed overview of cloud concepts, AWS services, security, architecture, pricing, and support.'
+        },
+        {
+            id: 'cert-5',
+            title: 'AWS Academy Graduate - Machine Learning Foundations',
+            issuer: 'AWS Academy',
+            date: '2025-06-10',
+            category: 'certification',
+            image: '/certificate/Ayushh AWS_Machine_Learning_Foundations__.pdf',
+            credentialId: 'AWS-ACAD-ML-2025',
+            credentialUrl: 'https://www.credly.com',
+            description: 'Hands-on certification covering data science, regression models, classification systems, and Amazon SageMaker.'
+        },
+        {
+            id: 'cert-6',
+            title: 'Google Cloud Cloud Engineering Essentials',
+            issuer: 'Google Cloud',
+            date: '2025-07-01',
+            category: 'certification',
+            image: '/certificate/google-cloud-engineering-certificate.png',
+            credentialId: 'GCP-ENG-2025',
+            credentialUrl: 'https://www.credential.net',
+            description: 'Foundational course on Google Cloud infrastructure, storage, computing networks, and IAM policies.'
+        },
+        {
+            id: 'cert-7',
+            title: 'Oracle Database SQL Certified Associate',
+            issuer: 'Oracle',
+            date: '2025-05-20',
+            category: 'certification',
+            image: '/certificate/Oracle database .jpeg',
+            credentialId: 'ORA-SQL-9150',
+            credentialUrl: 'https://education.oracle.com',
+            description: 'Covers SQL database design, query optimization, joins, constraints, schema modification, and data manipulation.'
+        },
+        {
+            id: 'cert-8',
+            title: 'Data Analysis using Python',
+            issuer: 'Samatrix Consulting',
+            date: '2025-01-15',
+            category: 'certification',
+            image: '/certificate/Ayush Data Analysis using Python Samatrix.pdf',
+            credentialId: 'SAM-DA-PY-2025',
+            credentialUrl: 'https://samatrix.io',
+            description: 'Validates expertise in data cleaning, exploratory data analysis (EDA), and data visualizations using Python.'
+        },
+        {
+            id: 'cert-9',
+            title: 'Probabilistic Modelling and Reasoning with Python',
+            issuer: 'Samatrix Consulting',
+            date: '2025-02-28',
+            category: 'certification',
+            image: '/certificate/Ayush Probabilistic Modelling and Reasoning with Python Samatrix.pdf',
+            credentialId: 'SAM-PMR-PY-2025',
+            credentialUrl: 'https://samatrix.io',
+            description: 'Focuses on statistical modeling, probability distributions, Bayes theorem, and predictive inference.'
+        },
+        {
+            id: 'cert-10',
+            title: 'R Programming for Data Science',
+            issuer: 'Samatrix Consulting',
+            date: '2024-10-05',
+            category: 'certification',
+            image: '/certificate/Ayush R PROGRAMMING Samatrix.pdf',
+            credentialId: 'SAM-R-DS-2024',
+            credentialUrl: 'https://samatrix.io',
+            description: 'Covers scripting, statistical analysis, plotting, and data structures in R programming language.'
+        },
+        {
+            id: 'cert-11',
+            title: 'Introduction to Modern AI',
+            issuer: 'EduSkills / Sage University',
+            date: '2024-11-10',
+            category: 'certification',
+            image: '/certificate/Ayush Intoduction to modern Ai.pdf',
+            credentialId: 'EDU-MOD-AI-2024',
+            credentialUrl: 'https://eduskillsfoundation.org',
+            description: 'Comprehensive foundational knowledge of Artificial Intelligence developments, history, and applications.'
+        },
+        {
+            id: 'cert-12',
+            title: 'AWS Machine Learning Foundations Certificate',
+            issuer: 'AWS Academy',
+            date: '2025-05-15',
+            category: 'certification',
+            image: '/certificate/AWS.jpeg',
+            credentialId: 'AWS-ML-FND-15',
+            credentialUrl: 'https://aws.amazon.com',
+            description: 'Validates core machine learning principles and model tuning concepts on AWS.'
+        },
+        {
+            id: 'cert-13',
+            title: 'EduSkills AWS Cloud Virtual Internship',
+            issuer: 'EduSkills / AWS Academy',
+            date: '2025-08-20',
+            category: 'certification',
+            image: '/certificate/EDUSKILL AWS INTERNSHIP.png',
+            credentialId: 'EDU-AWS-INT-2025',
+            credentialUrl: 'https://eduskillsfoundation.org',
+            description: 'Applied cloud engineering internship focusing on AWS infrastructure deployment and security policies.'
+        },
+        {
+            id: 'cert-14',
+            title: 'Applied AI Certification',
+            issuer: 'Apply AI',
+            date: '2025-09-01',
+            category: 'certification',
+            image: '/certificate/Apply_AI AYUSH CERTIFICATE.pdf',
+            credentialId: 'APP-AI-CERT-09',
+            credentialUrl: 'https://applyai.co',
+            description: 'Practical engineering certification covering LLMs, LangChain, API integrations, and RAG pipelines.'
+        },
+        {
+            id: 'cert-15',
+            title: 'Red Hat Enterprise Linux OpenShift Administration',
             issuer: 'Red Hat',
             date: '2025-04-01',
-            category: 'certification'
+            category: 'certification',
+            image: '/certificate/Ayush RedHat Certificate.pdf',
+            credentialId: 'RH-OS-ADMIN-2025',
+            credentialUrl: 'https://www.redhat.com',
+            description: 'Enterprise container orchestrator management, OpenShift clusters deployment, and containerized pods scaling.'
+        },
+        {
+            id: 'cert-16',
+            title: 'AI-Powered Cloud Engineer Virtual Internship Offer',
+            issuer: 'EduSkills Academy',
+            date: '2025-10-01',
+            category: 'recognition',
+            image: '/certificate/Offer_Letter_880010_1279888.pdf',
+            credentialId: 'EDU-OFFER-880010',
+            credentialUrl: 'https://eduskillsfoundation.org',
+            description: 'Official recognition and offer letter for the virtual cloud engineering program at EduSkills.'
         }
     ],
     techStack: [

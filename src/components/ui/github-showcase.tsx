@@ -69,12 +69,12 @@ const PINNED_REPOS = [
     url: "https://github.com/Ayush-0915/Uber-Trips-Analysis"
   },
   {
-    name: "Space-Portfolio",
-    desc: "Immersive, space-themed developer portfolio built with React Three Fiber, Custom GLSL Shaders, and Framer Motion.",
-    stars: 9,
-    forks: 2,
-    lang: "TypeScript",
-    url: "https://github.com/Ayush-0915/Space-Portfolio"
+    name: "Car-evaluation",
+    desc: "Machine learning classification system developed to classify vehicle quality based on multiple automotive attributes.",
+    stars: 7,
+    forks: 1,
+    lang: "Python",
+    url: "https://github.com/Ayush-0915/Car-evaluation"
   }
 ];
 
