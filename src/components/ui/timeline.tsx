@@ -1,120 +1,178 @@
 "use client";
-import {
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-  motion,
-} from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface TimelineEntry {
   title: string;
   content: React.ReactNode;
 }
 
-export const Timeline = ({ data, isLowPowerMode }: { data: TimelineEntry[]; isLowPowerMode?: boolean }) => {
-  const ref = useRef<HTMLDivElement>(null);
+export const Timeline = ({
+  data,
+}: {
+  data: TimelineEntry[];
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState(0);
+  const itemsContainerRef = useRef<HTMLDivElement>(null);
+  const [lineHeight, setLineHeight] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
+  // Height measurement to stop precisely at the last node's dot
   useEffect(() => {
-    if (ref.current) {
-      const updateHeight = () => {
-        const rect = ref.current?.getBoundingClientRect();
-        if (rect) {
-          setHeight(rect.height);
-        }
-      };
+    const container = itemsContainerRef.current;
+    if (!container) return;
 
+    const updateHeight = () => {
+      const items = container.querySelectorAll(".timeline-item");
+      if (items.length > 0) {
+        const lastItem = items[items.length - 1];
+        const lastItemHeight = lastItem.getBoundingClientRect().height;
+        const containerHeight = container.getBoundingClientRect().height;
+        // Height from the center of the first dot (top-[24px] of first item) 
+        // to the center of the last dot (top-[24px] of last item).
+        // Since the track line starts at top-[24px], its length is containerHeight - lastItemHeight.
+        setLineHeight(containerHeight - lastItemHeight);
+      }
+    };
+
+    updateHeight();
+
+    const resizeObserver = new ResizeObserver(() => {
       updateHeight();
+    });
+    resizeObserver.observe(container);
 
-      const resizeObserver = new ResizeObserver(() => {
-        updateHeight();
-      });
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, [data]);
 
-      resizeObserver.observe(ref.current);
+  // IntersectionObserver Scroll Spy to track active index
+  useEffect(() => {
+    const container = itemsContainerRef.current;
+    if (!container) return;
 
-      return () => {
-        resizeObserver.disconnect();
-      };
-    }
-  }, [ref]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const index = parseInt(entry.target.getAttribute("data-index") || "0");
+            setActiveIndex(index);
+          }
+        });
+      },
+      {
+        rootMargin: "-25% 0px -45% 0px", // Focal area of scroll viewport
+        threshold: [0.1, 0.5],
+      }
+    );
 
+    const items = container.querySelectorAll(".timeline-item");
+    items.forEach((item) => observer.observe(item));
+
+    return () => {
+      items.forEach((item) => observer.unobserve(item));
+    };
+  }, [data]);
+
+  // Framer Motion useScroll on the items container for scroll tracking
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 10%", "end 50%"],
+    offset: ["start 30%", "end 60%"],
   });
 
-  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, height]);
+  const heightTransform = useTransform(scrollYProgress, [0, 1], [0, lineHeight]);
   const opacityTransform = useTransform(scrollYProgress, [0, 0.1], [0, 1]);
 
   return (
-    <div
-      className="w-full bg-background font-sans md:px-10"
-      ref={containerRef}
-    >
-      <div className="max-w-7xl mx-auto pt-20 pb-10 px-4 md:px-8 lg:px-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          viewport={{ once: true }}
-        >
-          <motion.h2
-            className="text-[clamp(2rem,10vw,4.5rem)] font-black mb-6 bg-clip-text text-transparent bg-gradient-to-b from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-500 tracking-tight pb-2 leading-[1.1]"
-            whileHover={{ scale: 1.02, originX: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 10 }}
-          >
-            Changelog from my journey
-          </motion.h2>
-          <motion.p
-            className="text-neutral-600 dark:text-neutral-400 text-base md:text-xl max-w-2xl leading-relaxed"
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
-            A timeline of roles, responsibilities, and professional growth across various organizations.
-          </motion.p>
-        </motion.div>
-      </div>
-
-      <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
-        {data.map((item, index) => (
-          <div
-            key={index}
-            className="flex justify-start pt-10 md:pt-20 md:gap-10"
-          >
-            <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
-              <div className="h-10 absolute left-3 md:left-3 w-10 rounded-full bg-background flex items-center justify-center">
-                <div className="h-4 w-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 p-2" />
-              </div>
-              <h3 className="hidden md:block text-xl md:pl-20 md:text-5xl font-bold text-neutral-500 dark:text-neutral-500 ">
-                {item.title}
-              </h3>
-            </div>
-
-            <div className="relative pl-12 pr-4 md:pl-4 w-full">
-              <h3 className="md:hidden block text-2xl mb-4 text-left font-bold text-neutral-500 dark:text-neutral-500">
-                {item.title}
-              </h3>
-              {item.content}{" "}
-            </div>
-          </div>
-        ))}
+    <div className="w-full bg-background font-sans" ref={containerRef}>
+      <div ref={itemsContainerRef} className="relative max-w-7xl mx-auto pb-20">
+        
+        {/* Timeline Vertical Track Line */}
         <div
-          style={{
-            height: height + "px",
-          }}
-          className="absolute md:left-8 left-4 top-0 overflow-hidden w-[2px] bg-[linear-gradient(to_bottom,var(--tw-gradient-stops))] from-transparent from-[0%] via-neutral-200 dark:via-neutral-700 to-transparent to-[99%]  [mask-image:linear-gradient(to_bottom,transparent_0%,black_10%,black_80%,transparent_100%)] "
+          style={{ height: lineHeight + "px" }}
+          className="absolute left-[19px] md:left-[159px] top-[24px] w-[2px] bg-neutral-200 dark:bg-neutral-800/80 pointer-events-none rounded-full"
         >
+          {/* Scroll-driven gradient fill line */}
           <motion.div
             style={{
               height: heightTransform,
               opacity: opacityTransform,
             }}
-            className="absolute inset-x-0 top-0  w-[2px] bg-gradient-to-t from-purple-500 via-blue-500 to-transparent from-[0%] via-[10%] rounded-full"
+            className="absolute inset-x-0 top-0 w-[2px] bg-gradient-to-b from-blue-500 via-purple-500 to-transparent rounded-full shadow-[0_0_8px_rgba(59,130,246,0.5)]"
           />
         </div>
+
+        {/* Timeline Items Loop */}
+        {data.map((item, index) => {
+          const isActive = activeIndex === index;
+
+          return (
+            <div
+              key={index}
+              data-index={index}
+              className={cn(
+                "grid grid-cols-[40px_1fr] md:grid-cols-[140px_40px_1fr] gap-0 md:gap-0 pt-8 first:pt-4 timeline-item transition-all duration-500",
+                isActive ? "opacity-100" : "opacity-30"
+              )}
+            >
+              {/* Desktop Left Side: Date/Timeline label */}
+              <div className="hidden md:flex justify-end pr-6 text-right items-start pt-2">
+                <span
+                  className={cn(
+                    "text-sm font-bold tracking-tight transition-all duration-300 font-mono",
+                    isActive
+                      ? "text-blue-500 dark:text-blue-400 scale-105 drop-shadow-[0_0_8px_rgba(59,130,246,0.3)]"
+                      : "text-neutral-400 dark:text-neutral-500"
+                  )}
+                >
+                  {item.title}
+                </span>
+              </div>
+
+              {/* Middle Track Col: Dot container */}
+              <div className="flex justify-center items-start pt-2 relative z-10 w-10">
+                <div
+                  className={cn(
+                    "w-4 h-4 rounded-full flex items-center justify-center transition-all duration-500 border bg-background",
+                    isActive
+                      ? "border-blue-500 dark:border-blue-400 scale-125 shadow-[0_0_12px_rgba(59,130,246,0.8)]"
+                      : "border-neutral-300 dark:border-neutral-700"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "w-1.5 h-1.5 rounded-full transition-colors duration-500",
+                      isActive
+                        ? "bg-blue-500 dark:bg-blue-400"
+                        : "bg-neutral-300 dark:bg-neutral-700"
+                    )}
+                  />
+                </div>
+              </div>
+
+              {/* Right Side: Content Card */}
+              <div className="pl-4 pr-4 md:pl-6 w-full pb-8">
+                {/* Mobile-only Date header */}
+                <div className="md:hidden block mb-2">
+                  <span
+                    className={cn(
+                      "text-xs font-bold tracking-tight transition-colors duration-300 font-mono",
+                      isActive ? "text-blue-500 dark:text-blue-400" : "text-neutral-500"
+                    )}
+                  >
+                    {item.title}
+                  </span>
+                </div>
+                
+                <div className="w-full">
+                  {item.content}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

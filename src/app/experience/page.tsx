@@ -4,29 +4,27 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from "next/image";
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import { Transition } from "@headlessui/react";
 import {
     Calendar,
-    MapPin,
     ChevronDown,
     ChevronRight,
     Briefcase,
     GraduationCap,
-    Filter,
     Rocket,
     Award,
     Heart,
     Users,
     ExternalLink,
     ArrowRight,
-    Link2
+    Link2,
+    BookOpen,
+    Sparkles
 } from 'lucide-react';
 import { cn, formatDate } from '@/lib/utils';
 import { portfolioData } from '@/data/portfolio';
 import dynamic from 'next/dynamic';
-import { useTheme } from 'next-themes';
-import { Experience, Education } from '@/types';
+import { Experience } from '@/types';
 
 const ExperienceMarquee = dynamic(() => import('../../components/sections/ExperienceMarquee'), { ssr: true });
 const ExperienceStickyScroll = dynamic(() => import('../../components/sections/ExperienceStickyScroll'), { ssr: true });
@@ -54,10 +52,20 @@ const highlightContent = {
 };
 
 import { usePerformance } from '@/hooks/usePerformance';
-
 import { getJourneyImages } from '@/app/actions/getJourneyImages';
 
-function ExperienceHighlightSection({ type, isLowPowerMode }: { type: TabType; isLowPowerMode: boolean }) {
+const formatTimelineDate = (start: string, end?: string | null) => {
+    const format = (dateStr: string) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString("en-US", {
+            month: "short",
+            year: "numeric",
+        });
+    };
+    return `${format(start)} — ${end ? format(end) : 'Present'}`;
+};
+
+function ExperienceHighlightSection({ type }: { type: TabType }) {
     const content = highlightContent[type];
 
     return (
@@ -101,10 +109,12 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
     ];
 
     const categories = [
-        { id: 'professional', label: 'Professional Experience', icon: Briefcase, color: 'bg-blue-600', prefix: 'prof-' },
-        { id: 'leadership', label: 'Leadership & Organizational', icon: Users, color: 'bg-purple-600', prefix: 'lead-' },
-        { id: 'volunteer', label: 'Volunteer Experience', icon: Heart, color: 'bg-orange-500', prefix: 'vol-' },
-        { id: 'certifications', label: 'Certifications & Development', icon: Award, color: 'bg-emerald-500', prefix: 'cert-' },
+        { id: 'ai-ml', label: 'AI & Machine Learning', icon: Briefcase, color: 'bg-blue-600', ids: ['exp-ai', 'exp-ml'] },
+        { id: 'products', label: 'Products & Software', icon: Rocket, color: 'bg-purple-600', ids: ['exp-products'] },
+        { id: 'research', label: 'Research', icon: GraduationCap, color: 'bg-orange-500', ids: ['exp-research'] },
+        { id: 'open-source', label: 'Open Source', icon: Heart, color: 'bg-emerald-500', ids: ['exp-open-source'] },
+        { id: 'internships', label: 'Internships', icon: Users, color: 'bg-yellow-500', ids: ['exp-research'] },
+        { id: 'academic', label: 'Academic', icon: BookOpen, color: 'bg-pink-600', ids: ['exp-research'] },
     ];
 
     const heightFix = () => {
@@ -120,14 +130,13 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
         if (!selectedCategory) return [];
         const cat = categories.find(c => c.id === selectedCategory);
         if (!cat) return [];
-        return portfolioData.experiences.filter(exp => exp.id.startsWith(cat.prefix));
+        return portfolioData.experiences.filter(exp => cat.ids.includes(exp.id));
     }, [selectedCategory]);
 
     return (
         <div className="mb-24">
-            {/* Testimonial-style Header with Hemisphere */}
+            {/* Header with Orb Hemisphere */}
             <div className="mx-auto w-full max-w-5xl px-8 text-center sm:px-12 mb-12">
-                {/* Orb with Hemisphere Background */}
                 <div className="relative h-28 sm:h-36">
                     <div className="pointer-events-none absolute top-0 left-1/2 h-[400px] w-[400px] -translate-x-1/2 before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-gradient-to-b before:from-cyan-500/25 before:via-cyan-500/5 before:via-25% before:to-cyan-500/0 before:to-75% sm:h-[560px] sm:w-[560px]">
                         <div className="h-24 [mask-image:_linear-gradient(0deg,transparent,theme(colors.white)_20%,theme(colors.white))] sm:h-32">
@@ -166,7 +175,7 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                                 leaveTo="opacity-0 blur-sm -translate-y-4"
                                 beforeEnter={() => heightFix()}
                             >
-                                <div className="px-4 text-xl font-bold text-foreground sm:px-0 sm:text-2xl lg:text-3xl">
+                                <div className="px-4 text-xl font-bold text-foreground sm:px-0 sm:text-2xl lg:text-3xl font-sans tracking-tight">
                                     &ldquo;{tab.description}&rdquo;
                                 </div>
                             </Transition>
@@ -174,13 +183,13 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                     </div>
                 </div>
 
-                {/* Tab Buttons - Horizontal Scroll on Mobile, Centered on Tablet+ */}
+                {/* Tab Buttons */}
                 <div className="flex flex-nowrap sm:flex-wrap justify-start sm:justify-center gap-2 overflow-x-auto pb-4 sm:pb-0 hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
                     {tabs.map((tab, index) => (
                         <button
                             key={index}
                             className={`m-1.5 inline-flex justify-center items-center gap-2.5 rounded-full px-5 py-2.5 text-sm whitespace-nowrap shadow-sm transition-colors duration-150 focus-visible:ring focus-visible:ring-cyan-300 focus-visible:outline-none sm:px-6 sm:py-3 sm:text-base ${activeTab === index
-                                ? "bg-cyan-500 text-white shadow-cyan-950/10"
+                                ? "bg-cyan-500 text-white shadow-cyan-950/10 font-semibold"
                                 : "bg-white dark:bg-neutral-800 text-cyan-900 dark:text-cyan-100 hover:bg-cyan-100 dark:hover:bg-neutral-700"
                                 }`}
                             onClick={() => {
@@ -211,7 +220,7 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                         >
                             <ExperienceStickyScroll />
                             <div className="pb-[clamp(40px,10vh,120px)]" />
-                            <ExperienceHighlightSection type="education" isLowPowerMode={isLowPowerMode} />
+                            <ExperienceHighlightSection type="education" />
                         </motion.div>
                     )}
 
@@ -226,7 +235,7 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                         >
                             <ExperienceTimeline isLowPowerMode={isLowPowerMode} />
                             <div className="pb-[clamp(40px,10vh,120px)]" />
-                            <ExperienceHighlightSection type="journey" isLowPowerMode={isLowPowerMode} />
+                            <ExperienceHighlightSection type="journey" />
                         </motion.div>
                     )}
 
@@ -249,7 +258,7 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                                         exit={{ opacity: 0, x: -20 }}
                                         className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:min-h-[600px] items-center"
                                     >
-                                        {/* Left: Sticky Title & Context */}
+                                        {/* Left Description */}
                                         <div className="lg:col-span-5 space-y-8">
                                             <motion.div
                                                 initial={{ opacity: 0, x: -20 }}
@@ -259,19 +268,18 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                                                 <h2 className="text-5xl md:text-7xl font-black text-neutral-900 dark:text-white tracking-tighter mb-6 leading-[0.9]">
                                                     SELECT <br />
                                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 via-neutral-600 to-neutral-400 dark:from-white dark:via-neutral-200 dark:to-neutral-500">
-                                                        ARCHIVE
+                                                        SECTOR
                                                     </span>
                                                 </h2>
                                                 <p className="text-xl text-neutral-500 dark:text-neutral-400 max-w-md leading-relaxed">
-                                                    Navigate through the timeline of my career. Choose a lens to filter the experience database.
+                                                    Filter the experience database to inspect specific segments of my technical work.
                                                 </p>
                                             </motion.div>
 
-                                            {/* Decorative Elements */}
                                             <div className="hidden lg:block w-24 h-1 bg-gradient-to-r from-neutral-900 to-neutral-400 dark:from-white dark:to-neutral-600 rounded-full" />
                                         </div>
 
-                                        {/* Right: Interactive List */}
+                                        {/* Right Selection List */}
                                         <div className="lg:col-span-7 flex flex-col gap-4">
                                             {categories.map((cat, idx) => (
                                                 <motion.button
@@ -280,35 +288,30 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                                                     animate={{ opacity: 1, x: 0 }}
                                                     transition={{ delay: 0.1 * idx }}
                                                     onClick={() => setSelectedCategory(cat.id)}
-                                                    className="group relative flex items-center gap-6 p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50 hover:bg-white dark:hover:bg-neutral-800 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:hover:shadow-neutral-900/50 text-left overflow-hidden"
+                                                    className="group relative flex items-center gap-6 p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50 hover:bg-white dark:hover:bg-neutral-850 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:hover:shadow-neutral-950/30 text-left overflow-hidden"
                                                 >
-
-                                                    {/* Hover Gradient Background */}
                                                     <div className={cn(
-                                                        "absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500",
+                                                        "absolute inset-0 opacity-0 group-hover:opacity-[0.03] dark:group-hover:opacity-[0.05] transition-opacity duration-500",
                                                         cat.color
                                                     )} />
 
-                                                    {/* Category Icon */}
                                                     <div className={cn(
-                                                        "w-16 h-16 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-500",
+                                                        "w-14 h-14 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-110 transition-transform duration-500",
                                                         cat.color
                                                     )}>
-                                                        <cat.icon className="w-8 h-8" />
+                                                        <cat.icon className="w-7 h-7" />
                                                     </div>
 
-                                                    {/* Text Content */}
                                                     <div className="flex-1 relative z-10">
-                                                        <h4 className="text-2xl font-bold text-neutral-900 dark:text-white mb-1 group-hover:text-neutral-700 dark:group-hover:text-neutral-200 transition-colors">
+                                                        <h4 className="text-xl font-bold text-neutral-900 dark:text-white mb-0.5 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
                                                             {cat.label}
                                                         </h4>
-                                                        <p className="text-sm font-medium text-neutral-500 dark:text-neutral-400 line-clamp-1 group-hover:text-neutral-900 dark:group-hover:text-neutral-200 transition-colors">
-                                                            Tap to explore {cat.label.toLowerCase()} records
+                                                        <p className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
+                                                            Explore projects in the {cat.label.toLowerCase()} category
                                                         </p>
                                                     </div>
 
-                                                    {/* Arrow Action */}
-                                                    <div className="w-10 h-10 rounded-full bg-white dark:bg-black border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white group-hover:border-neutral-400 dark:group-hover:border-neutral-600 transition-all duration-300">
+                                                    <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white group-hover:border-neutral-400 dark:group-hover:border-neutral-600 transition-all duration-300">
                                                         <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
                                                     </div>
                                                 </motion.button>
@@ -323,25 +326,25 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                                         exit={{ opacity: 0 }}
                                         className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-32"
                                     >
-                                        {/* Left: Sticky Sidebar Filters */}
+                                        {/* Sticky Filters Sidebar */}
                                         <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit space-y-8">
                                             <button
                                                 onClick={() => setSelectedCategory(null)}
-                                                className="group flex items-center gap-3 text-sm font-bold uppercase tracking-wider text-neutral-500 hover:text-black dark:hover:text-white transition-colors px-4 py-2 -ml-4 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800/50 w-fit"
+                                                className="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-black dark:hover:text-white transition-colors px-4 py-2 -ml-4 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800/50 w-fit"
                                             >
                                                 <ArrowRight className="w-4 h-4 rotate-180 group-hover:-translate-x-1 transition-transform" />
-                                                <span>Back to Selection</span>
+                                                <span>Back to Sectors</span>
                                             </button>
 
                                             <div className="space-y-2">
-                                                <h3 className="text-4xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tighter leading-tight">
+                                                <h3 className="text-4xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tighter leading-tight font-sans">
                                                     {categories.find(c => c.id === selectedCategory)?.label}
                                                 </h3>
-                                                <div className="h-1.5 w-20 bg-gradient-to-r from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-600 rounded-full" />
+                                                <div className="h-1.5 w-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-md" />
                                             </div>
 
                                             <div className="hidden lg:flex flex-col gap-2">
-                                                <p className="text-xs font-bold uppercase text-neutral-400 tracking-widest mb-2">
+                                                <p className="text-[10px] font-black uppercase text-neutral-400 dark:text-neutral-500 tracking-widest mb-2 pl-4">
                                                     Filter View
                                                 </p>
                                                 {categories.map(cat => (
@@ -349,10 +352,10 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                                                         key={cat.id}
                                                         onClick={() => setSelectedCategory(cat.id)}
                                                         className={cn(
-                                                            "text-left px-4 py-3 rounded-xl text-sm font-bold transition-all duration-300 border border-transparent",
+                                                            "text-left px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-300 border border-transparent",
                                                             selectedCategory === cat.id
-                                                                ? "bg-white dark:bg-neutral-800 text-black dark:text-white shadow-lg border-neutral-200 dark:border-neutral-700"
-                                                                : "text-neutral-500 hover:bg-neutral-100 dark:hover:bg-neutral-900 hover:text-neutral-900 dark:hover:text-neutral-300"
+                                                                ? "bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-lg border-neutral-200/80 dark:border-neutral-700/80"
+                                                                : "text-neutral-400 hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 hover:text-neutral-950 dark:hover:text-neutral-300"
                                                         )}
                                                     >
                                                         {cat.label}
@@ -361,12 +364,17 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                                             </div>
                                         </div>
 
-                                        {/* Right: Scrollable Content Stream */}
+                                        {/* Scrollable Content Stream */}
                                         <div className="lg:col-span-8 space-y-6">
                                             {filteredExperiences.map((exp, idx) => (
-                                                <CollapsibleExperienceCard key={exp.id} exp={exp} idx={idx} isLowPowerMode={isLowPowerMode} />
+                                                <CollapsibleExperienceCard 
+                                                    key={exp.id} 
+                                                    exp={exp} 
+                                                    idx={idx} 
+                                                    isLowPowerMode={isLowPowerMode} 
+                                                    defaultExpanded={true} // Expand all items by default in filtered view
+                                                />
                                             ))}
-
 
                                             {filteredExperiences.length === 0 && (
                                                 <div className="flex flex-col items-center justify-center py-20 text-neutral-400">
@@ -378,7 +386,7 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
                                 )}
                             </AnimatePresence>
                             <div className="pb-[clamp(40px,10vh,120px)]" />
-                            <ExperienceHighlightSection type="experience" isLowPowerMode={isLowPowerMode} />
+                            <ExperienceHighlightSection type="experience" />
                         </motion.div>
                     )}
                 </AnimatePresence>
@@ -387,12 +395,9 @@ function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
     );
 }
 
-
 import { SmoothScrollHero } from '@/components/sections/SmoothScrollHero';
 
 export default function ExperiencePage() {
-    const t = useTranslations('experience');
-    const { resolvedTheme } = useTheme();
     const { isLowPowerMode } = usePerformance();
 
     return (
@@ -402,42 +407,50 @@ export default function ExperiencePage() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="bg-background text-foreground relative"
         >
-            {/* Smooth Scroll Hero Section */}
             <SmoothScrollHero />
 
             <FloatingShape
                 className="w-[min(500px,80vw)] h-[min(500px,80vw)] -top-20 -right-40"
-                gradient="radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)"
+                gradient="radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%)"
                 isLowPowerMode={isLowPowerMode}
             />
             <FloatingShape
                 className="w-[min(400px,70vw)] h-[min(400px,70vw)] bottom-40 -left-20"
-                gradient="radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%)"
+                gradient="radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%)"
                 delay={3}
                 isLowPowerMode={isLowPowerMode}
             />
 
             <motion.div
-                initial={{ opacity: 0, y: isLowPowerMode ? 0 : 60 }}
+                initial={{ opacity: 0, y: isLowPowerMode ? 0 : 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+                transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
                 className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20"
             >
-
                 {/* 1. Work Experience Gallery Marquee */}
                 <div className="w-screen relative left-1/2 -translate-x-1/2 mb-20 -mt-10 md:-mt-20">
                     <ExperienceMarquee />
                 </div>
 
-                {/* 2. Tab Slider Section (Testimonial-style UI) */}
+                {/* 2. Tab Slider Section */}
                 <ExperienceTabSlider isLowPowerMode={isLowPowerMode} />
             </motion.div>
         </motion.div>
     );
 }
 
-function CollapsibleExperienceCard({ exp, idx, isLowPowerMode }: { exp: Experience; idx: number; isLowPowerMode: boolean }) {
-    const [isExpanded, setIsExpanded] = useState(false);
+function CollapsibleExperienceCard({ 
+    exp, 
+    idx, 
+    isLowPowerMode,
+    defaultExpanded = false
+}: { 
+    exp: Experience; 
+    idx: number; 
+    isLowPowerMode: boolean;
+    defaultExpanded?: boolean;
+}) {
+    const [isExpanded, setIsExpanded] = useState(defaultExpanded);
     const t = useTranslations('experience');
 
     // Helper to calculate duration in months/years
@@ -454,96 +467,140 @@ function CollapsibleExperienceCard({ exp, idx, isLowPowerMode }: { exp: Experien
         return `${years} ${t('year')} ${months} ${t('months')}`;
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsExpanded(!isExpanded);
+        }
+    };
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: isLowPowerMode ? 0 : 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: isLowPowerMode ? 0 : idx * 0.1 }}
-            className={`group relative bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-[2rem] transition-all duration-500 overflow-hidden ${isExpanded ? 'shadow-2xl dark:shadow-neutral-900/50 ring-1 ring-neutral-200 dark:ring-neutral-700' : 'hover:shadow-2xl dark:hover:shadow-neutral-900/50 hover:-translate-y-1'}`}
+        <article
+            className={cn(
+                "group relative bg-white/40 dark:bg-neutral-900/30 backdrop-blur-xl border rounded-[2rem] transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl dark:hover:shadow-neutral-950/80 hover:-translate-y-1 hover:border-blue-500/20 dark:hover:border-blue-500/20",
+                isExpanded 
+                    ? "border-blue-500/30 dark:border-blue-500/30 ring-1 ring-blue-500/10 shadow-xl" 
+                    : "border-neutral-200/80 dark:border-neutral-800/80"
+            )}
         >
-            <div className="p-6 md:p-8 cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
-                <div className="flex gap-4 md:gap-6 items-start">
-                    {/* Logo (Left Side) - Always visible */}
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-white dark:bg-black rounded-2xl flex items-center justify-center shrink-0 border border-neutral-100 dark:border-neutral-800 p-2 shadow-sm">
+            {/* Ambient hover glow background */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/[0.02] group-hover:to-purple-500/[0.02] transition-all duration-700 pointer-events-none" />
+
+            {/* Glowing active card edge border overlay */}
+            {isExpanded && (
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-md" />
+            )}
+
+            <div 
+                className="p-6 md:p-8 cursor-pointer select-none" 
+                onClick={() => setIsExpanded(!isExpanded)}
+                onKeyDown={handleKeyDown}
+                tabIndex={0}
+                role="button"
+                aria-expanded={isExpanded}
+            >
+                <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
+                    {/* Logo (Left Side) */}
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-neutral-100 dark:bg-neutral-855 rounded-2xl flex items-center justify-center shrink-0 border border-neutral-200/50 dark:border-neutral-700/50 p-2 shadow-sm transition-transform group-hover:scale-105 duration-300">
                         {exp.logo ? (
-                            <Image src={exp.logo} alt={exp.company} width={48} height={48} className="object-contain" unoptimized loading="lazy" />
+                            <Image 
+                                src={exp.logo} 
+                                alt={exp.company} 
+                                width={48} 
+                                height={48} 
+                                className="object-contain" 
+                                unoptimized 
+                                loading="lazy" 
+                            />
                         ) : (
-                            <Briefcase className="w-8 h-8 text-neutral-300" />
+                            <Briefcase className="w-7 h-7 text-neutral-400 dark:text-neutral-500" />
                         )}
                     </div>
 
-                    {/* Content (Right Side) */}
-                    <div className="flex-1 space-y-3">
-                        {/* Header: Position & Company */}
-                        <div>
-                            <h4 className="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white leading-tight mb-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                    {/* Header Text Content */}
+                    <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
+                            <h3 className="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white leading-tight truncate group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors font-sans tracking-tight">
                                 {exp.position}
-                            </h4>
-                            <div className="text-base font-medium text-neutral-600 dark:text-neutral-400 flex flex-wrap items-center gap-2">
-                                <span>{exp.company}</span>
-                                {exp.location && (
-                                    <>
-                                        <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                                        <span>{exp.location}</span>
-                                    </>
-                                )}
-                            </div>
+                            </h3>
+                            {exp.type && (
+                                <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-mono">
+                                    {t(`type.${exp.type}`)}
+                                </span>
+                            )}
                         </div>
 
-                        {/* Metadata Row (Reference Style) */}
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-neutral-500 dark:text-neutral-500 font-medium">
-                            <span className="text-neutral-700 dark:text-neutral-300">
-                                {formatDate(exp.startDate)} — {exp.endDate ? formatDate(exp.endDate) : t('present')}
-                            </span>
-                            <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                            <span className="text-neutral-400 dark:text-neutral-600">
-                                {getDuration(exp.startDate, exp.endDate)}
-                            </span>
-                            {exp.type && (
-                                <>
-                                    <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                                    <span className="capitalize">{t(`type.${exp.type}`)}</span>
-                                </>
-                            )}
+                        <div className="text-sm md:text-base font-semibold text-neutral-600 dark:text-neutral-400 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                            <span>{exp.company}</span>
                             {exp.location && (
                                 <>
                                     <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                                    <span>{exp.location}</span>
+                                    <span className="text-neutral-500 font-medium">{exp.location}</span>
                                 </>
                             )}
                         </div>
 
-                        {/* Show Detail Action (Collapsed Only) */}
-                        {!isExpanded && (
-                            <div className="pt-2 flex items-center gap-1 text-sm font-medium text-neutral-400 group-hover:text-neutral-600 dark:group-hover:text-neutral-300 transition-colors">
-                                <ChevronRight className="w-4 h-4" />
-                                <span>{t('showDetail')}</span>
-                            </div>
-                        )}
+                        {/* Metadata Tagline Row */}
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-400 dark:text-neutral-500 font-semibold mt-2">
+                            <span className="flex items-center gap-1 font-mono text-neutral-600 dark:text-neutral-400">
+                                <Calendar className="w-3.5 h-3.5" />
+                                {formatDate(exp.startDate)} — {exp.endDate ? formatDate(exp.endDate) : t('present')}
+                            </span>
+                            <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                            <span className="font-mono text-neutral-500">
+                                {getDuration(exp.startDate, exp.endDate)}
+                            </span>
+                        </div>
                     </div>
+
+                    {/* Expand Chevron */}
+                    <div className="self-end sm:self-center ml-auto">
+                        <div className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-800 flex items-center justify-center text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white group-hover:border-neutral-400 dark:group-hover:border-neutral-700 transition-colors">
+                            <ChevronDown className={cn("w-4 h-4 transition-transform duration-300", isExpanded && "rotate-180")} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Short bio preview */}
+                <p className="text-neutral-600 dark:text-neutral-300 mt-4 leading-relaxed text-sm md:text-base font-medium">
+                    {exp.description}
+                </p>
+
+                {/* Tech stack badges */}
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                    {exp.skills.map((skill, i) => (
+                        <span 
+                            key={i} 
+                            className="px-2.5 py-0.5 rounded-lg text-[9px] font-bold tracking-wider bg-neutral-50 dark:bg-neutral-800/80 text-neutral-500 dark:text-neutral-400 border border-neutral-200/50 dark:border-neutral-700/50 font-mono uppercase"
+                        >
+                            {skill}
+                        </span>
+                    ))}
                 </div>
             </div>
 
-            {/* Expanded Content */}
-            <AnimatePresence>
+            {/* Collapsible Details Panel */}
+            <AnimatePresence initial={false}>
                 {isExpanded && (
                     <motion.div
+                        key="content"
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: "auto", opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
                     >
-                        <div className="px-6 md:px-8 pb-8 pt-0 space-y-8 border-t border-neutral-100 dark:border-neutral-800/50 mt-4">
-                            {/* 1. TASKS / RESPONSIBILITIES */}
+                        <div className="px-6 md:px-8 pb-8 pt-4 space-y-6 border-t border-neutral-100 dark:border-neutral-800/50 bg-neutral-50/[0.1] dark:bg-neutral-900/[0.1]">
+                            {/* Responsibilities */}
                             {exp.responsibilities && exp.responsibilities.length > 0 && (
-                                <div className="pt-6">
-                                    <h5 className="text-xs font-black text-neutral-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <div className="space-y-3">
+                                    <h4 className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em] flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                        {t('tasks')}
-                                    </h5>
-                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        Responsibilities & Projects
+                                    </h4>
+                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 pl-1">
                                         {exp.responsibilities.map((task, i) => (
-                                            <li key={i} className="flex items-start gap-3 text-sm text-neutral-600 dark:text-neutral-300">
+                                            <li key={i} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-300">
                                                 <ChevronRight className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
                                                 <span>{task}</span>
                                             </li>
@@ -552,34 +609,17 @@ function CollapsibleExperienceCard({ exp, idx, isLowPowerMode }: { exp: Experien
                                 </div>
                             )}
 
-                            {/* 2. WHAT I LEARNED */}
-                            {exp.keyLearnings && exp.keyLearnings.length > 0 && (
-                                <div>
-                                    <h5 className="text-xs font-black text-neutral-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
-                                        {t('learned')}
-                                    </h5>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {exp.keyLearnings.map((learn, i) => (
-                                            <div key={i} className="p-4 rounded-xl bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-100 dark:border-neutral-800">
-                                                <p className="text-sm text-neutral-600 dark:text-neutral-300">{learn}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* 3. IMPACT */}
+                            {/* Achievements & Impact */}
                             {exp.impact && exp.impact.length > 0 && (
-                                <div>
-                                    <h5 className="text-xs font-black text-neutral-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <div className="space-y-3">
+                                    <h4 className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em] flex items-center gap-2">
                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                        {t('impact')}
-                                    </h5>
-                                    <ul className="space-y-3">
+                                        Key Achievements & Metrics
+                                    </h4>
+                                    <ul className="space-y-2.5 pl-1">
                                         {exp.impact.map((imp, i) => (
-                                            <li key={i} className="flex items-center gap-3 text-sm font-medium text-neutral-800 dark:text-neutral-200">
-                                                <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center shrink-0">
+                                            <li key={i} className="flex items-center gap-3 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+                                                <div className="w-7 h-7 rounded-xl bg-emerald-100/50 dark:bg-emerald-900/20 flex items-center justify-center shrink-0 border border-emerald-500/20">
                                                     <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                                                 </div>
                                                 <span>{imp}</span>
@@ -589,34 +629,54 @@ function CollapsibleExperienceCard({ exp, idx, isLowPowerMode }: { exp: Experien
                                 </div>
                             )}
 
-                            {/* Skills (Full List in Expanded View) */}
-                            <div className="pt-4 border-t border-neutral-100 dark:border-neutral-800/50">
-                                <div className="flex flex-wrap gap-2">
-                                    {exp.skills.map((skill, i) => (
-                                        <span key={i} className="px-3 py-1 rounded-lg text-xs font-bold bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-200 dark:border-neutral-700">
-                                            {skill}
-                                        </span>
-                                    ))}
+                            {/* Key Learnings */}
+                            {exp.keyLearnings && exp.keyLearnings.length > 0 && (
+                                <div className="space-y-3">
+                                    <h4 className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                                        Core Learnings
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        {exp.keyLearnings.map((learn, i) => (
+                                            <div 
+                                                key={i} 
+                                                className="p-3.5 rounded-xl bg-neutral-100/30 dark:bg-neutral-800/30 border border-neutral-200/50 dark:border-neutral-700/50"
+                                            >
+                                                <p className="text-sm text-neutral-600 dark:text-neutral-300 font-medium leading-relaxed animate-none">
+                                                    {learn}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
-                            {/* Action Button */}
-                            <div className="flex justify-center pt-2">
+                            {/* Gallery Attachments */}
+                            <TimelineGallery
+                                images={exp.galleryImages || []}
+                                id={exp.id}
+                                title={exp.position}
+                                externalLink={exp.externalLink}
+                                logo={exp.logo}
+                            />
+
+                            {/* Collapse Trigger */}
+                            <div className="flex justify-end pt-2">
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setIsExpanded(false);
                                     }}
-                                    className="px-6 py-2 rounded-full bg-neutral-100 dark:bg-neutral-800 text-xs font-bold text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors"
+                                    className="px-5 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-xs font-bold text-neutral-500 hover:text-neutral-800 dark:hover:text-white transition-colors"
                                 >
-                                    {t('hideDetail')}
+                                    Hide Details
                                 </button>
                             </div>
                         </div>
                     </motion.div>
                 )}
             </AnimatePresence>
-        </motion.div>
+        </article>
     );
 }
 
@@ -642,15 +702,15 @@ const LinkPreviewCard = ({ url, title, id, logo }: { url: string; title?: string
             target="_blank"
             rel="noopener noreferrer"
             layoutId={`${id}-link-card`}
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="group relative flex flex-col justify-center p-4 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl h-24 md:h-32 w-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/30"
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="group relative flex flex-col justify-center p-4 bg-white/40 dark:bg-neutral-900/40 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 rounded-2xl h-24 md:h-32 w-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-blue-500/30"
         >
             <div className="flex items-center gap-4 relative z-10 w-full">
                 <div className="flex-1 flex flex-col overflow-hidden">
                     <div className="flex items-center gap-2 mb-1 overflow-hidden">
-                        <div className="p-1 rounded bg-primary/10 text-primary shrink-0">
+                        <div className="p-1 rounded bg-blue-500/10 text-blue-500 shrink-0">
                             <Link2 className="w-2.5 h-2.5" />
                         </div>
                         <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest truncate">{domain}</span>
@@ -663,21 +723,20 @@ const LinkPreviewCard = ({ url, title, id, logo }: { url: string; title?: string
                     </p>
                 </div>
                 {logo && (
-                    <div className="shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-lg bg-white dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 overflow-hidden p-2">
+                    <div className="shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 overflow-hidden p-2">
                         <Image src={logo} alt="Logo" width={64} height={64} className="w-full h-full object-contain lowercase" unoptimized loading="lazy" />
                     </div>
                 )}
             </div>
 
-            {/* Hover Overlay - LinkedIn Style */}
+            {/* Hover Overlay */}
             <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
                 <div className="w-10 h-10 rounded-full bg-black/80 dark:bg-white/90 flex items-center justify-center backdrop-blur-sm transform scale-90 group-hover:scale-100 transition-transform duration-300">
                     <ExternalLink className="w-5 h-5 text-white dark:text-black" />
                 </div>
             </div>
 
-            {/* Subtle background decoration */}
-            <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-primary/5 rounded-full blur-2xl group-hover:bg-primary/10 transition-colors" />
+            <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors" />
         </motion.a>
     );
 };
@@ -688,7 +747,11 @@ function TimelineGallery({ images, id, title, externalLink, logo }: { images: st
     const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
 
     const handleImageError = (index: number) => {
-        setFailedImages(prev => new Set(prev).add(index));
+        setFailedImages(prev => {
+            const next = new Set(prev);
+            next.add(index);
+            return next;
+        });
     };
 
     const [verifiedImages, setVerifiedImages] = useState<string[]>([]);
@@ -704,8 +767,6 @@ function TimelineGallery({ images, id, title, externalLink, logo }: { images: st
                 setVerifiedImages([]);
                 return;
             }
-
-
 
             const baseSlug = slugify(title);
 
@@ -743,18 +804,18 @@ function TimelineGallery({ images, id, title, externalLink, logo }: { images: st
                                 key={`${id}-gallery-${item.index}`}
                                 layoutId={`${id}-gallery-${item.index}`}
                                 layout
-                                initial={{ opacity: 0, scale: 0.9 }}
+                                initial={{ opacity: 0, scale: 0.95 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.9 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.2 }}
                                 onClick={() => setSelectedImage(item.src)}
-                                className="relative h-24 md:h-32 w-full group rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 bg-neutral-100 dark:bg-neutral-800 cursor-zoom-in"
+                                className="relative h-24 md:h-32 w-full group rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 bg-neutral-100 dark:bg-neutral-800 cursor-zoom-in border border-neutral-200/50 dark:border-neutral-700/50"
                             >
                                 <Image
                                     src={item.src}
                                     alt={`experience gallery ${item.index}`}
                                     fill
-                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                                     unoptimized
                                     loading="lazy"
                                     onError={() => handleImageError(item.index)}
@@ -775,7 +836,7 @@ function TimelineGallery({ images, id, title, externalLink, logo }: { images: st
             {galleryItems.length > 2 && (
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="flex items-center gap-1.5 text-xs font-bold text-neutral-500 hover:text-primary transition-colors uppercase tracking-widest pl-1"
+                    className="flex items-center gap-1.5 text-xs font-bold text-neutral-500 hover:text-blue-500 transition-colors uppercase tracking-widest pl-1"
                 >
                     {isExpanded ? (
                         <>Show Less <ChevronDown className="w-3 h-3 rotate-180" /></>
@@ -802,10 +863,10 @@ function TimelineGallery({ images, id, title, externalLink, logo }: { images: st
                             className="absolute inset-0 bg-black/80 backdrop-blur-md"
                         />
                         <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
+                            initial={{ scale: 0.95, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.9, opacity: 0 }}
-                            className="relative max-w-4xl w-[90vw] md:w-auto h-fit max-h-[80vh] rounded-2xl overflow-hidden shadow-2xl border border-white/10"
+                            exit={{ scale: 0.95, opacity: 0 }}
+                            className="relative max-w-4xl w-[90vw] md:w-auto h-fit max-h-[80vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <img
@@ -822,87 +883,22 @@ function TimelineGallery({ images, id, title, externalLink, logo }: { images: st
 }
 
 function ExperienceTimeline({ isLowPowerMode }: { isLowPowerMode: boolean }) {
-    const experiences = portfolioData.experiences;
+    // Sort experiences in reverse chronological order (newest first)
+    const sortedExperiences = useMemo(() => {
+        return [...portfolioData.experiences].sort(
+            (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+        );
+    }, []);
 
-    const groupedExperiences = useMemo(() => {
-        const groups: { [key: string]: Experience[] } = {};
-
-        const sortedAll = [...experiences].sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
-
-        sortedAll.forEach(exp => {
-            const year = new Date(exp.startDate).getFullYear().toString();
-            if (!groups[year]) {
-                groups[year] = [];
-            }
-            groups[year].push(exp);
-        });
-
-        return Object.keys(groups)
-            .sort((a, b) => parseInt(b) - parseInt(a))
-            .map(year => ({
-                title: year,
-                experiences: groups[year]
-            }));
-    }, [experiences]);
-
-    const timelineData = groupedExperiences.map(group => ({
-        title: group.title,
+    const timelineData = sortedExperiences.map((exp, idx) => ({
+        title: formatTimelineDate(exp.startDate, exp.endDate),
         content: (
-            <div className="space-y-12">
-                {group.experiences.map((exp) => (
-                    <div key={exp.id} className="relative pl-8 border-l-2 border-neutral-200 dark:border-neutral-800">
-                        <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-neutral-200 dark:bg-neutral-800 border-2 border-white dark:border-black" />
-
-                        <div className="mb-2 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                            <div>
-                                <h3 className="text-xl font-bold text-neutral-900 dark:text-white leading-tight">
-                                    {exp.position}
-                                </h3>
-                                <p className="text-lg font-medium text-primary">
-                                    {exp.company}
-                                </p>
-                            </div>
-                            <div className="flex flex-col sm:items-end gap-2">
-                                <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500 dark:text-neutral-400 bg-neutral-100 dark:bg-neutral-900 px-2 py-1 rounded w-fit">
-                                    {formatDate(exp.startDate)} - {exp.endDate ? formatDate(exp.endDate) : 'Present'}
-                                </span>
-                            </div>
-                        </div>
-
-                        <p className="text-neutral-600 dark:text-neutral-300 mb-6 leading-relaxed text-sm md:text-base">
-                            {exp.description}
-                        </p>
-
-                        {exp.responsibilities && (
-                            <ul className="mb-8 space-y-3">
-                                {exp.responsibilities.slice(0, 3).map((resp, i) => (
-                                    <li key={i} className="flex items-start gap-2.5 text-xs md:text-sm text-neutral-500 dark:text-neutral-400">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-primary/40 mt-1.5 shrink-0" />
-                                        <span>{resp}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-
-                        <div className="flex flex-wrap gap-2 mb-8">
-                            {exp.skills.map((skill, i) => (
-                                <span key={i} className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-lg bg-neutral-50 dark:bg-neutral-900 border border-neutral-100 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400">
-                                    {skill}
-                                </span>
-                            ))}
-                        </div>
-
-                        {/* Expandable Gallery Component */}
-                        <TimelineGallery
-                            images={exp.galleryImages || []}
-                            id={exp.id}
-                            title={exp.position}
-                            externalLink={exp.externalLink}
-                            logo={exp.logo}
-                        />
-                    </div>
-                ))}
-            </div>
+            <CollapsibleExperienceCard 
+                exp={exp} 
+                idx={idx} 
+                isLowPowerMode={isLowPowerMode} 
+                defaultExpanded={idx === 0} // Expand first card by default for landing preview
+            />
         )
     }));
 

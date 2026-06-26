@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import { useMotionValueEvent, useScroll } from "framer-motion";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -41,27 +41,7 @@ export const StickyScroll = ({
     setActiveCard(closestBreakpointIndex);
   });
 
-  useEffect(() => {
-    const container = ref.current;
-    if (!container) return;
 
-    const handleWheel = (e: WheelEvent) => {
-      const { scrollTop, scrollHeight, clientHeight } = container;
-      const isAtTop = scrollTop <= 0;
-      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
-
-      if ((e.deltaY < 0 && isAtTop) || (e.deltaY > 0 && isAtBottom)) {
-        return;
-      }
-
-      e.preventDefault();
-      e.stopPropagation();
-      container.scrollTop += e.deltaY;
-    };
-
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    return () => container.removeEventListener('wheel', handleWheel);
-  }, []);
 
   return (
     <div className="relative group">
