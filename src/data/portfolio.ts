@@ -6,7 +6,7 @@ export const portfolioData: PortfolioData = {
         title: 'AI & Machine Learning Engineer',
         subtitle: 'AI & Machine Learning Engineer | Deep Learning & Generative AI Developer',
         bio: 'An Artificial Intelligence and Machine Learning student with a distinctive profile in deep learning, computer vision, data science, and generative AI. Driven to design and build intelligent systems, machine learning applications, and robust data-driven solutions.',
-        avatar: '/about/ayush.jpeg',
+        avatar: '/about/ayush.png',
         location: 'Indore, India',
         email: 'ayushofficaluse@gmail.com',
         phone: '+919999999999',
