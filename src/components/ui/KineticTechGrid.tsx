@@ -284,6 +284,9 @@ const TechCard = ({ tech, idx }: { tech: TechItem, idx: number }) => {
                             className="object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 unoptimized"
                             unoptimized
                             loading="lazy"
+                            onError={(e) => {
+                                e.currentTarget.src = "/icons/fallback-tech.svg";
+                            }}
                         />
                     )}
                 </div>

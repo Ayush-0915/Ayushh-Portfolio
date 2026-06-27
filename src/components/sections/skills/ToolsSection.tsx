@@ -128,6 +128,9 @@ const ToolPill = ({ tool }: { tool: any }) => {
                         tool.name === 'GitHub' && "dark:invert"
                     )}
                     unoptimized
+                    onError={(e) => {
+                        e.currentTarget.src = "/icons/fallback-tech.svg";
+                    }}
                 />
             </div>
             <span className="text-xl md:text-2xl font-bold uppercase tracking-[0.1em] text-black/70 dark:text-white/70 group-hover:text-black dark:group-hover:text-white transition-colors duration-300">

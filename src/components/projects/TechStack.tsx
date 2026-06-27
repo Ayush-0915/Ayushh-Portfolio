@@ -274,6 +274,9 @@ export function TechStack({ techStack, tools, isLowPowerMode }: TechStackProps &
                                                             "w-full h-full object-contain opacity-90",
                                                             ["Next.js", "GitHub"].includes(item) && "dark:invert"
                                                         )}
+                                                        onError={(e) => {
+                                                            e.currentTarget.src = "/icons/fallback-tech.svg";
+                                                        }}
                                                     />
                                                 ) : (
                                                     <span className="text-xs font-bold opacity-50">{item[0]}</span>
@@ -307,6 +310,9 @@ export function TechStack({ techStack, tools, isLowPowerMode }: TechStackProps &
                                                 "w-full h-full object-contain pointer-events-none opacity-90 dark:opacity-90",
                                                 ["Next.js", "GitHub"].includes(body.id.replace('-tool', '')) && "dark:invert"
                                             )}
+                                            onError={(e) => {
+                                                e.currentTarget.src = "/icons/fallback-tech.svg";
+                                            }}
                                         />
                                     ) : (
                                         <span className={cn(

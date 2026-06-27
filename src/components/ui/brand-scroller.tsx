@@ -24,6 +24,9 @@ const ScrollerItem = ({ name, icon }: { name: string; icon: string }) => (
                 fill
                 className="object-contain"
                 unoptimized
+                onError={(e) => {
+                    e.currentTarget.src = "/icons/fallback-tech.svg";
+                }}
             />
         </div>
         <p className="text-xl font-bold text-zinc-600 dark:text-zinc-400 group-hover:text-black dark:group-hover:text-white transition-colors duration-500 whitespace-nowrap">

@@ -166,6 +166,9 @@ export function ArchedTechIconsInteractive({ icons }: ArchedIconsProps) {
                             unoptimized 
                             priority={true} 
                             draggable={false}
+                            onError={(e) => {
+                              e.currentTarget.src = "/icons/fallback-tech.svg";
+                            }}
                           />
                       </div>
                     </motion.div>

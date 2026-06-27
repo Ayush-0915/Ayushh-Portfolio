@@ -114,6 +114,9 @@ function Bubble({ b, mouseX, mouseY }: { b: any, mouseX: any, mouseY: any }) {
                     filter: useTransform(grayscale, (v) => `grayscale(${v}%)`),
                 }}
                 alt={b.icon}
+                onError={(e) => {
+                    e.currentTarget.src = "/icons/fallback-tech.svg";
+                }}
             />
         </motion.div>
     );
@@ -300,10 +303,10 @@ export default function SkillsPage() {
                             key="arched-tech-icons-interactive"
                             icons={TECH_CATEGORIES.flatMap(cat => cat.skills).map(s => {
                                 if (typeof s.icon === 'string') return s.icon;
-                                if (s.name === "Prompt Engineering") return "https://cdn.simpleicons.org/openai";
-                                if (s.name === "Retrieval-Augmented Generation (RAG)") return "https://cdn.simpleicons.org/pinecone";
-                                if (s.name === "AI Agents") return "https://cdn.simpleicons.org/copilot";
-                                return "https://cdn.simpleicons.org/google";
+                                if (s.name === "Prompt Engineering") return "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/openai.svg";
+                                if (s.name === "Retrieval-Augmented Generation (RAG)") return "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/milvus.svg";
+                                if (s.name === "AI Agents") return "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/githubcopilot.svg";
+                                return "https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/google.svg";
                             })}
                         />
 
