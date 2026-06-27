@@ -1,162 +1,56 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence, animate, useMotionValue, useTransform } from 'framer-motion';
-import Image from "next/image";
+import React, { useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import {
     Calendar,
     GraduationCap,
-    Briefcase,
     Award,
     Sparkles,
-    ChevronRight,
     Code,
     Cpu,
     Server,
     Layers,
     ExternalLink,
-    BookOpen,
-    Rocket,
-    Brain,
-    Play,
     Github,
     Maximize2,
-    Shield,
-    TrendingUp,
-    Tv,
-    Car,
-    Activity,
-    Map
+    CheckCircle2,
+    BookOpen,
+    Rocket,
+    Globe
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
-// Counter Component powered by Framer Motion's HMR-safe, lightweight engine
-function CountUp({ value, suffix = "", duration = 1.5 }: { value: number; suffix?: string; duration?: number }) {
-    const count = useMotionValue(0);
-    const [displayValue, setDisplayValue] = useState("0");
-
-    useEffect(() => {
-        const controls = animate(count, value, {
-            duration: duration,
-            ease: "easeOut",
-            onUpdate: (latest) => {
-                if (value % 1 !== 0) {
-                    setDisplayValue(latest.toFixed(1));
-                } else {
-                    setDisplayValue(Math.round(latest).toString());
-                }
-            }
-        });
-        return () => controls.stop();
-    }, [value, duration]);
-
-    return (
-        <span>
-            {displayValue}
-            {suffix}
-        </span>
-    );
-}
-
-// Academic Data
-const educationData = [
-    {
-        degree: "B.Tech in Artificial Intelligence & Machine Learning",
-        institution: "Sage University, Indore",
-        period: "2024 — Present",
-        metrics: "CGPA: 7.0",
-        logoLetters: "SU",
-        logoColor: "from-blue-600 to-cyan-500 shadow-blue-500/20",
-        badge: "Academic Major",
-        details: "Currently in 2nd Year, 4th Semester. Focused on advanced neural architectures, computer vision pipelines, and scalable AI applications."
-    },
-    {
-        degree: "Class 12 (Senior Secondary)",
-        institution: "Sunflower English Medium School",
-        period: "Year: 2024",
-        metrics: "Percentage: 70%",
-        logoLetters: "SF",
-        logoColor: "from-amber-500 to-orange-600 shadow-orange-500/20",
-        badge: "Science Stream",
-        details: "Focused on Physics, Chemistry, and Mathematics. Established logical and mathematical foundations for algorithms."
-    },
-    {
-        degree: "Class 10 (Secondary)",
-        institution: "Bhansali Vidhya Mandir Public School",
-        period: "Year: 2022",
-        metrics: "Percentage: 70%",
-        logoLetters: "BV",
-        logoColor: "from-purple-600 to-pink-600 shadow-purple-500/20",
-        badge: "General Studies",
-        details: "General science and foundational mathematics. Developed early interest in computer programming and logical thinking."
-    }
-];
-
-// Experience Data
-const experienceData = [
-    {
-        role: "AI Developer",
-        company: "HUMIC (Human Centric Engineering Research Center)",
-        period: "Sep 2025 — Present",
-        logoLetters: "HM",
-        logoColor: "from-purple-600 to-indigo-600 shadow-purple-500/20",
-        description: "Designing and optimizing machine learning pipelines, deep learning models, and custom transformer models. Focused on high-accuracy threat detection systems.",
-        tech: ["Python", "TensorFlow", "Transformers", "Threat Detection", "Deep Learning"]
-    },
-    {
-        role: "Computer Network Practicum Assistant",
-        company: "Informatics Laboratory, Telkom University",
-        period: "Sep 2025 — Present",
-        logoLetters: "IL",
-        logoColor: "from-blue-600 to-indigo-600 shadow-blue-500/20",
-        description: "Mentoring undergraduate students in networking practicals, protocol architectures, and socket programming projects using C/Python.",
-        tech: ["Socket Programming", "TCP/IP", "Wireshark", "C", "Network Architectures"]
-    },
-    {
-        role: "AI & Big Data Research Assistant",
-        company: "Cyber Physical System Laboratory",
-        period: "May 2025 — Present",
-        logoLetters: "CP",
-        logoColor: "from-emerald-600 to-teal-600 shadow-emerald-500/20",
-        description: "Leading advanced data analysis and machine learning research initiatives. Exploring multi-modal AI systems and high-throughput data processing.",
-        tech: ["Python", "Pandas", "Scikit-learn", "Research Methods", "Big Data Analytics"]
-    },
-    {
-        role: "Project Officer",
-        company: "Digistar Club by Telkom Indonesia",
-        period: "Feb 2024 — Aug 2024",
-        logoLetters: "DC",
-        logoColor: "from-crimson-600 to-rose-600 shadow-rose-500/20",
-        description: "Directed DigiCourse program planning, speaker coordination, and digital event management. Streamlined cross-department workflows.",
-        tech: ["Project Management", "Event Planning", "Workflow Automation", "Stakeholder Mgmt"]
-    }
-];
 
 // Certifications Data
 const certificationsData = [
     {
         title: "Microsoft Azure Fundamentals (AZ-900)",
         issuer: "Microsoft",
+        date: "May 2025",
         image: "/certificate/AZ900.png",
-        description: "Foundational knowledge of cloud services and how those services are provided with Microsoft Azure."
+        description: "Foundational knowledge of cloud services and Azure architecture."
     },
     {
         title: "Oracle Cloud Infrastructure AI Foundations",
         issuer: "Oracle",
+        date: "June 2025",
         image: "/certificate/Oracle database .jpeg",
-        description: "Demonstrated core competency in artificial intelligence, machine learning concepts, and OCI AI services."
+        description: "Core competency in machine learning and OCI AI services."
     },
     {
         title: "Google Cloud Generative AI Certification",
         issuer: "Google Cloud",
+        date: "July 2025",
         image: "/certificate/google-cloud-engineering-certificate.png",
-        description: "Completed Google Cloud pathway covering large language models, image generation, and responsible AI principles."
+        description: "Large language models, semantic analysis, and responsible AI."
     },
     {
         title: "Red Hat Academy Certification (RH134)",
         issuer: "Red Hat",
+        date: "April 2025",
         image: "/certificate/red-hat-system-administration-ii-rh134-rha-ver-10.png",
-        description: "Validated key command-line concepts, network configuration, and enterprise administration of RHEL."
+        description: "Enterprise system administration and RHEL environment setups."
     }
 ];
 
@@ -166,7 +60,8 @@ const projectsData = [
         name: "NEXUS AI", 
         type: "AI Operating System", 
         desc: "Cognitive desktop assistant with low-latency Voice AI, screen perception, and vector memory.",
-        icon: Brain,
+        tags: ["Python", "FastAPI", "RAG", "AI Agents"],
+        image: "/project/nexusai1.png",
         github: "https://github.com/Ayush-0915/NEXUS-AI",
         demo: "https://nexus-ai-web-page.vercel.app/"
     },
@@ -174,7 +69,8 @@ const projectsData = [
         name: "CareerNova", 
         type: "AI SaaS Platform", 
         desc: "ATS compatibility reviewer and resume analyzer leveraging LLM recommendation engines.",
-        icon: Briefcase,
+        tags: ["React", "TypeScript", "Supabase", "Gemini API"],
+        image: "/project/careernova1.png",
         github: "https://github.com/Ayush-0915/CareerNova",
         demo: "https://career-nova-cyan.vercel.app/"
     },
@@ -182,7 +78,8 @@ const projectsData = [
         name: "CreditWise Loan Dashboard", 
         type: "Predictive ML Model", 
         desc: "Stacked classifier ensemble evaluating credit defaults with interactive SHAP risk insights.",
-        icon: TrendingUp,
+        tags: ["Python", "Scikit-learn", "Streamlit", "XGBoost"],
+        image: "/project/creditwise1.png",
         github: "https://github.com/Ayush-0915/CreditWise",
         demo: "https://credit-wise-loanapp.streamlit.app/"
     },
@@ -190,7 +87,8 @@ const projectsData = [
         name: "Bitcoin Sentiment Trader", 
         type: "Financial ML Model", 
         desc: "Predicting market trends by combining time-series indicators with NLP public sentiment.",
-        icon: Layers,
+        tags: ["Python", "Sentiment Analysis", "XGBoost", "NLP"],
+        image: "/project/bitcoinsentimenttraderanalysis1.jpg",
         github: "https://github.com/Ayush-0915/Bitcoin-sentiment-trader-analysis",
         demo: ""
     },
@@ -198,7 +96,8 @@ const projectsData = [
         name: "Car Evaluation System", 
         type: "Classification Model", 
         desc: "Machine learning classifier assessing vehicle qualities using multi-criteria attributes.",
-        icon: Car,
+        tags: ["Python", "Scikit-learn", "Random Forest"],
+        image: "/project/carevaluation1.jpg",
         github: "https://github.com/Ayush-0915/Car-evaluation",
         demo: ""
     },
@@ -206,7 +105,8 @@ const projectsData = [
         name: "Fake News Detection ML", 
         type: "NLP Text Pipeline", 
         desc: "Supervised classification model analyzing news articles validity using custom TF-IDF matrices.",
-        icon: Shield,
+        tags: ["Python", "Scikit-learn", "TF-IDF", "NLTK"],
+        image: "/project/fakenewsdetectionusingml1.png",
         github: "https://github.com/Ayush-0915/Detecting-Fake-News-Using-ML",
         demo: ""
     },
@@ -214,7 +114,8 @@ const projectsData = [
         name: "Healthcare Risk Management", 
         type: "Clinical Predictor", 
         desc: "Clinical decision support system evaluating patient risk profiles from high-dimensional lab data.",
-        icon: Activity,
+        tags: ["Python", "Pandas", "Scikit-learn", "Streamlit"],
+        image: "/project/healthcareriskmanagement1.png",
         github: "https://github.com/Ayush-0915/Healthcare-Risk-Management",
         demo: ""
     },
@@ -222,7 +123,8 @@ const projectsData = [
         name: "Netflix Data Analysis", 
         type: "Exploratory Analytics", 
         desc: "Temporal content trend mapping, release mapping, and TF-IDF content recommendation system.",
-        icon: Tv,
+        tags: ["Python", "Pandas", "Matplotlib", "Seaborn"],
+        image: "/project/netflixdataanalysis1.png",
         github: "https://github.com/Ayush-0915/Netflix-Data-Analysis",
         demo: ""
     },
@@ -230,515 +132,413 @@ const projectsData = [
         name: "Uber Trips Analysis", 
         type: "Exploratory Analytics", 
         desc: "Exploratory ride-sharing data analysis identifying demand patterns, peaks, and drop-off spaces.",
-        icon: Map,
+        tags: ["Python", "Pandas", "NumPy", "Plotly"],
+        image: "/project/ubertripsanalysis1.png",
         github: "https://github.com/Ayush-0915/Uber-Data-Analysis",
         demo: ""
     }
 ];
 
-// Skills List for Technical Universe
-const skillsList = [
-    "Python", "NumPy", "Pandas", "Scikit-learn", "TensorFlow", "PyTorch", "OpenCV", 
-    "NLP", "Transformers", "Generative AI", "LangChain", "FastAPI", "Streamlit", 
-    "React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "Docker", 
-    "Kubernetes", "Git", "GitHub", "AWS", "Azure", "GCP", "SQL", "Power BI", 
-    "Tableau", "Jupyter", "Vercel", "Supabase", "Linux", "MLOps"
-];
-
-// Timeline Milestones
-const milestonesData = [
-    { year: "2024", title: "Started B.Tech in AI & ML", desc: "Sage University, Indore" },
-    { year: "2024", title: "Core Programming & Data Analytics", desc: "Python, NumPy, Pandas, EDA" },
-    { year: "2025", title: "ML, DL & AI Research", desc: "Supervised systems, neural nets, paper reviews" },
-    { year: "2025", title: "Research & Real-world Projects", desc: "Internships, Assistantships, Model Tuning" },
-    { year: "2026", title: "Intelligent Systems & Impact", desc: "GenAI, local RAG, MLOps, deployment" }
-];
-
 export default function ExperiencePage() {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-    // Memoize skills to prevent unnecessary recalculation of indexes
-    const memoizedSkills = useMemo(() => skillsList, []);
-
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-neutral-100 relative overflow-hidden pb-32">
+        <div className="min-h-screen bg-[#050505] text-zinc-100 relative overflow-hidden pb-40">
             
-            {/* Ambient Background Glows */}
-            <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
-            <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
-            
+            {/* Minimal Background Glows */}
+            <div className="absolute top-0 right-1/4 w-[400px] h-[400px] bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+
             {/* Hero Section */}
-            <section className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-16">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                    
-                    {/* Left Hero Content */}
-                    <div className="lg:col-span-7 space-y-6 text-left">
-                        <motion.div
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider"
-                        >
-                            <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-                            <span>Academic & Experience sequence</span>
-                        </motion.div>
-                        
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                            className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none uppercase bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-500 font-sans"
-                        >
-                            Education & <br className="hidden md:block"/> Experience Journey
-                        </motion.h1>
-                        
-                        <motion.p
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                            className="text-neutral-400 text-base md:text-lg max-w-xl leading-relaxed font-medium"
-                        >
-                            My academic path, certifications, research work, internships, and continuous growth in Artificial Intelligence and Machine Learning.
-                        </motion.p>
-                    </div>
-
-                    {/* Right Hero Interactive Cap Graphic (Framer Motion slow float, prefers-reduced-motion safe) */}
-                    <div className="lg:col-span-5 flex justify-center items-center relative min-h-[300px]">
-                        <motion.div
-                            className="relative w-56 h-56 bg-neutral-900/30 border border-neutral-800/80 rounded-full flex items-center justify-center backdrop-blur-md shadow-2xl"
-                            animate={{ y: [0, -12, 0] }}
-                            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                        >
-                            <GraduationCap className="w-24 h-24 text-indigo-400 drop-shadow-[0_0_15px_rgba(129,140,248,0.3)]" />
-                            
-                            {/* Satellites */}
-                            {/* Satellite 1: Book */}
-                            <motion.div
-                                className="absolute -top-4 -left-4 p-3 bg-neutral-900 border border-neutral-800 rounded-2xl text-blue-400"
-                                animate={{ y: [0, 8, 0], x: [0, -6, 0] }}
-                                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                            >
-                                <BookOpen className="w-5 h-5" />
-                            </motion.div>
-                            
-                            {/* Satellite 2: Rocket */}
-                            <motion.div
-                                className="absolute -bottom-2 -right-4 p-3 bg-neutral-900 border border-neutral-800 rounded-2xl text-rose-400"
-                                animate={{ y: [0, -8, 0], x: [0, 8, 0] }}
-                                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                            >
-                                <Rocket className="w-5 h-5" />
-                            </motion.div>
-
-                            {/* Satellite 3: AI Brain */}
-                            <motion.div
-                                className="absolute top-8 -right-8 p-3 bg-neutral-900 border border-neutral-800 rounded-2xl text-amber-400"
-                                animate={{ y: [0, 6, 0], x: [0, 6, 0] }}
-                                transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                            >
-                                <Brain className="w-5 h-5" />
-                            </motion.div>
-
-                            {/* Satellite 4: Code */}
-                            <motion.div
-                                className="absolute -bottom-6 -left-2 p-3 bg-neutral-900 border border-neutral-800 rounded-2xl text-emerald-400"
-                                animate={{ y: [0, -6, 0], x: [0, -6, 0] }}
-                                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-                            >
-                                <Code className="w-5 h-5" />
-                            </motion.div>
-                        </motion.div>
-                    </div>
-                </div>
+            <section className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-20 text-left border-b border-neutral-900">
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <h1 className="text-4xl md:text-6xl font-black tracking-tight leading-tight uppercase font-sans">
+                        Education & <br /> Learning Journey
+                    </h1>
+                    <p className="text-neutral-400 max-w-2xl text-base md:text-lg mt-4 leading-relaxed font-medium">
+                        My academic path, certifications, projects, and growth in AI Engineering.
+                    </p>
+                </motion.div>
             </section>
 
-            {/* Statistics Row (Count Up once, HMR and Performance Safe) */}
-            <section className="max-w-6xl mx-auto px-6 py-12">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    
-                    {/* Stat Card 1: CGPA */}
-                    <div className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md text-center group hover:border-blue-500/20 transition-colors">
-                        <div className="mx-auto w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-3">
-                            <GraduationCap className="w-5 h-5" />
-                        </div>
-                        <h3 className="text-3xl font-black text-white font-mono leading-none">
-                            <CountUp value={7.0} />
-                        </h3>
-                        <p className="text-xs font-bold text-neutral-400 uppercase tracking-wider mt-2">CGPA</p>
-                        <p className="text-[10px] text-neutral-500 font-medium">Academic Score</p>
-                    </div>
-
-                    {/* Stat Card 2: Projects */}
-                    <div className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md text-center group hover:border-rose-500/20 transition-colors">
-                        <div className="mx-auto w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mb-3">
-                            <Rocket className="w-5 h-5" />
-                        </div>
-                        <h3 className="text-3xl font-black text-white font-mono leading-none">
-                            <CountUp value={10} suffix="+" />
-                        </h3>
-                        <p className="text-xs font-bold text-neutral-400 uppercase tracking-wider mt-2">Projects Built</p>
-                        <p className="text-[10px] text-neutral-500 font-medium">End-to-End Projects</p>
-                    </div>
-
-                    {/* Stat Card 3: Certifications */}
-                    <div className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md text-center group hover:border-amber-500/20 transition-colors">
-                        <div className="mx-auto w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-3">
-                            <Award className="w-5 h-5" />
-                        </div>
-                        <h3 className="text-3xl font-black text-white font-mono leading-none">
-                            <CountUp value={4} suffix="+" />
-                        </h3>
-                        <p className="text-xs font-bold text-neutral-400 uppercase tracking-wider mt-2">Certifications</p>
-                        <p className="text-[10px] text-neutral-500 font-medium">Professional Certificates</p>
-                    </div>
-
-                    {/* Stat Card 4: Technologies */}
-                    <div className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md text-center group hover:border-emerald-500/20 transition-colors">
-                        <div className="mx-auto w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-3">
-                            <Code className="w-5 h-5" />
-                        </div>
-                        <h3 className="text-3xl font-black text-white font-mono leading-none">
-                            <CountUp value={40} suffix="+" />
-                        </h3>
-                        <p className="text-xs font-bold text-neutral-400 uppercase tracking-wider mt-2">Technologies</p>
-                        <p className="text-[10px] text-neutral-500 font-medium">Tools & Libraries</p>
-                    </div>
-
-                </div>
-            </section>
-
-            {/* Journey Highlights Timeline (Responsive, Static, Observers Free) */}
-            <section className="max-w-6xl mx-auto px-6 py-12 space-y-8">
-                <div className="text-center md:text-left space-y-1">
-                    <h2 className="text-xl md:text-2xl font-black uppercase tracking-tight text-white">Milestone Highlights</h2>
-                    <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider font-mono">Continuous learning progression</p>
-                </div>
-                
-                {/* Horizontal on Desktop, Vertical on Mobile */}
+            {/* Premium Vertical Timeline */}
+            <main className="relative z-10 max-w-6xl mx-auto px-6 pt-16">
                 <div className="relative">
                     
-                    {/* Connecting line on desktop */}
-                    <div className="hidden md:block absolute top-12 left-6 right-6 h-[2px] bg-neutral-900" />
-                    
-                    {/* Vertical connecting line on mobile */}
-                    <div className="md:hidden absolute top-6 bottom-6 left-6 w-[2px] bg-neutral-900" />
+                    {/* The Timeline Line (offset left side) */}
+                    <div className="absolute left-[30px] md:left-[90px] top-4 bottom-4 w-[1px] bg-gradient-to-b from-indigo-500/50 via-purple-500/50 to-emerald-500/50" />
 
-                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative z-10">
-                        {milestonesData.map((mile, i) => (
-                            <div key={i} className="flex md:flex-col gap-4 md:gap-0 items-start">
-                                
-                                {/* Point indicator */}
-                                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-neutral-950 border-2 border-neutral-800 flex items-center justify-center text-neutral-400 text-sm font-bold font-mono group-hover:border-indigo-500 transition-colors">
-                                    {mile.year}
-                                </div>
-                                
-                                {/* Text Details */}
-                                <div className="mt-0 md:mt-4 text-left">
-                                    <h4 className="text-sm font-bold text-white leading-tight">{mile.title}</h4>
-                                    <p className="text-xs text-neutral-500 font-semibold mt-1">{mile.desc}</p>
-                                </div>
+                    {/* Timeline Entries Loop */}
+                    <div className="space-y-24">
 
+                        {/* ENTRY 1: 2024 - Sage University */}
+                        <div className="grid grid-cols-[60px_1fr] md:grid-cols-[140px_1fr] gap-6 md:gap-12 relative group">
+                            
+                            {/* Left Year Badge */}
+                            <div className="sticky top-28 h-fit text-right">
+                                <span className="inline-block text-sm md:text-base font-black font-mono px-3 py-1.5 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shadow-[0_0_15px_rgba(99,102,241,0.1)]">
+                                    2024
+                                </span>
                             </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
-            {/* Main Content Sections */}
-            <main className="relative z-10 max-w-6xl mx-auto px-6 space-y-32 mt-12">
-                
-                {/* 1. Academic Journey */}
-                <section className="space-y-10">
-                    <div className="flex items-center gap-4">
-                        <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-2xl text-blue-400 shadow-lg shadow-blue-500/5">
-                            <GraduationCap className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Academic Journey</h2>
-                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Degrees & Credentials</p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {educationData.map((edu, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                                className="group relative flex flex-col justify-between p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-blue-500/20 hover:shadow-[0_0_20px_rgba(59,130,246,0.05)] transition-all duration-300 hover:scale-[1.01]"
-                            >
-                                <div className="space-y-4">
-                                    <div className="flex justify-between items-start gap-2">
-                                        <span className="text-[10px] font-bold font-mono px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                                            {edu.period}
-                                        </span>
-                                        <span className="text-[10px] font-bold text-neutral-400 font-mono">
-                                            {edu.metrics}
-                                        </span>
-                                    </div>
-                                    
-                                    <div className="flex gap-4 items-center pt-2">
-                                        {/* Styled Logo Placeholder */}
-                                        <div className={cn(
-                                            "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br font-black font-sans shadow-lg",
-                                            edu.logoColor
-                                        )}>
-                                            {edu.logoLetters}
-                                        </div>
-                                        <div>
-                                            <h3 className="text-base font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">
-                                                {edu.degree}
-                                            </h3>
-                                            <p className="text-xs font-semibold text-neutral-500 mt-0.5">
-                                                {edu.institution}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="mt-6 border-t border-neutral-900/60 pt-4 space-y-3">
-                                    <span className="inline-block text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-mono">
-                                        {edu.badge}
-                                    </span>
-                                    <p className="text-neutral-400 text-xs leading-relaxed font-medium">
-                                        {edu.details}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* 2. Professional Experience */}
-                <section className="space-y-10">
-                    <div className="flex items-center gap-4">
-                        <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-2xl text-purple-400 shadow-lg shadow-purple-500/5">
-                            <Briefcase className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Professional Experience</h2>
-                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Research, Assistantships & Leadership</p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {experienceData.map((exp, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                                className="group p-6 md:p-8 rounded-[2rem] border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-purple-500/20 hover:shadow-[0_0_20px_rgba(168,85,247,0.05)] transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between"
-                            >
-                                <div className="space-y-4">
-                                    <div className="flex items-start gap-4">
-                                        {/* Styled Logo Placeholder */}
-                                        <div className={cn(
-                                            "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br font-black font-sans shadow-lg shrink-0",
-                                            exp.logoColor
-                                        )}>
-                                            {exp.logoLetters}
-                                        </div>
-                                        <div className="min-w-0 flex-1">
-                                            <div className="flex flex-wrap items-center justify-between gap-2">
-                                                <h3 className="text-lg font-bold text-white group-hover:text-purple-400 transition-colors leading-tight truncate">
-                                                    {exp.role}
-                                                </h3>
-                                                <span className="text-[9px] font-bold font-mono px-2 py-0.5 rounded bg-neutral-900 text-neutral-400 border border-neutral-800">
-                                                    {exp.period}
-                                                </span>
-                                            </div>
-                                            <p className="text-xs font-semibold text-neutral-500 mt-1">
-                                                {exp.company}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p className="text-neutral-400 text-xs leading-relaxed font-medium pt-2">
-                                        {exp.description}
-                                    </p>
-                                </div>
-                                
-                                <div className="flex flex-wrap gap-1.5 mt-6 border-t border-neutral-900/60 pt-4">
-                                    {exp.tech.map((t, i) => (
-                                        <span key={i} className="px-2 py-0.5 rounded bg-neutral-900 text-[9px] font-bold font-mono text-neutral-500 uppercase">
-                                            {t}
-                                        </span>
-                                    ))}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* 3. Certifications */}
-                <section className="space-y-10">
-                    <div className="flex items-center gap-4">
-                        <div className="p-3 bg-rose-500/10 border border-rose-500/20 rounded-2xl text-rose-400 shadow-lg shadow-rose-500/5">
-                            <Award className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Certifications</h2>
-                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Industry Credentials ({certificationsData.length} total)</p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                        {certificationsData.map((cert, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                                className="group flex flex-col justify-between rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-rose-500/20 transition-all duration-300 hover:shadow-2xl overflow-hidden cursor-pointer"
-                                onClick={() => setSelectedImage(cert.image)}
-                            >
-                                <div className="relative h-40 bg-neutral-900 overflow-hidden border-b border-neutral-900">
-                                    <Image
-                                        src={cert.image}
-                                        alt={cert.title}
-                                        fill
-                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                        sizes="(max-w-768px) 100vw, 25vw"
-                                        unoptimized
-                                    />
-                                    {/* Hover Preview Overlay */}
-                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                        <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white">
-                                            <Maximize2 className="w-4 h-4" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
-                                    <div>
-                                        <h3 className="text-sm font-bold text-white group-hover:text-rose-400 transition-colors line-clamp-2 leading-tight">
-                                            {cert.title}
-                                        </h3>
-                                        <p className="text-[9px] font-bold font-mono text-rose-500 uppercase mt-1">
-                                            {cert.issuer}
-                                        </p>
-                                    </div>
-                                    <p className="text-neutral-400 text-xs leading-relaxed font-medium line-clamp-3">
-                                        {cert.description}
-                                    </p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </section>
-
-                {/* 4. Achievements & Projects */}
-                <section className="space-y-10">
-                    <div className="flex items-center gap-4">
-                        <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-amber-400 shadow-lg shadow-amber-500/5">
-                            <Sparkles className="w-6 h-6" />
-                        </div>
-                        <div>
-                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Achievements & Flagship Projects</h2>
-                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Applied AI & Software Engineering Outcomes</p>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {projectsData.map((project, idx) => {
-                            const IconComponent = project.icon;
-                            return (
+                            {/* Right Content */}
+                            <div className="pl-6 md:pl-8 space-y-6">
                                 <motion.div
-                                    key={idx}
-                                    initial={{ opacity: 0, y: 15 }}
+                                    initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.4, delay: idx * 0.05 }}
-                                    className="group p-6 rounded-3xl border border-neutral-900 bg-neutral-950/20 hover:bg-neutral-950/40 hover:border-amber-500/20 transition-all duration-300 flex flex-col justify-between"
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 0.5 }}
+                                    className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-indigo-500/20 hover:shadow-[0_0_30px_rgba(99,102,241,0.02)] transition-all duration-300"
                                 >
-                                    <div className="space-y-3">
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-[9px] font-bold font-mono text-amber-500 uppercase bg-amber-500/10 border border-amber-500/10 px-2 py-0.5 rounded">
-                                                {project.type}
+                                    <div className="flex gap-2 items-center text-xs font-bold font-mono text-indigo-400 uppercase tracking-wider mb-2">
+                                        <GraduationCap className="w-4 h-4" />
+                                        <span>B.Tech Commencement</span>
+                                    </div>
+                                    <h3 className="text-xl md:text-2xl font-bold text-white mb-1 leading-snug">
+                                        Started B.Tech in Artificial Intelligence & Machine Learning
+                                    </h3>
+                                    <p className="text-sm font-semibold text-neutral-500 mb-4">
+                                        Sage University, Indore
+                                    </p>
+                                    
+                                    <div className="text-sm text-neutral-400 leading-relaxed font-medium space-y-2 mb-6">
+                                        <p>• Beginning of AI & ML journey, establishing core theoretical foundations.</p>
+                                        <p>• Learned Python fundamentals, object-oriented concepts, and computational logic.</p>
+                                        <p>• Started Data Structures and Algorithms to resolve complex split and timing constraints.</p>
+                                        <p>• Explored Data Science structures and matrices using NumPy and Pandas.</p>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral-900/60">
+                                        {["Python", "Data Structures", "NumPy", "Data Science"].map((tag, i) => (
+                                            <span key={i} className="px-2.5 py-0.5 rounded-lg text-[10px] font-bold font-mono uppercase bg-neutral-900 text-neutral-400 border border-neutral-800">
+                                                {tag}
                                             </span>
-                                            <div className="flex gap-2">
-                                                {project.github && (
-                                                    <a 
-                                                        href={project.github} 
-                                                        target="_blank" 
-                                                        rel="noopener noreferrer" 
-                                                        className="p-1 rounded bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800"
-                                                    >
-                                                        <Github className="w-3.5 h-3.5" />
-                                                    </a>
-                                                )}
-                                                {project.demo && (
-                                                    <a 
-                                                        href={project.demo} 
-                                                        target="_blank" 
-                                                        rel="noopener noreferrer" 
-                                                        className="p-1 rounded bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800"
-                                                    >
-                                                        <ExternalLink className="w-3.5 h-3.5" />
-                                                    </a>
-                                                )}
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="flex gap-3 items-center pt-2">
-                                            <div className="p-2.5 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 group-hover:text-amber-400 group-hover:border-amber-500/10 transition-colors">
-                                                <IconComponent className="w-5 h-5" />
-                                            </div>
-                                            <h3 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors leading-tight">
-                                                {project.name}
-                                            </h3>
-                                        </div>
-                                        
-                                        <p className="text-neutral-400 text-xs leading-relaxed font-medium pt-2">
-                                            {project.desc}
-                                        </p>
+                                        ))}
                                     </div>
                                 </motion.div>
-                            );
-                        })}
-                    </div>
-                </section>
-
-                {/* 5. Technical Universe (Floating Skills Pills, Loop-Free, Performance Safe) */}
-                <section className="space-y-10">
-                    <div className="flex items-center gap-4">
-                        <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-emerald-400 shadow-lg shadow-emerald-500/5">
-                            <Layers className="w-6 h-6" />
+                            </div>
                         </div>
-                        <div>
-                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Technical Universe</h2>
-                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Competency Matrix & Frameworks</p>
-                        </div>
-                    </div>
 
-                    <div className="p-8 rounded-[2rem] border border-neutral-900 bg-neutral-950/40 backdrop-blur-md flex flex-wrap justify-center gap-3 relative overflow-hidden">
-                        <div className="absolute inset-0 pointer-events-none opacity-5 bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_70%)] blur-3xl" />
-                        
-                        {memoizedSkills.map((skill, idx) => (
-                            <motion.div
-                                key={idx}
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                animate={{ y: [0, -4, 0] }}
-                                transition={{
-                                    default: { duration: 0.3, delay: (idx % 10) * 0.03 },
-                                    y: {
-                                        duration: 4 + (idx % 4),
-                                        repeat: Infinity,
-                                        ease: "easeInOut",
-                                        delay: (idx % 3) * 0.4
-                                    }
-                                }}
-                                className="px-4 py-2 rounded-2xl bg-neutral-900/60 hover:bg-neutral-900 border border-neutral-800/80 hover:border-emerald-500/30 text-xs font-bold font-mono text-neutral-400 hover:text-emerald-400 shadow-sm hover:shadow-[0_0_15px_rgba(16,185,129,0.08)] cursor-default transition-all duration-300"
-                            >
-                                {skill}
-                            </motion.div>
-                        ))}
+                        {/* ENTRY 2: 2024 - Sunflower School */}
+                        <div className="grid grid-cols-[60px_1fr] md:grid-cols-[140px_1fr] gap-6 md:gap-12 relative group">
+                            
+                            {/* Left Year Badge */}
+                            <div className="sticky top-28 h-fit text-right">
+                                <span className="inline-block text-sm md:text-base font-black font-mono px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+                                    2024
+                                </span>
+                            </div>
+
+                            {/* Right Content */}
+                            <div className="pl-6 md:pl-8 space-y-6">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 0.5 }}
+                                    className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-amber-500/20 hover:shadow-[0_0_30px_rgba(245,158,11,0.02)] transition-all duration-300"
+                                >
+                                    <div className="flex gap-2 items-center text-xs font-bold font-mono text-amber-400 uppercase tracking-wider mb-2">
+                                        <Award className="w-4 h-4" />
+                                        <span>Senior Secondary Education</span>
+                                    </div>
+                                    <h3 className="text-xl md:text-2xl font-bold text-white mb-1 leading-snug">
+                                        Class 12 Completion
+                                    </h3>
+                                    <p className="text-sm font-semibold text-neutral-500 mb-4">
+                                        Sunflower English Medium School | Score: 70%
+                                    </p>
+                                    
+                                    <p className="text-sm text-neutral-400 leading-relaxed font-medium mb-6">
+                                        Completed senior secondary education focusing on Science and Mathematics. Established logical and analytical reasoning methods vital for computing and algorithms.
+                                    </p>
+
+                                    <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral-900/60">
+                                        {["Science", "Mathematics", "Computer Fundamentals"].map((tag, i) => (
+                                            <span key={i} className="px-2.5 py-0.5 rounded-lg text-[10px] font-bold font-mono uppercase bg-neutral-900 text-neutral-400 border border-neutral-800">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </div>
+
+                        {/* ENTRY 3: 2025 - ML & AI Research */}
+                        <div className="grid grid-cols-[60px_1fr] md:grid-cols-[140px_1fr] gap-6 md:gap-12 relative group">
+                            
+                            {/* Left Year Badge */}
+                            <div className="sticky top-28 h-fit text-right">
+                                <span className="inline-block text-sm md:text-base font-black font-mono px-3 py-1.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 shadow-[0_0_15px_rgba(168,85,247,0.1)]">
+                                    2025
+                                </span>
+                            </div>
+
+                            {/* Right Content */}
+                            <div className="pl-6 md:pl-8 space-y-6">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 0.5 }}
+                                    className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-purple-500/20 hover:shadow-[0_0_30px_rgba(168,85,247,0.02)] transition-all duration-300"
+                                >
+                                    <div className="flex gap-2 items-center text-xs font-bold font-mono text-purple-400 uppercase tracking-wider mb-2">
+                                        <Cpu className="w-4 h-4" />
+                                        <span>Research & Development</span>
+                                    </div>
+                                    <h3 className="text-xl md:text-2xl font-bold text-white mb-1 leading-snug">
+                                        Deep Dive into Machine Learning & AI Research
+                                    </h3>
+                                    <p className="text-sm font-semibold text-neutral-500 mb-4">
+                                        Advanced Algorithmic Modeling
+                                    </p>
+                                    
+                                    <div className="text-sm text-neutral-400 leading-relaxed font-medium space-y-2 mb-6">
+                                        <p>• Built predictive classification pipelines using Scikit-Learn (Decision Trees, Random Forests, XGBoost).</p>
+                                        <p>• Constructed neural network architectures and multi-layered models in TensorFlow and PyTorch.</p>
+                                        <p>• Developed real-time object classification and image processing routines using OpenCV.</p>
+                                        <p>• Explored NLP pipelines including TF-IDF representations, lemmatization, and basic transformers.</p>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral-900/60">
+                                        {["Machine Learning", "Deep Learning", "Computer Vision", "NLP"].map((tag, i) => (
+                                            <span key={i} className="px-2.5 py-0.5 rounded-lg text-[10px] font-bold font-mono uppercase bg-neutral-900 text-neutral-400 border border-neutral-800">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </div>
+
+                        {/* ENTRY 4: 2025 - Certifications */}
+                        <div className="grid grid-cols-[60px_1fr] md:grid-cols-[140px_1fr] gap-6 md:gap-12 relative group">
+                            
+                            {/* Left Year Badge */}
+                            <div className="sticky top-28 h-fit text-right">
+                                <span className="inline-block text-sm md:text-base font-black font-mono px-3 py-1.5 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20 shadow-[0_0_15px_rgba(244,63,94,0.1)]">
+                                    2025
+                                </span>
+                            </div>
+
+                            {/* Right Content */}
+                            <div className="pl-6 md:pl-8 space-y-6">
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-400">
+                                            <Award className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold text-white">Certifications & Professional Growth</h3>
+                                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider font-mono">Industry Credentials</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-2">
+                                        {certificationsData.map((cert, idx) => (
+                                            <motion.div
+                                                key={idx}
+                                                initial={{ opacity: 0, y: 15 }}
+                                                whileInView={{ opacity: 1, y: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                                                onClick={() => setSelectedImage(cert.image)}
+                                                className="group cursor-pointer flex flex-col justify-between rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-rose-500/20 transition-all duration-300 hover:shadow-lg overflow-hidden"
+                                            >
+                                                <div className="relative h-40 bg-neutral-900 overflow-hidden border-b border-neutral-900">
+                                                    <Image
+                                                        src={cert.image}
+                                                        alt={cert.title}
+                                                        fill
+                                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                        sizes="(max-w-768px) 100vw, 25vw"
+                                                        unoptimized
+                                                    />
+                                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white">
+                                                            <Maximize2 className="w-4 h-4" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                                                    <div>
+                                                        <h4 className="text-sm font-bold text-white group-hover:text-rose-400 transition-colors line-clamp-2 leading-tight">
+                                                            {cert.title}
+                                                        </h4>
+                                                        <div className="flex items-center gap-1.5 mt-2">
+                                                            <span className="text-[9px] font-bold font-mono text-rose-500 uppercase">
+                                                                {cert.issuer}
+                                                            </span>
+                                                            <span className="text-neutral-700 font-mono text-[9px]">•</span>
+                                                            <span className="text-[9px] font-bold font-mono text-neutral-500 uppercase">
+                                                                {cert.date}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex items-center justify-between border-t border-neutral-900/60 pt-3">
+                                                        <span className="text-neutral-400 text-xs leading-relaxed font-medium line-clamp-2">
+                                                            {cert.description}
+                                                        </span>
+                                                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 ml-2" />
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ENTRY 5: 2025-2026 - Projects & Research */}
+                        <div className="grid grid-cols-[60px_1fr] md:grid-cols-[140px_1fr] gap-6 md:gap-12 relative group">
+                            
+                            {/* Left Year Badge */}
+                            <div className="sticky top-28 h-fit text-right">
+                                <span className="inline-block text-sm md:text-base font-black font-mono px-3 py-1.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.1)]">
+                                    2025–26
+                                </span>
+                            </div>
+
+                            {/* Right Content */}
+                            <div className="pl-6 md:pl-8 space-y-6">
+                                <div className="space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="p-2 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-400">
+                                            <Rocket className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <h3 className="text-xl font-bold text-white">Projects & Research Journey</h3>
+                                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider font-mono">Flagship Software & AI Engineering</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-2">
+                                        {projectsData.map((project, idx) => (
+                                            <motion.div
+                                                key={idx}
+                                                initial={{ opacity: 0, y: 15 }}
+                                                whileInView={{ opacity: 1, y: 0 }}
+                                                viewport={{ once: true }}
+                                                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                                                className="group flex flex-col justify-between rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-amber-500/20 transition-all duration-300 hover:shadow-lg overflow-hidden"
+                                            >
+                                                <div className="relative h-32 bg-neutral-900 overflow-hidden border-b border-neutral-900">
+                                                    <Image
+                                                        src={project.image}
+                                                        alt={project.name}
+                                                        fill
+                                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                        sizes="(max-w-768px) 100vw, 30vw"
+                                                        unoptimized
+                                                    />
+                                                </div>
+                                                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                                                    <div className="space-y-2">
+                                                        <div className="flex justify-between items-center">
+                                                            <span className="text-[9px] font-bold font-mono text-amber-500 uppercase bg-amber-500/10 px-2 py-0.5 rounded">
+                                                                {project.type}
+                                                            </span>
+                                                            <div className="flex gap-2">
+                                                                {project.github && (
+                                                                    <a 
+                                                                        href={project.github} 
+                                                                        target="_blank" 
+                                                                        rel="noopener noreferrer" 
+                                                                        className="p-1 rounded bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800"
+                                                                    >
+                                                                        <Github className="w-3.5 h-3.5" />
+                                                                    </a>
+                                                                )}
+                                                                {project.demo && (
+                                                                    <a 
+                                                                        href={project.demo} 
+                                                                        target="_blank" 
+                                                                        rel="noopener noreferrer" 
+                                                                        className="p-1 rounded bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800"
+                                                                    >
+                                                                        <ExternalLink className="w-3.5 h-3.5" />
+                                                                    </a>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        <h4 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors leading-tight">
+                                                            {project.name}
+                                                        </h4>
+                                                        <p className="text-neutral-400 text-xs leading-relaxed font-medium line-clamp-3">
+                                                            {project.desc}
+                                                        </p>
+                                                    </div>
+                                                    
+                                                    <div className="flex flex-wrap gap-1 pt-3 border-t border-neutral-900/60">
+                                                        {project.tags.map((t, i) => (
+                                                            <span key={i} className="px-2 py-0.5 rounded text-[8px] font-bold font-mono bg-neutral-900 text-neutral-500 uppercase">
+                                                                {t}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* ENTRY 6: 2026 - Building Intelligent Systems */}
+                        <div className="grid grid-cols-[60px_1fr] md:grid-cols-[140px_1fr] gap-6 md:gap-12 relative group">
+                            
+                            {/* Left Year Badge */}
+                            <div className="sticky top-28 h-fit text-right">
+                                <span className="inline-block text-sm md:text-base font-black font-mono px-3 py-1.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
+                                    2026
+                                </span>
+                            </div>
+
+                            {/* Right Content */}
+                            <div className="pl-6 md:pl-8 space-y-6">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 0.5 }}
+                                    className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-emerald-500/20 hover:shadow-[0_0_30px_rgba(16,185,129,0.02)] transition-all duration-300"
+                                >
+                                    <div className="flex gap-2 items-center text-xs font-bold font-mono text-emerald-400 uppercase tracking-wider mb-2">
+                                        <Server className="w-4 h-4" />
+                                        <span>Production AI Systems</span>
+                                    </div>
+                                    <h3 className="text-xl md:text-2xl font-bold text-white mb-1 leading-snug">
+                                        Building Intelligent AI Systems
+                                    </h3>
+                                    <p className="text-sm font-semibold text-neutral-500 mb-4">
+                                        Scale, Deployments & Cloud MLOps
+                                    </p>
+                                    
+                                    <div className="text-sm text-neutral-400 leading-relaxed font-medium space-y-2 mb-6">
+                                        <p>• **AI Engineering**: Designing multi-agent cognitive patterns, planning layers, and local memory engines.</p>
+                                        <p>• **Full Stack AI**: Building low-latency Next.js client interfaces and robust FastAPI API backends.</p>
+                                        <p>• **LLMs & RAG**: Implementing semantic retrieval chains using LangChain, sentence embeddings, and vector stores.</p>
+                                        <p>• **MLOps & Cloud**: Containerizing models with Docker, running local cluster pods using Kubernetes, and deploying to AWS, Azure, or GCP instances.</p>
+                                    </div>
+
+                                    <div className="flex flex-wrap gap-2 pt-2 border-t border-neutral-900/60">
+                                        {["LangChain", "FastAPI", "Docker", "Kubernetes", "AWS", "Azure", "GCP"].map((tag, i) => (
+                                            <span key={i} className="px-2.5 py-0.5 rounded-lg text-[10px] font-bold font-mono uppercase bg-neutral-900 text-neutral-400 border border-neutral-800">
+                                                {tag}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </motion.div>
+                            </div>
+                        </div>
+
                     </div>
-                </section>
+                </div>
             </main>
 
             {/* Lightbox / Certificate Preview Overlay (AnimatePresence supported) */}
