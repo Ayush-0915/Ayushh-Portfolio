@@ -9,7 +9,7 @@
 
 *AI Engineer · Machine Learning Developer · Full-Stack Builder · Data Science Enthusiast*
 
-[![Live Portfolio](https://img.shields.io/badge/🌐_Live_Portfolio-Visit_Now-6366f1?style=for-the-badge)](https://ayush-singh-portfolio.vercel.app/)
+[![Live Portfolio](https://img.shields.io/badge/🌐_Live_Portfolio-Visit_Now-6366f1?style=for-the-badge)](https://ayushh-portfolio.vercel.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-Ayush--0915-181717?style=for-the-badge&logo=github)](https://github.com/Ayush-0915)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Ayush_Singh-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/ayush-singh-0915ap)
 [![Email](https://img.shields.io/badge/Email-ayushofficaluse@gmail.com-EA4335?style=for-the-badge&logo=gmail)](mailto:ayushofficaluse@gmail.com)
