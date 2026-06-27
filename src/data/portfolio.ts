@@ -31,9 +31,27 @@ export const portfolioData: PortfolioData = {
             },
             {
                 platform: 'Instagram',
-                url: 'https://instagram.com/ayush_singh', // optional placeholder
+                url: 'https://www.instagram.com/ayush_xo._?igsh=MTM5dm1xd3Bwb2Q0bg==',
                 icon: 'instagram',
-                username: 'ayush_singh',
+                username: 'AYUSH_XO._',
+            },
+            {
+                platform: 'Twitter',
+                url: 'https://x.com/Ayush21915',
+                icon: 'twitter',
+                username: 'Ayush21915',
+            },
+            {
+                platform: 'Discord',
+                url: '',
+                icon: 'discord',
+                username: 'ayu_shhh6969',
+            },
+            {
+                platform: 'Spotify',
+                url: 'https://open.spotify.com/',
+                icon: 'spotify',
+                username: 'music_lover',
             }
         ],
     },
