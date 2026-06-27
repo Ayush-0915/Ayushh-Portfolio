@@ -30,6 +30,12 @@ export const TECH_CATEGORIES: TechCategory[] = [
                 icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg"
             },
             {
+                name: "LangChain",
+                description: "Framework for building LLM applications and chains.",
+                badge: "Advanced",
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/langchain/langchain-original.svg"
+            },
+            {
                 name: "Scikit-learn",
                 description: "Develop predictive models, classification algorithms, regression systems, and feature engineering workflows.",
                 badge: "Advanced",
@@ -57,7 +63,7 @@ export const TECH_CATEGORIES: TechCategory[] = [
                 name: "Pandas",
                 description: "Efficient data manipulation, preprocessing, and exploratory data analysis.",
                 badge: "Advanced",
-                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original.svg"
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pandas/pandas-original-wordmark.svg"
             },
             {
                 name: "NumPy",
@@ -107,6 +113,13 @@ export const TECH_CATEGORIES: TechCategory[] = [
                 badge: "Advanced",
                 icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
             },
+                {
+                    name: "Streamlit",
+                    description: "Rapid prototyping and data app deployment with Python.",
+                    badge: "Core",
+                    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/streamlit/streamlit-original.svg"
+                },
+                {
             {
                 name: "JavaScript (ES6+)",
                 description: "Dynamic frontend engineering and application logic.",
@@ -129,13 +142,37 @@ export const TECH_CATEGORIES: TechCategory[] = [
                 name: "FastAPI",
                 description: "High-performance APIs for AI and machine learning applications.",
                 badge: "Core",
-                icon: "https://cdn.simpleicons.org/fastapi"
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg"
             },
             {
                 name: "Supabase",
                 description: "Authentication, PostgreSQL database, storage, and backend services.",
                 badge: "Core",
-                icon: "https://cdn.simpleicons.org/supabase"
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/supabase/supabase-original.svg"
+            },
+            {
+                name: "Kubernetes",
+                description: "Container orchestration for scalable deployments.",
+                badge: "Advanced",
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-original.svg"
+            },
+            {
+                name: "AWS",
+                description: "Amazon Web Services cloud platform.",
+                badge: "Advanced",
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg"
+            },
+            {
+                name: "Azure",
+                description: "Microsoft Azure cloud services.",
+                badge: "Advanced",
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg"
+            },
+            {
+                name: "GCP",
+                description: "Google Cloud Platform services.",
+                badge: "Advanced",
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg"
             },
             {
                 name: "PostgreSQL",
@@ -281,7 +318,8 @@ const TechCard = ({ tech, idx }: { tech: TechItem, idx: number }) => {
                             src={tech.icon}
                             alt={tech.name}
                             fill
-                            className="object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300 unoptimized"
+                            className="object-contain group-hover:scale-110 transition-all duration-300 unoptimized"
+                            style={{ filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.15))' }}
                             unoptimized
                             loading="lazy"
                             onError={(e) => {
