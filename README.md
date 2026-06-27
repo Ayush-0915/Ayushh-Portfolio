@@ -1,180 +1,478 @@
-# 🌌 Ayush Singh Portfolio
+# 🌌 Ayush Singh — AI & Machine Learning Portfolio
 
-### AI & Machine Learning Engineer | Deep Learning & Generative AI Developer
+<div align="center">
 
-> Building intelligent AI systems, machine learning solutions, and modern software products that solve real-world problems.
+![Portfolio Banner](public/about/ayush.png)
 
----
+### **Ayush Singh**
+**B.Tech AI & Machine Learning Student · 3rd Year · Sage University, Indore**
 
-## 🌌 Hero Section & Live Website
+*AI Engineer · Machine Learning Developer · Full-Stack Builder · Data Science Enthusiast*
 
-My portfolio is a feature-rich, interactive showcases of my technical capabilities in AI, Machine Learning, Data Science, and Full Stack development. It features a premium dark user interface, real-time WakaTime stats, and an interactive AI Engineering Universe.
+[![Live Portfolio](https://img.shields.io/badge/🌐_Live_Portfolio-Visit_Now-6366f1?style=for-the-badge)](https://ayush-singh-portfolio.vercel.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-Ayush--0915-181717?style=for-the-badge&logo=github)](https://github.com/Ayush-0915)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Ayush_Singh-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/ayush-singh-0915ap)
+[![Email](https://img.shields.io/badge/Email-ayushofficaluse@gmail.com-EA4335?style=for-the-badge&logo=gmail)](mailto:ayushofficaluse@gmail.com)
 
-👉 **Live Portfolio:** [ayush-singh-portfolio.vercel.app](https://ayush-singh-portfolio.vercel.app/)
-
----
-
-## 🙋‍♂️ About Me
-
-I am a passionate **B.Tech Artificial Intelligence & Machine Learning Student** at **Sage University**, Indore. As an aspiring **AI & Machine Learning Engineer** and **Data Science Enthusiast**, I focus on building full-stack AI applications that integrate deep mathematical modeling with fluid, modern interfaces.
-
-### Core Interests
-- **Artificial Intelligence** & **Machine Learning**
-- **Deep Learning** & **Neural Networks**
-- **Computer Vision** (Object Detection, Image Segmentation)
-- **Natural Language Processing** & **Generative AI** (RAG, AI Agents)
-- **Data Analytics** & **Exploratory Data Analysis**
-- **Intelligent Software Systems** & **Scalable Architectures**
+</div>
 
 ---
 
-## ✨ Key Features of the Portfolio
+## 🙋‍♂️ Who Am I?
 
-*   **🖤 Premium Dark UI**: Immersive, recruiter-focused dark aesthetic designed for high readability.
-*   **✨ Interactive Animations**: Smooth transitions and micro-interactions powered by Framer Motion, GSAP, and Canvas.
-*   **🪐 AI Engineering Universe**: A fully interactive, animated 3D-repulsion-based technology web/cloud displaying 65+ frameworks, databases, tools, and libraries clustered by domain expertise.
-*   **📂 Featured Project Showcase**: Categorized cards highlighting flagship AI/ML, Data Science, and Web applications.
-*   **🧠 AI Case Studies**: Deep-dive summaries detailing role responsibilities, timelines, tech stacks, and architectures.
-*   **📄 Dynamic Resume Viewer**: Dark-themed, embedded PDF viewer with fluid scrolling, zoom controls, and print options.
-*   **🟢 Live WakaTime Dashboard**: Real-time integration syncing daily coding average, project breakdowns, languages used, active editor, and operating system metrics, with a 30-minute backend cache.
-*   **📱 Responsive Design**: Seamless viewing experience across mobile, tablet, and desktop viewports.
-*   **🔍 SEO Optimized**: High-fidelity structured schema markup, descriptive meta tags, and semantic HTML5 structures.
-*   **⚡ Fast Performance**: Built on Next.js 14 App Router using Turbopack compilation and optimized image rendering.
+I am **Ayush Singh**, a passionate **B.Tech Artificial Intelligence & Machine Learning student** currently in my **3rd year at Sage University, Indore, India**. As a **fresher** building a distinctive technical profile, I focus on developing intelligent AI systems, machine learning applications, and full-stack products that bridge deep mathematical modeling with fluid, modern interfaces.
 
----
+My goal is to become an **AI/ML Engineer** who doesn't just train models — but builds complete, production-ready intelligent products that solve real-world problems.
 
-## 📁 Featured Projects
+### 🔬 What I Work On
+| Domain | Technologies & Focus |
+|---|---|
+| **Artificial Intelligence** | LLMs, AI Agents, Prompt Engineering, Generative AI, RAG Systems |
+| **Machine Learning** | Scikit-learn, XGBoost, LightGBM, Random Forests, Ensemble Methods |
+| **Deep Learning** | TensorFlow, PyTorch, Neural Networks, Transfer Learning |
+| **Computer Vision** | OpenCV, Object Detection, Image Segmentation, Real-Time Vision |
+| **Natural Language Processing** | TF-IDF, NLTK, Text Classification, Sentiment Analysis |
+| **Data Science** | Pandas, NumPy, Matplotlib, Seaborn, Plotly, EDA, Feature Engineering |
+| **Full-Stack Development** | React, Next.js, TypeScript, FastAPI, Supabase, Tailwind CSS |
+| **Cloud & DevOps** | AWS, Azure, GCP, Docker, Kubernetes, Vercel, Git |
 
-Below are the 9 core projects featured in my portfolio, spanning Artificial Intelligence, Machine Learning, Data Science, and Web Engineering:
+### 💡 Soft Skills
+- **Problem Solving** — Algorithmic efficiency and model performance optimization
+- **Analytical Thinking** — Formulating data hypotheses and validating with metric outcomes
+- **Continuous Learning** — Eagerly researching and adopting state-of-the-art AI papers and tools
+- **Collaboration** — Open-source contributions and pair-programming mindset
 
-| Project | Description | Tech Stack | Live Demo | Source Code |
-| :--- | :--- | :--- | :---: | :---: |
-| **NEXUS AI** | Secure Personal AI Assistant (Voice, Vision, Memory, Local RAG). | Python • FastAPI • React • Supabase • Gemini API | [Live Demo](https://nexus-ai-web-page.vercel.app/) | [Source Code](https://github.com/Ayush-0915/NEXUS-AI) |
-| **CareerNova** | AI SaaS Career Development Platform (Resumes, Interviews, Mentors). | React • TypeScript • Supabase • Gemini API • Tailwind CSS | [Live Demo](https://career-nova-cyan.vercel.app/) | [Source Code](https://github.com/Ayush-0915/CareerNova) |
-| **CreditWise Loan Dashboard** | Machine learning dashboard predicting loan approvals with interactive financial analytics. | Python • Pandas • NumPy • Scikit-learn • Streamlit | [Live Demo](https://credit-wise-loanapp.streamlit.app/) | [Source Code](https://github.com/Ayush-0915/CreditWise) |
-| **Healthcare Risk Management** | ML Platform predicting clinical patient risks and hazards. | Python • Scikit-learn • Pandas • Streamlit | `-` | [Source Code](https://github.com/Ayush-0915/Healthcare-Risk-Management) |
-| **Fake News Detection Using ML** | NLP Classification pipeline to detect disinformation and fake news. | Python • Scikit-learn • NLTK • TF-IDF | `-` | [Source Code](https://github.com/Ayush-0915/Detecting-Fake-News-Using-ML) |
-| **Car Evaluation** | Machine learning classification model evaluating automotive safety and quality. | Python • Scikit-learn • Pandas • Streamlit | `-` | [Source Code](https://github.com/Ayush-0915/Car-evaluation) |
-| **Bitcoin Sentiment Trader Analysis** | Financial analytics platform combining market price logs with NLP sentiment signals. | Python • Pandas • Scikit-learn • XGBoost • Plotly | `-` | [Source Code](https://github.com/Ayush-0915/Bitcoin-sentiment-trader-analysis) |
-| **Netflix Data Analysis** | Exploratory data analysis uncovering business trends and a cosine similarity movie recommender. | Python • Pandas • NumPy • Matplotlib | `-` | [Source Code](https://github.com/Ayush-0915/Netflix-Data-Analysis) |
-| **Uber Trips Analysis** | EDA exploring trip patterns, demand hours, and dispatch efficiency. | Python • Pandas • Matplotlib • Seaborn • Plotly | `-` | [Source Code](https://github.com/Ayush-0915/Uber-Data-Analysis) |
+### 🌍 Languages
+- **English** — Native/Professional
+- **Hindi** — Native
 
 ---
 
-## 🪐 AI Engineering Universe
+## 🌐 Live Portfolio Website
 
-The portfolio introduces an interactive, high-fidelity **AI Engineering Universe** visualizing my extensive expertise:
+> 👉 **[ayush-singh-portfolio.vercel.app](https://ayush-singh-portfolio.vercel.app/)**
 
-*   **AI & Machine Learning**: Artificial Intelligence, Machine Learning, Deep Learning, Generative AI, Agentic AI, Prompt Engineering, RAG, LangChain, LLMs, NLP, Computer Vision, TensorFlow, PyTorch, Scikit-learn, OpenCV, Ultralytics YOLO
-*   **Data Science**: Python, Pandas, NumPy, Matplotlib, Plotly, Seaborn, Power BI, Tableau, Data Analytics, Feature Engineering, Model Evaluation, EDA
-*   **Backend & Databases**: FastAPI, Flask, REST API, Python Backend, API Integration, JSON, PostgreSQL, SQL, SQLite, Supabase, MySQL
-*   **Frontend**: React, Next.js, TypeScript, JavaScript, HTML5, CSS3, Tailwind CSS, Responsive UI, Framer Motion, GSAP, Canvas
-*   **Cloud & DevOps**: Microsoft Azure, AWS, Google Cloud, Oracle Cloud, Docker, Git, GitHub, Linux, Vercel, Streamlit, Jupyter
-*   **Developer Tools**: VS Code, Cursor, Anaconda, Conda, NPM, PIP
+A feature-rich, interactive portfolio showcasing my technical capabilities in AI, Machine Learning, Data Science, and Full-Stack Development. Built with Next.js 16, React 19, TypeScript, Framer Motion, and deployed on Vercel.
 
 ---
 
-## 📸 Screen Previews
+## ✨ Portfolio Features
 
-Here are some visual insights into the portfolio:
-
-*   **Home Page & Hero Journey**: `public/about/ayush.png`
-*   **Projects Gallery Showcase**: `public/project/nexusai1.png`
-*   **AI Technology Universe Node**: `public/project/carevaluation1.webp`
-*   **Bitcoin Analytics View**: `public/project/bitcoinsentimenttraderanalysis1.webp`
+| Feature | Description |
+|---|---|
+| 🖤 **Premium Dark UI** | Immersive, recruiter-focused dark aesthetic with glassmorphism and vibrant gradients |
+| 🎬 **Framer Motion Animations** | Smooth entrance, hover, and micro-interaction animations throughout |
+| 🪐 **AI Engineering Universe** | Interactive animated bubble-cloud displaying 65+ technologies clustered by domain |
+| 🧩 **AI Engineering Stack Grid** | Categorized tech grid (40+ technologies) with colored icons, badges, and hover glows |
+| 📂 **Project Showcase** | 10 featured projects with full case-study pages, tech stacks, and live/GitHub links |
+| 📜 **Education & Learning Timeline** | Glassmorphism changelog-style timeline of academic journey, certifications, and milestones |
+| 🏆 **Certifications Gallery** | 16+ certificates with marquee slider and expandable detail view |
+| 📄 **Dynamic Resume Viewer** | Embedded dark-themed PDF viewer with zoom, scroll, and print capabilities |
+| 🟢 **Live WakaTime Dashboard** | Real-time coding stats synced via WakaTime API (daily average, languages, editor, streak) |
+| 📱 **Fully Responsive** | Seamless experience across mobile, tablet, and desktop viewports |
+| 🔍 **SEO Optimized** | Structured schema markup, descriptive meta tags, and semantic HTML5 |
+| ⚡ **Next.js 16 + Turbopack** | Ultra-fast compilation and optimized image delivery |
+| 🎯 **React 19 + TypeScript** | Strictly typed components, React memo, useMemo, useCallback optimization |
+| 🤖 **AI Chat Integration** | Built-in AI chat assistant via `/api/chat` route |
+| 📬 **Contact Form** | EmailJS-powered contact form with API route handler |
+| 📸 **Gallery Page** | Personal development gallery showcasing technical workspaces |
+| 🌓 **Dark/Light Theme** | Theme toggler with next-themes, supporting system preferences |
+| ♿ **Reduced Motion Support** | Respects `prefers-reduced-motion` — all continuous animations disabled gracefully |
 
 ---
 
-## 📂 Project Directory Structure
+## 📁 Featured Projects (10 Projects)
+
+### 🤖 AI & Generative AI
+
+#### 1. [NEXUS AI](https://github.com/Ayush-0915/NEXUS-AI) — *AI Operating System*
+> **[🔗 Live Demo](https://nexus-ai-web-page.vercel.app/)**
+
+A next-generation personal AI operating system unifying Voice AI, Vision Intelligence, Memory, RAG, and intelligent desktop automation into one seamless experience.
+
+- 🗣️ **Voice Interaction** — Natural language STT/TTS with custom voice models
+- 👁️ **Vision Intelligence** — Real-time screen capture, object detection, visual QA
+- 🧠 **Memory Engine** — Vector-based semantic search (ChromaDB) for long-term context
+- 🔒 **Local RAG** — Enterprise-grade retrieval running fully on-device, no cloud exposure
+- 🖥️ **Desktop Automation** — Secure system command execution via natural language
+- **Stack:** `Python` `FastAPI` `React` `TypeScript` `Gemini API` `ChromaDB` `RAG` `AI Agents` `Supabase`
+- **Status:** 🟡 Ongoing (Beta) | **Role:** AI & ML Engineer
+
+---
+
+#### 2. [CareerNova](https://github.com/Ayush-0915/CareerNova) — *AI SaaS Career Platform*
+> **[🔗 Live Demo](https://career-nova-cyan.vercel.app/)**
+
+An AI-powered career development platform combining Generative AI, NLP, and semantic analysis for personalized career guidance, resume optimization, and interview preparation.
+
+- 📄 **AI Resume Analyzer** — Semantic evaluation of resume quality and ATS score
+- 💼 **Career Recommendations** — Tailored career paths based on extracted skills
+- 🎙️ **Mock Interview Generator** — AI-driven interview questions by role
+- 📊 **Skill Gap Analysis** — Detect missing tools for targeted job roles
+- 🗺️ **Personalized Learning Roadmaps** — Custom study plans with key resources
+- 🔐 **Supabase Auth** — Secure OAuth and email/password authentication
+- **Stack:** `React` `TypeScript` `Supabase` `Gemini API` `Tailwind CSS` `Vercel` `NLP`
+- **Status:** ✅ Completed (June 2026) | **Role:** Founder & AI Developer
+
+---
+
+### 📊 Machine Learning & Data Science
+
+#### 3. [CreditWise Loan Dashboard](https://github.com/Ayush-0915/CreditWise) — *ML Risk Analytics*
+> **[🔗 Live Demo](https://credit-wise-loanapp.streamlit.app/)**
+
+A machine learning dashboard predicting loan approvals with ensemble classifiers, SHAP explainability, and interactive financial analytics.
+
+- 📈 **Stacked Ensembles** — XGBoost + Random Forest blending for superior AUC
+- ⚖️ **SMOTE** — Handles severe class imbalance in default detection
+- 🔍 **SHAP Explainability** — Explains exactly why an applicant is high-risk
+- 🎛️ **What-If Simulator** — Real-time risk simulation by tweaking financial variables
+- **Stack:** `Python` `Scikit-learn` `XGBoost` `Pandas` `Streamlit` `Matplotlib`
+- **Status:** ✅ Completed (May 2026)
+
+---
+
+#### 4. [Healthcare Risk Management](https://github.com/Ayush-0915/Healthcare-Risk-Management) — *Clinical AI*
+
+ML-powered clinical decision support system assessing patient risk categories from high-dimensional clinical data (vitals, demographics, labs).
+
+- 🏥 **Patient Risk Prediction** — Hazard binning with optimized classifiers
+- 📉 **KNN Imputation** — Handles missing clinical lab values
+- 📊 **Risk Distribution Dashboard** — Visual overlays for physician decision support
+- **Stack:** `Python` `Scikit-learn` `Pandas` `Streamlit` `Matplotlib`
+- **Status:** ✅ Completed (2026)
+
+---
+
+#### 5. [Fake News Detection Using ML](https://github.com/Ayush-0915/Detecting-Fake-News-Using-ML) — *NLP Classification*
+
+NLP-powered text classification pipeline to detect disinformation and fake news from news articles.
+
+- 📝 **TF-IDF Vectorization** — Statistical feature extraction from text corpora
+- 🧹 **Text Preprocessing** — Stopword removal, stemming, lemmatization
+- 🏋️ **L2 Regularization** — Reduced feature space by 60% maintaining 94% accuracy
+- **Stack:** `Python` `Scikit-learn` `Pandas` `NumPy` `NLTK` `TF-IDF`
+- **Status:** ✅ Completed (2026)
+
+---
+
+#### 6. [Car Evaluation](https://github.com/Ayush-0915/Car-evaluation) — *Classification System*
+
+ML classification system evaluating vehicle quality from automotive attributes (buying price, safety, capacity, luggage size).
+
+- 🌳 **Decision Tree & Random Forest** — Ensemble comparison with grid search tuning
+- 📊 **Feature Importance Analysis** — Identifies dominant car quality attributes
+- **Stack:** `Python` `Scikit-learn` `Pandas` `NumPy` `Matplotlib` `Streamlit`
+- **Status:** ✅ Completed (April 2026)
+
+---
+
+#### 7. [Bitcoin Sentiment Trader Analysis](https://github.com/Ayush-0915/Bitcoin-sentiment-trader-analysis) — *Financial AI*
+
+AI-powered financial analytics combining cryptocurrency market data with sentiment analysis and ML models to understand market psychology.
+
+- 📉 **XGBoost + LightGBM + CatBoost** — Gradient boosting ensemble for market prediction
+- 💬 **Sentiment Analysis Pipeline** — NLP-based sentiment scoring from public data
+- 📅 **Walk-Forward Validation** — Prevents data leakage in time-series model splits
+- 🎛️ **Bayesian Hyperparameter Optimization** — Advanced model tuning
+- **Stack:** `Python` `Pandas` `NumPy` `Scikit-learn` `XGBoost` `LightGBM` `CatBoost` `Plotly` `Seaborn`
+- **Status:** ✅ Completed (May 2026)
+
+---
+
+### 📈 Data Analytics
+
+#### 8. [Netflix Data Analysis](https://github.com/Ayush-0915/Netflix-Data-Analysis) — *EDA + Recommender*
+
+Exploratory data analysis of the Netflix catalog uncovering business trends with a content-based cosine similarity recommender.
+
+- 🗺️ **Geospatial Choropleth Maps** — Global content release distribution
+- 🎬 **Content-Based Filtering** — TF-IDF + cosine similarity recommendation engine
+- **Stack:** `Python` `Pandas` `NumPy` `Matplotlib`
+- **Status:** ✅ Completed (2025)
+
+---
+
+#### 9. [Uber Trips Analysis](https://github.com/Ayush-0915/Uber-Data-Analysis) — *Ride-Sharing EDA*
+
+Comprehensive EDA uncovering ride demand patterns, peak hours, trip distribution, and operational insights from Uber trip datasets.
+
+- 🕐 **Peak Hour Identification** — Temporal demand segmentation analysis
+- 🗺️ **Trip Distribution Mapping** — Spatial drop-off distribution visualization
+- 📦 **Chunked Pandas Processing** — 40% reduction in memory footprint for large datasets
+- **Stack:** `Python` `Pandas` `NumPy` `Matplotlib` `Seaborn` `Plotly`
+- **Status:** ✅ Completed (January 2026)
+
+---
+
+#### 10. [Personal Portfolio Website](https://github.com/Ayush-0915/Ayushh-Portfolio) — *This Project*
+
+This portfolio itself is a full-stack Next.js 16 application demonstrating premium UI/UX engineering, AI/ML showcasing, and performance-optimized web development.
+
+- **Stack:** `Next.js 16` `React 19` `TypeScript` `Tailwind CSS` `Framer Motion` `Three.js` `Vercel`
+- **Status:** 🟡 Ongoing
+
+---
+
+## 🎓 Education
+
+| Institution | Degree | Major | Duration | CGPA |
+|---|---|---|---|---|
+| **Sage University, Indore** | B.Tech | Artificial Intelligence & Machine Learning | July 2024 – June 2028 | 7.0 |
+| **Sunflower English Medium School** | Class 12 | Science (PCM + CS) | — | — |
+| **Bhansali Vidhya Mandir Public School** | Class 10 | General | — | — |
+
+**Activities:** AI/ML Projects · Open Source Contributions · Data Analysis Hackathons · Technical Student Chapters
+
+---
+
+## 🏆 Certifications (16+)
+
+| # | Certificate | Issuer | Year |
+|---|---|---|---|
+| 1 | Microsoft Certified: Azure Fundamentals (AZ-900) | Microsoft | 2025 |
+| 2 | Oracle Cloud Infrastructure AI Foundations Associate | Oracle | 2025 |
+| 3 | AWS Certified Cloud Practitioner | Amazon Web Services | 2025 |
+| 4 | AWS Academy: Machine Learning Foundations | AWS Academy | 2025 |
+| 5 | Google Cloud Cloud Engineering Essentials | Google Cloud | 2025 |
+| 6 | Oracle Database SQL Certified Associate | Oracle | 2025 |
+| 7 | Red Hat System Administration II (RH134) | Red Hat | 2025 |
+| 8 | Red Hat Enterprise Linux OpenShift Administration | Red Hat | 2025 |
+| 9 | EduSkills AWS Cloud Virtual Internship | EduSkills / AWS Academy | 2025 |
+| 10 | AI-Powered Cloud Engineer Virtual Internship | EduSkills Academy | 2025 |
+| 11 | Applied AI Certification | Apply AI | 2025 |
+| 12 | Data Analysis using Python | Samatrix Consulting | 2025 |
+| 13 | Probabilistic Modelling & Reasoning with Python | Samatrix Consulting | 2025 |
+| 14 | R Programming for Data Science | Samatrix Consulting | 2024 |
+| 15 | Introduction to Modern AI | EduSkills / Sage University | 2024 |
+| 16 | AWS Machine Learning Foundations Certificate | AWS Academy | 2025 |
+
+---
+
+## 🛠️ Full Technical Stack (40+ Technologies)
+
+### 🤖 AI & Machine Learning
+`Python` `TensorFlow` `PyTorch` `Scikit-learn` `LangChain` `OpenCV` `XGBoost` `LightGBM` `CatBoost` `NLTK` `TF-IDF` `ChromaDB`
+
+### 📊 Data Science
+`Pandas` `NumPy` `Matplotlib` `Seaborn` `Plotly` `Jupyter Notebook` `Google Colab`
+
+### 🧠 Generative AI
+`Gemini API` `Prompt Engineering` `RAG (Retrieval-Augmented Generation)` `AI Agents` `LLMs`
+
+### 🌐 Full-Stack Development
+`React` `Next.js` `TypeScript` `JavaScript (ES6+)` `Tailwind CSS` `Streamlit` `FastAPI` `Flask`
+
+### 🗄️ Databases
+`PostgreSQL` `Supabase` `ChromaDB` `SQLite` `MySQL`
+
+### ☁️ Cloud & DevOps
+`AWS` `Microsoft Azure` `Google Cloud Platform (GCP)` `Docker` `Kubernetes` `Vercel`
+
+### 🔧 Developer Tools
+`Git` `GitHub` `VS Code` `Conda / Anaconda` `Linux` `NPM` `PIP`
+
+---
+
+## 🗂️ Project Directory Structure
 
 ```text
 ├── src/
-│   ├── app/                # Next.js App Router paths
-│   │   ├── api/            # API Route handlers (WakaTime cache, Contact submission)
-│   │   ├── resume/         # Dark-themed PDF resume viewer page
-│   │   ├── achievements/   # Achievements, certificates, & AI Engineering Universe page
-│   │   └── projects/       # Dynamic Project Case Studies & Detail pages
+│   ├── app/                         # Next.js 16 App Router pages
+│   │   ├── page.tsx                 # Home / Hero page
+│   │   ├── experience/              # Education & Learning Journey page
+│   │   ├── skills/                  # AI Engineering Stack & Tech Universe page
+│   │   ├── projects/                # Projects list + dynamic [slug] detail pages
+│   │   ├── achievements/            # Certifications gallery page
+│   │   ├── resume/                  # Dark-themed PDF resume viewer
+│   │   ├── blog/                    # Blog posts + dynamic [slug] pages
+│   │   ├── contact/                 # Contact form page
+│   │   ├── gallery/                 # Personal gallery page
+│   │   └── api/                     # API route handlers
+│   │       ├── chat/                # AI chat API
+│   │       ├── contact/             # Contact form submission (EmailJS/Nodemailer)
+│   │       ├── wakatime/            # WakaTime stats API (30-min cache)
+│   │       ├── wakatime-stats/      # Extended WakaTime dashboard
+│   │       ├── github-stats/        # GitHub profile statistics
+│   │       ├── github-languages/    # Repository language breakdown
+│   │       ├── kaggle-stats/        # Kaggle profile stats
+│   │       └── gallery/             # Gallery data API
 │   ├── components/
-│   │   ├── effects/        # TechnicalUniverse interactive Canvas component
-│   │   ├── layout/         # Header, Navigation, & Footer modules
-│   │   ├── sections/       # Hero, About, Projects list, Experience components
-│   │   └── ui/             # Animated cards, widgets, infinite sliders, charts
-│   ├── data/               # State databases containing project, experience & certificate data
-│   └── styles/             # Global CSS and layout overrides
+│   │   ├── effects/                 # TechnicalUniverse interactive Canvas component
+│   │   ├── layout/                  # Header, Navigation, Footer
+│   │   ├── sections/                # Hero, About, Projects list, Experience sections
+│   │   ├── projects/                # Project TechStack and case-study components
+│   │   └── ui/                      # Reusable UI components
+│   │       ├── KineticTechGrid.tsx  # AI Engineering Stack grid (40+ technologies)
+│   │       ├── ArchedTechIcons.tsx  # Interactive tech bubble/orbit display
+│   │       ├── brand-scroller.tsx   # Infinite logo marquee scroller
+│   │       ├── timeline.tsx         # Education & experience timeline
+│   │       ├── certificate-marquee.tsx # Certificates marquee slider
+│   │       ├── github-showcase.tsx  # Live GitHub activity display
+│   │       ├── wakatime-showcase.tsx # Real-time WakaTime stats dashboard
+│   │       ├── globe.tsx            # 3D interactive globe
+│   │       └── ...                  # 30+ additional UI components
+│   ├── data/
+│   │   └── portfolio.ts             # Source of truth: projects, education, certs, skills
+│   ├── types/                       # TypeScript type definitions
+│   ├── hooks/                       # Custom React hooks
+│   ├── lib/                         # Utility functions (cn, formatters)
+│   └── providers/                   # Theme, smooth scroll providers
 ├── public/
-│   ├── resume/             # Contains Ayush_Singh_Resume.pdf
-│   ├── certificate/        # All 16 certificate images and credentials
-│   └── project/            # Optimized project images (PNG/WebP/JPG formats)
+│   ├── about/                       # Profile photo (ayush.png)
+│   ├── resume/                      # Ayush_Singh_Resume.pdf
+│   ├── certificate/                 # 16+ certificate images/PDFs
+│   ├── project/                     # Optimized project screenshots (WebP/PNG)
+│   └── icons/                       # Technology fallback icons
 └── README.md
 ```
 
 ---
 
-## ⚙️ Installation & Setup
+## 📊 Portfolio Stats
 
-Follow these steps to deploy or run the portfolio codebase locally:
+| Metric | Count |
+|---|---|
+| 🚀 Projects Built | 10+ |
+| 🏅 Certifications Earned | 16+ |
+| 🛠️ Technologies in Stack | 40+ |
+| 🚢 Active Deployments | 15+ |
+| 📦 GitHub Repositories | Growing |
+| 📚 Academic Year | 3rd Year B.Tech (Fresher) |
 
-1.  **Clone the Repository**
-    ```bash
-    git clone https://github.com/Ayush-0915/Ayushh-Portfolio.git
-    cd Ayushh-Portfolio
-    ```
+---
 
-2.  **Install Node Modules**
-    ```bash
-    npm install
-    ```
+## ⚡ Performance Optimizations (Recent Changes)
 
-3.  **Run Development Server**
-    ```bash
-    npm run dev
-    ```
-    Open [http://localhost:3000](http://localhost:3000) inside your browser.
+This portfolio has been extensively optimized for performance and visual quality. Below is a changelog of all major improvements made:
 
-4.  **Production Compile**
-    ```bash
-    npm run build
-    ```
+### 🔧 Skills Page Performance (Commit: `852ceea`)
+- **Lazy-loaded** heavy components (`KineticTechGrid`, `ArchedTechIconsInteractive`) using `next/dynamic` with SSR disabled
+- **Replaced** infinite Framer Motion animations with static CSS keyframe sheen effects
+- **Implemented** `React.memo`, `useMemo`, and `useCallback` to eliminate unnecessary re-renders
+- **Removed** `useScroll`, `useTransform`, `mousemove` listeners causing scroll jank
+- **Added** `prefers-reduced-motion` support — all continuous animations disabled gracefully
+- **Target achieved:** Near 60 FPS scrolling, no long tasks >50ms
+
+### 🎨 AI Engineering Stack Icon Overhaul (Commit: `b11792a`)
+- **Fixed** incorrect icon mappings (e.g., Google Cloud icon was wrongly used for TensorFlow)
+- **Replaced** all dark/monochrome SVG icons with official colored versions from `devicons`
+- **Added** Streamlit, LangChain, Kubernetes, AWS, Azure, GCP tech entries
+- **Fixed** Pandas icon (was incorrectly showing Azure icon)
+- **Fixed** Git icon (was incorrectly showing AWS icon)
+- **Fixed** React icon (was incorrectly showing Streamlit icon)
+- **Added** `filter: drop-shadow(0 0 8px rgba(255,255,255,0.15))` for visibility on dark backgrounds
+- **Removed** grayscale/opacity filters — all icons now display full color by default
+
+### 🐛 Syntax Error Fix (Commit: `6933684`)
+- **Fixed** Turbopack syntax error: `Unexpected token '{'. Expected identifier, string literal...`
+- **Root cause:** A previous icon insertion left duplicate orphaned `{` braces in the tech array
+- **Resolution:** Cleaned the FULL STACK DEVELOPMENT skills array to proper structure
+
+### 📐 Education & Experience Page Restructure
+- **Separated** Education Timeline, Certifications, Projects, and Technical Universe into completely independent sections
+- **Removed** ResizeObserver and scroll-spy that caused browser freeze on `/experience`
+- **Applied** glassmorphism cards with subtle hover glow effects
+- **Added** `margin-top: 8rem` + section dividers between all major page sections
+
+### 📊 Stats Section Update
+- **Updated** "Building The Future" stats: `10+` Projects, `40+` Technologies, `15+` Active Deployments
+- **Redesigned** Experience stat to show `Fresher` / `3rd Year AI & ML Student` (no fake years of experience)
+
+---
+
+## ⚙️ Installation & Local Setup
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/Ayush-0915/Ayushh-Portfolio.git
+cd Ayushh-Portfolio
+
+# 2. Install dependencies
+npm install
+
+# 3. Create environment variables
+cp .env.example .env.local
+# Then edit .env.local with your API keys (see below)
+
+# 4. Start development server
+npm run dev
+# Open http://localhost:3000
+
+# 5. Production build
+npm run build
+
+# 6. Lint check
+npm run lint
+```
 
 ---
 
 ## 🔑 Environment Variables
 
-Create a `.env.local` file in the root directory to store your API integrations:
+Create a `.env.local` file in the project root:
 
 ```env
-# WakaTime API key
+# WakaTime API (for live coding stats dashboard)
 WAKATIME_API_KEY=waka_your_secure_api_key
 
-# EmailJS Configuration (Contact form delivery)
+# EmailJS (for contact form delivery)
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id
 NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
 ```
 
-*Note: Never commit your `.env.local` file to GitHub.*
+> ⚠️ **Never commit `.env.local` to version control.** It is already listed in `.gitignore`.
 
 ---
 
-## ⚡ Performance Optimization
+## 🔌 Tech Stack — Core Dependencies
 
-*   **Optimized Image Delivery**: Dynamic `next/image` lazy loading, multi-format sources, and responsive resolution sizing.
-*   **Code Splitting**: Dynamic component imports (`next/dynamic`) for heavy interactive canvas components.
-*   **WakaTime Caching**: Optimized endpoints caching profile records for 30 minutes, preventing rate-limiting.
-*   **Type Safety**: Strictly typed components and data state utilizing TypeScript.
+| Package | Version | Purpose |
+|---|---|---|
+| `next` | ^16.2.5 | App Router, SSR, Image optimization |
+| `react` | ^19.2.4 | UI component library |
+| `typescript` | ^5.3.0 | Type safety |
+| `framer-motion` | ^11.0.0 | Animations & transitions |
+| `tailwindcss` | ^3.4.0 | Utility-first styling |
+| `three` | 0.170.0 | 3D WebGL rendering |
+| `@react-three/fiber` | ^9.0.0 | React renderer for Three.js |
+| `@react-three/drei` | ^10.0.0 | Three.js helpers |
+| `gsap` | ^3.14.2 | Advanced animation engine |
+| `lenis` | ^1.3.23 | Smooth scroll provider |
+| `lucide-react` | ^0.309.0 | Icon library |
+| `next-themes` | ^0.2.1 | Dark/light theme support |
+| `nodemailer` | ^8.0.1 | Server-side email delivery |
 
 ---
 
-## 📬 Contact & Networks
+## 📬 Contact & Connect
 
-- **Author:** Ayush Singh
-- **Email:** [ayushofficaluse@gmail.com](mailto:ayushofficaluse@gmail.com)
-- **GitHub:** [@Ayush-0915](https://github.com/Ayush-0915)
-- **LinkedIn:** [Ayush Singh](https://linkedin.com/in/ayush-singh-0915ap)
-- **Live Portfolio:** [ayush-singh-portfolio.vercel.app](https://github.com/Ayush-0915/Ayushh-Portfolio)
+| Platform | Link |
+|---|---|
+| 🌐 **Portfolio** | [ayush-singh-portfolio.vercel.app](https://ayush-singh-portfolio.vercel.app/) |
+| 📧 **Email** | [ayushofficaluse@gmail.com](mailto:ayushofficaluse@gmail.com) |
+| 💼 **LinkedIn** | [linkedin.com/in/ayush-singh-0915ap](https://linkedin.com/in/ayush-singh-0915ap) |
+| 🐙 **GitHub** | [github.com/Ayush-0915](https://github.com/Ayush-0915) |
+| 📍 **Location** | Indore, Madhya Pradesh, India |
+
+> 💬 *I am actively seeking AI/ML engineering internships, research collaborations, and open-source contributions. Feel free to reach out!*
 
 ---
 
 ## 🛡️ License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details.
+
+---
+
+<div align="center">
+
+**Built with 🤖 AI passion & ☕ caffeine by [Ayush Singh](https://github.com/Ayush-0915)**
+
+*3rd Year B.Tech AI & ML Student · Sage University, Indore*
+
+[![Stars](https://img.shields.io/github/stars/Ayush-0915/Ayushh-Portfolio?style=social)](https://github.com/Ayush-0915/Ayushh-Portfolio)
+[![Forks](https://img.shields.io/github/forks/Ayush-0915/Ayushh-Portfolio?style=social)](https://github.com/Ayush-0915/Ayushh-Portfolio/fork)
+
+</div>
