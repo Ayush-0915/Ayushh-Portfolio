@@ -266,19 +266,14 @@ function ProjectListItem({
                                 "w-[500px] h-[300px] rounded-2xl overflow-hidden border backdrop-blur-xl flex items-center justify-center relative shadow-2xl transition-all duration-300",
                                 "border-white/10 bg-zinc-950"
                             )}>
-                                {project.image ? (
-                                    <img
-                                        src={project.image}
-                                        alt={project.title}
-                                        loading="lazy"
-                                        className="absolute inset-0 w-full h-full object-cover opacity-90 block transition-transform duration-500 hover:scale-105"
-                                    />
-                                ) : (
-                                    <ProjectPlaceholder className="pb-0" title="No Preview Image" />
-                                )}
-
+                                <img
+                                    src={project.image || "/project/fallback.png"}
+                                    alt={project.title}
+                                    loading="lazy"
+                                    className="absolute inset-0 w-full h-full object-cover opacity-90 block transition-transform duration-500 hover:scale-105"
+                                />
                                 {/* Overlay Gradient */}
-                                {project.image && <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                             </div>
                         </motion.div>
                     )}
@@ -575,16 +570,12 @@ function ProjectCard({ project, onClick, index }: { project: Project; onClick: (
         >
             {/* Top Image Box */}
             <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] rounded-3xl overflow-hidden bg-secondary/10 border border-foreground/5 dark:border-white/10 shadow-sm transition-all duration-500 group-hover:shadow-2xl dark:shadow-none shadow-black/5 group-hover:-translate-y-1">
-                {project.image ? (
-                    <img
-                        src={project.image}
-                        alt={project.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                ) : (
-                    <ProjectPlaceholder className="absolute inset-0" title={project.title} />
-                )}
+                <img
+                    src={project.image || "/project/fallback.png"}
+                    alt={project.title}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
                 
                 {/* Subtle overlay on hover */}
                 <div className="absolute inset-0 bg-foreground/5 dark:bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />

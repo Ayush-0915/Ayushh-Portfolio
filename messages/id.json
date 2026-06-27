@@ -260,7 +260,8 @@
             "freelance": "Freelance",
             "contract": "Kontrak",
             "apprenticeship": "Apprenticeship",
-            "volunteer": "Sukarelawan"
+            "volunteer": "Sukarelawan",
+            "self-employed": "Wiraswasta"
         },
         "filters": {
             "all": "Semua",
@@ -501,6 +502,10 @@
         "achievement1": "Microsoft Azure Fundamentals (AZ-900)",
         "achievement2": "Oracle AI Foundations Associate",
         "achievement3": "Membangun NEXUS AI"
+    },
+    "projectHeader": {
+        "title": "Proyek",
+        "subtitle": "Kumpulan proyek teknis, sistem perangkat lunak, dan eksperimen kecerdasan berbasis data saya."
     },
     "chatbot": {
         "title": "Asisten AI",

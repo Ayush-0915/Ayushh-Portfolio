@@ -1,852 +1,747 @@
 'use client';
 
-import { useState, useMemo, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence, animate, useMotionValue, useTransform } from 'framer-motion';
 import Image from "next/image";
-import { useTranslations } from 'next-intl';
-import { Transition } from "@headlessui/react";
 import {
     Calendar,
-    ChevronDown,
-    ChevronRight,
-    Briefcase,
     GraduationCap,
-    Rocket,
+    Briefcase,
     Award,
-    Heart,
-    Users,
+    Sparkles,
+    ChevronRight,
+    Code,
+    Cpu,
+    Server,
+    Layers,
     ExternalLink,
-    ArrowRight,
-    Link2,
     BookOpen,
-    Sparkles
+    Rocket,
+    Brain,
+    Play,
+    Github,
+    Maximize2,
+    Shield,
+    TrendingUp,
+    Tv,
+    Car,
+    Activity,
+    Map
 } from 'lucide-react';
-import { cn, formatDate } from '@/lib/utils';
-import { portfolioData } from '@/data/portfolio';
-import dynamic from 'next/dynamic';
-import { Experience } from '@/types';
+import { cn } from '@/lib/utils';
 
-const ExperienceMarquee = dynamic(() => import('../../components/sections/ExperienceMarquee'), { ssr: true });
-const ExperienceStickyScroll = dynamic(() => import('../../components/sections/ExperienceStickyScroll'), { ssr: true });
-import { Timeline } from '@/components/ui/timeline';
-import { InnovativeExperienceHero } from '@/components/sections/InnovativeExperienceHero';
-
-type TabType = 'education' | 'journey' | 'experience';
-
-const highlightContent = {
-    education: {
-        title: "Building the Future",
-        highlight: "Through Knowledge",
-        description: "Every line of code starts with understanding. My academic journey at Sage University shapes how I approach complex problems with systematic thinking."
-    },
-    journey: {
-        title: "Crafting Experiences",
-        highlight: "That Matter",
-        description: "From internships to leadership roles, each step has been a lesson in collaboration, innovation, and pushing boundaries."
-    },
-    experience: {
-        title: "Turning Ideas",
-        highlight: "Into Reality",
-        description: "Real-world projects that solve real problems. Building solutions that make a difference."
-    }
-};
-
-import { usePerformance } from '@/hooks/usePerformance';
-import { getJourneyImages } from '@/app/actions/getJourneyImages';
-
-const formatTimelineDate = (start: string, end?: string | null) => {
-    const format = (dateStr: string) => {
-        const date = new Date(dateStr);
-        return date.toLocaleDateString("en-US", {
-            month: "short",
-            year: "numeric",
-        });
-    };
-    return `${format(start)} — ${end ? format(end) : 'Present'}`;
-};
-
-function ExperienceHighlightSection({ type }: { type: TabType }) {
-    const content = highlightContent[type];
-
-    return (
-        <div className="mt-6">
-            <InnovativeExperienceHero 
-                type={type}
-                title={content.title}
-                highlight={content.highlight}
-                description={content.description}
-            />
-        </div>
-    );
-}
-
-function FloatingShape({ className, gradient, delay = 0, isLowPowerMode }: { className?: string; gradient: string; delay?: number; isLowPowerMode: boolean }) {
-    return (
-        <motion.div
-            className={`absolute rounded-full blur-3xl opacity-20 pointer-events-none ${className}`}
-            style={{ background: gradient }}
-            animate={isLowPowerMode ? {} : { y: [0, -20, 0], scale: [1, 1.05, 1] }}
-            transition={{ duration: 8, repeat: Infinity, delay }}
-        />
-    );
-}
-
-interface TabItem {
-    id: TabType;
-    label: string;
-    description: string;
-}
-
-function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
-    const contentRef = useRef<HTMLDivElement>(null);
-    const [activeTab, setActiveTab] = useState<number>(1);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-    const tabs: TabItem[] = [
-        { id: 'education', label: 'Education', description: 'Building strong foundations through academic excellence at Sage University.' },
-        { id: 'journey', label: 'Journey', description: 'A timeline of roles, responsibilities, and professional growth across various organizations.' },
-        { id: 'experience', label: 'Experience', description: 'Detailed breakdown of work experiences with project highlights and achievements.' },
-    ];
-
-    const categories = [
-        { id: 'ai-ml', label: 'AI & Machine Learning', icon: Briefcase, color: 'bg-blue-600', ids: ['exp-ai', 'exp-ml'] },
-        { id: 'products', label: 'Products & Software', icon: Rocket, color: 'bg-purple-600', ids: ['exp-products'] },
-        { id: 'research', label: 'Research', icon: GraduationCap, color: 'bg-orange-500', ids: ['exp-research'] },
-        { id: 'open-source', label: 'Open Source', icon: Heart, color: 'bg-emerald-500', ids: ['exp-open-source'] },
-        { id: 'internships', label: 'Internships', icon: Users, color: 'bg-yellow-500', ids: ['exp-research'] },
-        { id: 'academic', label: 'Academic', icon: BookOpen, color: 'bg-pink-600', ids: ['exp-research'] },
-    ];
-
-    const heightFix = () => {
-        if (contentRef.current && contentRef.current.parentElement)
-            contentRef.current.parentElement.style.height = `${contentRef.current.clientHeight}px`;
-    };
+// Counter Component powered by Framer Motion's HMR-safe, lightweight engine
+function CountUp({ value, suffix = "", duration = 1.5 }: { value: number; suffix?: string; duration?: number }) {
+    const count = useMotionValue(0);
+    const [displayValue, setDisplayValue] = useState("0");
 
     useEffect(() => {
-        heightFix();
-    }, [activeTab, selectedCategory]);
-
-    const filteredExperiences = useMemo(() => {
-        if (!selectedCategory) return [];
-        const cat = categories.find(c => c.id === selectedCategory);
-        if (!cat) return [];
-        return portfolioData.experiences.filter(exp => cat.ids.includes(exp.id));
-    }, [selectedCategory]);
+        const controls = animate(count, value, {
+            duration: duration,
+            ease: "easeOut",
+            onUpdate: (latest) => {
+                if (value % 1 !== 0) {
+                    setDisplayValue(latest.toFixed(1));
+                } else {
+                    setDisplayValue(Math.round(latest).toString());
+                }
+            }
+        });
+        return () => controls.stop();
+    }, [value, duration]);
 
     return (
-        <div className="mb-24">
-            {/* Header with Orb Hemisphere */}
-            <div className="mx-auto w-full max-w-5xl px-8 text-center sm:px-12 mb-12">
-                <div className="relative h-28 sm:h-36">
-                    <div className="pointer-events-none absolute top-0 left-1/2 h-[400px] w-[400px] -translate-x-1/2 before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-gradient-to-b before:from-cyan-500/25 before:via-cyan-500/5 before:via-25% before:to-cyan-500/0 before:to-75% sm:h-[560px] sm:w-[560px]">
-                        <div className="h-24 [mask-image:_linear-gradient(0deg,transparent,theme(colors.white)_20%,theme(colors.white))] sm:h-32">
-                            {tabs.map((tab, index) => (
-                                <Transition
-                                    as="div"
-                                    key={index}
-                                    show={activeTab === index}
-                                    className="absolute inset-0 -z-10 h-full flex items-center justify-center"
-                                    enter="transition ease-out duration-700 order-first"
-                                    enterFrom="opacity-0 -rotate-[60deg]"
-                                    enterTo="opacity-100 rotate-0"
-                                    leave="transition ease-out duration-700"
-                                    leaveFrom="opacity-100 rotate-0"
-                                    leaveTo="opacity-0 rotate-[60deg]"
-                                >
-                                    <div className="relative top-8 sm:top-11 w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 shadow-lg shadow-cyan-500/30" />
-                                </Transition>
-                            ))}
-                        </div>
+        <span>
+            {displayValue}
+            {suffix}
+        </span>
+    );
+}
+
+// Academic Data
+const educationData = [
+    {
+        degree: "B.Tech in Artificial Intelligence & Machine Learning",
+        institution: "Sage University, Indore",
+        period: "2024 — Present",
+        metrics: "CGPA: 7.0",
+        logoLetters: "SU",
+        logoColor: "from-blue-600 to-cyan-500 shadow-blue-500/20",
+        badge: "Academic Major",
+        details: "Currently in 2nd Year, 4th Semester. Focused on advanced neural architectures, computer vision pipelines, and scalable AI applications."
+    },
+    {
+        degree: "Class 12 (Senior Secondary)",
+        institution: "Sunflower English Medium School",
+        period: "Year: 2024",
+        metrics: "Percentage: 70%",
+        logoLetters: "SF",
+        logoColor: "from-amber-500 to-orange-600 shadow-orange-500/20",
+        badge: "Science Stream",
+        details: "Focused on Physics, Chemistry, and Mathematics. Established logical and mathematical foundations for algorithms."
+    },
+    {
+        degree: "Class 10 (Secondary)",
+        institution: "Bhansali Vidhya Mandir Public School",
+        period: "Year: 2022",
+        metrics: "Percentage: 70%",
+        logoLetters: "BV",
+        logoColor: "from-purple-600 to-pink-600 shadow-purple-500/20",
+        badge: "General Studies",
+        details: "General science and foundational mathematics. Developed early interest in computer programming and logical thinking."
+    }
+];
+
+// Experience Data
+const experienceData = [
+    {
+        role: "AI Developer",
+        company: "HUMIC (Human Centric Engineering Research Center)",
+        period: "Sep 2025 — Present",
+        logoLetters: "HM",
+        logoColor: "from-purple-600 to-indigo-600 shadow-purple-500/20",
+        description: "Designing and optimizing machine learning pipelines, deep learning models, and custom transformer models. Focused on high-accuracy threat detection systems.",
+        tech: ["Python", "TensorFlow", "Transformers", "Threat Detection", "Deep Learning"]
+    },
+    {
+        role: "Computer Network Practicum Assistant",
+        company: "Informatics Laboratory, Telkom University",
+        period: "Sep 2025 — Present",
+        logoLetters: "IL",
+        logoColor: "from-blue-600 to-indigo-600 shadow-blue-500/20",
+        description: "Mentoring undergraduate students in networking practicals, protocol architectures, and socket programming projects using C/Python.",
+        tech: ["Socket Programming", "TCP/IP", "Wireshark", "C", "Network Architectures"]
+    },
+    {
+        role: "AI & Big Data Research Assistant",
+        company: "Cyber Physical System Laboratory",
+        period: "May 2025 — Present",
+        logoLetters: "CP",
+        logoColor: "from-emerald-600 to-teal-600 shadow-emerald-500/20",
+        description: "Leading advanced data analysis and machine learning research initiatives. Exploring multi-modal AI systems and high-throughput data processing.",
+        tech: ["Python", "Pandas", "Scikit-learn", "Research Methods", "Big Data Analytics"]
+    },
+    {
+        role: "Project Officer",
+        company: "Digistar Club by Telkom Indonesia",
+        period: "Feb 2024 — Aug 2024",
+        logoLetters: "DC",
+        logoColor: "from-crimson-600 to-rose-600 shadow-rose-500/20",
+        description: "Directed DigiCourse program planning, speaker coordination, and digital event management. Streamlined cross-department workflows.",
+        tech: ["Project Management", "Event Planning", "Workflow Automation", "Stakeholder Mgmt"]
+    }
+];
+
+// Certifications Data
+const certificationsData = [
+    {
+        title: "Microsoft Azure Fundamentals (AZ-900)",
+        issuer: "Microsoft",
+        image: "/certificate/AZ900.png",
+        description: "Foundational knowledge of cloud services and how those services are provided with Microsoft Azure."
+    },
+    {
+        title: "Oracle Cloud Infrastructure AI Foundations",
+        issuer: "Oracle",
+        image: "/certificate/Oracle database .jpeg",
+        description: "Demonstrated core competency in artificial intelligence, machine learning concepts, and OCI AI services."
+    },
+    {
+        title: "Google Cloud Generative AI Certification",
+        issuer: "Google Cloud",
+        image: "/certificate/google-cloud-engineering-certificate.png",
+        description: "Completed Google Cloud pathway covering large language models, image generation, and responsible AI principles."
+    },
+    {
+        title: "Red Hat Academy Certification (RH134)",
+        issuer: "Red Hat",
+        image: "/certificate/red-hat-system-administration-ii-rh134-rha-ver-10.png",
+        description: "Validated key command-line concepts, network configuration, and enterprise administration of RHEL."
+    }
+];
+
+// Projects & Achievements Data
+const projectsData = [
+    { 
+        name: "NEXUS AI", 
+        type: "AI Operating System", 
+        desc: "Cognitive desktop assistant with low-latency Voice AI, screen perception, and vector memory.",
+        icon: Brain,
+        github: "https://github.com/Ayush-0915/NEXUS-AI",
+        demo: "https://nexus-ai-web-page.vercel.app/"
+    },
+    { 
+        name: "CareerNova", 
+        type: "AI SaaS Platform", 
+        desc: "ATS compatibility reviewer and resume analyzer leveraging LLM recommendation engines.",
+        icon: Briefcase,
+        github: "https://github.com/Ayush-0915/CareerNova",
+        demo: "https://career-nova-cyan.vercel.app/"
+    },
+    { 
+        name: "CreditWise Loan Dashboard", 
+        type: "Predictive ML Model", 
+        desc: "Stacked classifier ensemble evaluating credit defaults with interactive SHAP risk insights.",
+        icon: TrendingUp,
+        github: "https://github.com/Ayush-0915/CreditWise",
+        demo: "https://credit-wise-loanapp.streamlit.app/"
+    },
+    { 
+        name: "Bitcoin Sentiment Trader", 
+        type: "Financial ML Model", 
+        desc: "Predicting market trends by combining time-series indicators with NLP public sentiment.",
+        icon: Layers,
+        github: "https://github.com/Ayush-0915/Bitcoin-sentiment-trader-analysis",
+        demo: ""
+    },
+    { 
+        name: "Car Evaluation System", 
+        type: "Classification Model", 
+        desc: "Machine learning classifier assessing vehicle qualities using multi-criteria attributes.",
+        icon: Car,
+        github: "https://github.com/Ayush-0915/Car-evaluation",
+        demo: ""
+    },
+    { 
+        name: "Fake News Detection ML", 
+        type: "NLP Text Pipeline", 
+        desc: "Supervised classification model analyzing news articles validity using custom TF-IDF matrices.",
+        icon: Shield,
+        github: "https://github.com/Ayush-0915/Detecting-Fake-News-Using-ML",
+        demo: ""
+    },
+    { 
+        name: "Healthcare Risk Management", 
+        type: "Clinical Predictor", 
+        desc: "Clinical decision support system evaluating patient risk profiles from high-dimensional lab data.",
+        icon: Activity,
+        github: "https://github.com/Ayush-0915/Healthcare-Risk-Management",
+        demo: ""
+    },
+    { 
+        name: "Netflix Data Analysis", 
+        type: "Exploratory Analytics", 
+        desc: "Temporal content trend mapping, release mapping, and TF-IDF content recommendation system.",
+        icon: Tv,
+        github: "https://github.com/Ayush-0915/Netflix-Data-Analysis",
+        demo: ""
+    },
+    { 
+        name: "Uber Trips Analysis", 
+        type: "Exploratory Analytics", 
+        desc: "Exploratory ride-sharing data analysis identifying demand patterns, peaks, and drop-off spaces.",
+        icon: Map,
+        github: "https://github.com/Ayush-0915/Uber-Data-Analysis",
+        demo: ""
+    }
+];
+
+// Skills List for Technical Universe
+const skillsList = [
+    "Python", "NumPy", "Pandas", "Scikit-learn", "TensorFlow", "PyTorch", "OpenCV", 
+    "NLP", "Transformers", "Generative AI", "LangChain", "FastAPI", "Streamlit", 
+    "React", "Next.js", "TypeScript", "JavaScript", "Tailwind CSS", "Docker", 
+    "Kubernetes", "Git", "GitHub", "AWS", "Azure", "GCP", "SQL", "Power BI", 
+    "Tableau", "Jupyter", "Vercel", "Supabase", "Linux", "MLOps"
+];
+
+// Timeline Milestones
+const milestonesData = [
+    { year: "2024", title: "Started B.Tech in AI & ML", desc: "Sage University, Indore" },
+    { year: "2024", title: "Core Programming & Data Analytics", desc: "Python, NumPy, Pandas, EDA" },
+    { year: "2025", title: "ML, DL & AI Research", desc: "Supervised systems, neural nets, paper reviews" },
+    { year: "2025", title: "Research & Real-world Projects", desc: "Internships, Assistantships, Model Tuning" },
+    { year: "2026", title: "Intelligent Systems & Impact", desc: "GenAI, local RAG, MLOps, deployment" }
+];
+
+export default function ExperiencePage() {
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+    // Memoize skills to prevent unnecessary recalculation of indexes
+    const memoizedSkills = useMemo(() => skillsList, []);
+
+    return (
+        <div className="min-h-screen bg-[#0a0a0a] text-neutral-100 relative overflow-hidden pb-32">
+            
+            {/* Ambient Background Glows */}
+            <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-1/4 left-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+            
+            {/* Hero Section */}
+            <section className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-16">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    {/* Left Hero Content */}
+                    <div className="lg:col-span-7 space-y-6 text-left">
+                        <motion.div
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-semibold uppercase tracking-wider"
+                        >
+                            <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+                            <span>Academic & Experience sequence</span>
+                        </motion.div>
+                        
+                        <motion.h1
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1 }}
+                            className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-none uppercase bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-500 font-sans"
+                        >
+                            Education & <br className="hidden md:block"/> Experience Journey
+                        </motion.h1>
+                        
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: 0.2 }}
+                            className="text-neutral-400 text-base md:text-lg max-w-xl leading-relaxed font-medium"
+                        >
+                            My academic path, certifications, research work, internships, and continuous growth in Artificial Intelligence and Machine Learning.
+                        </motion.p>
+                    </div>
+
+                    {/* Right Hero Interactive Cap Graphic (Framer Motion slow float, prefers-reduced-motion safe) */}
+                    <div className="lg:col-span-5 flex justify-center items-center relative min-h-[300px]">
+                        <motion.div
+                            className="relative w-56 h-56 bg-neutral-900/30 border border-neutral-800/80 rounded-full flex items-center justify-center backdrop-blur-md shadow-2xl"
+                            animate={{ y: [0, -12, 0] }}
+                            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                        >
+                            <GraduationCap className="w-24 h-24 text-indigo-400 drop-shadow-[0_0_15px_rgba(129,140,248,0.3)]" />
+                            
+                            {/* Satellites */}
+                            {/* Satellite 1: Book */}
+                            <motion.div
+                                className="absolute -top-4 -left-4 p-3 bg-neutral-900 border border-neutral-800 rounded-2xl text-blue-400"
+                                animate={{ y: [0, 8, 0], x: [0, -6, 0] }}
+                                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                                <BookOpen className="w-5 h-5" />
+                            </motion.div>
+                            
+                            {/* Satellite 2: Rocket */}
+                            <motion.div
+                                className="absolute -bottom-2 -right-4 p-3 bg-neutral-900 border border-neutral-800 rounded-2xl text-rose-400"
+                                animate={{ y: [0, -8, 0], x: [0, 8, 0] }}
+                                transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                            >
+                                <Rocket className="w-5 h-5" />
+                            </motion.div>
+
+                            {/* Satellite 3: AI Brain */}
+                            <motion.div
+                                className="absolute top-8 -right-8 p-3 bg-neutral-900 border border-neutral-800 rounded-2xl text-amber-400"
+                                animate={{ y: [0, 6, 0], x: [0, 6, 0] }}
+                                transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                            >
+                                <Brain className="w-5 h-5" />
+                            </motion.div>
+
+                            {/* Satellite 4: Code */}
+                            <motion.div
+                                className="absolute -bottom-6 -left-2 p-3 bg-neutral-900 border border-neutral-800 rounded-2xl text-emerald-400"
+                                animate={{ y: [0, -6, 0], x: [0, -6, 0] }}
+                                transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+                            >
+                                <Code className="w-5 h-5" />
+                            </motion.div>
+                        </motion.div>
                     </div>
                 </div>
+            </section>
 
-                {/* Description Text */}
-                <div className="mb-6 transition-all delay-300 duration-150 ease-in-out sm:mb-9 min-h-[100px]">
-                    <div className="relative flex flex-col" ref={contentRef}>
-                        {tabs.map((tab, index) => (
-                            <Transition
-                                key={index}
-                                show={activeTab === index}
-                                enter="transition ease-out duration-300 delay-150 relative"
-                                enterFrom="opacity-0 blur-sm translate-y-4"
-                                enterTo="opacity-100 blur-0 translate-y-0"
-                                leave="transition ease-in duration-150 absolute top-0 left-0 w-full"
-                                leaveFrom="opacity-100 blur-0 translate-y-0"
-                                leaveTo="opacity-0 blur-sm -translate-y-4"
-                                beforeEnter={() => heightFix()}
-                            >
-                                <div className="px-4 text-xl font-bold text-foreground sm:px-0 sm:text-2xl lg:text-3xl font-sans tracking-tight">
-                                    &ldquo;{tab.description}&rdquo;
+            {/* Statistics Row (Count Up once, HMR and Performance Safe) */}
+            <section className="max-w-6xl mx-auto px-6 py-12">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    
+                    {/* Stat Card 1: CGPA */}
+                    <div className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md text-center group hover:border-blue-500/20 transition-colors">
+                        <div className="mx-auto w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 mb-3">
+                            <GraduationCap className="w-5 h-5" />
+                        </div>
+                        <h3 className="text-3xl font-black text-white font-mono leading-none">
+                            <CountUp value={7.0} />
+                        </h3>
+                        <p className="text-xs font-bold text-neutral-400 uppercase tracking-wider mt-2">CGPA</p>
+                        <p className="text-[10px] text-neutral-500 font-medium">Academic Score</p>
+                    </div>
+
+                    {/* Stat Card 2: Projects */}
+                    <div className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md text-center group hover:border-rose-500/20 transition-colors">
+                        <div className="mx-auto w-10 h-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 mb-3">
+                            <Rocket className="w-5 h-5" />
+                        </div>
+                        <h3 className="text-3xl font-black text-white font-mono leading-none">
+                            <CountUp value={10} suffix="+" />
+                        </h3>
+                        <p className="text-xs font-bold text-neutral-400 uppercase tracking-wider mt-2">Projects Built</p>
+                        <p className="text-[10px] text-neutral-500 font-medium">End-to-End Projects</p>
+                    </div>
+
+                    {/* Stat Card 3: Certifications */}
+                    <div className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md text-center group hover:border-amber-500/20 transition-colors">
+                        <div className="mx-auto w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 mb-3">
+                            <Award className="w-5 h-5" />
+                        </div>
+                        <h3 className="text-3xl font-black text-white font-mono leading-none">
+                            <CountUp value={4} suffix="+" />
+                        </h3>
+                        <p className="text-xs font-bold text-neutral-400 uppercase tracking-wider mt-2">Certifications</p>
+                        <p className="text-[10px] text-neutral-500 font-medium">Professional Certificates</p>
+                    </div>
+
+                    {/* Stat Card 4: Technologies */}
+                    <div className="p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md text-center group hover:border-emerald-500/20 transition-colors">
+                        <div className="mx-auto w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-3">
+                            <Code className="w-5 h-5" />
+                        </div>
+                        <h3 className="text-3xl font-black text-white font-mono leading-none">
+                            <CountUp value={40} suffix="+" />
+                        </h3>
+                        <p className="text-xs font-bold text-neutral-400 uppercase tracking-wider mt-2">Technologies</p>
+                        <p className="text-[10px] text-neutral-500 font-medium">Tools & Libraries</p>
+                    </div>
+
+                </div>
+            </section>
+
+            {/* Journey Highlights Timeline (Responsive, Static, Observers Free) */}
+            <section className="max-w-6xl mx-auto px-6 py-12 space-y-8">
+                <div className="text-center md:text-left space-y-1">
+                    <h2 className="text-xl md:text-2xl font-black uppercase tracking-tight text-white">Milestone Highlights</h2>
+                    <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider font-mono">Continuous learning progression</p>
+                </div>
+                
+                {/* Horizontal on Desktop, Vertical on Mobile */}
+                <div className="relative">
+                    
+                    {/* Connecting line on desktop */}
+                    <div className="hidden md:block absolute top-12 left-6 right-6 h-[2px] bg-neutral-900" />
+                    
+                    {/* Vertical connecting line on mobile */}
+                    <div className="md:hidden absolute top-6 bottom-6 left-6 w-[2px] bg-neutral-900" />
+
+                    <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative z-10">
+                        {milestonesData.map((mile, i) => (
+                            <div key={i} className="flex md:flex-col gap-4 md:gap-0 items-start">
+                                
+                                {/* Point indicator */}
+                                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-neutral-950 border-2 border-neutral-800 flex items-center justify-center text-neutral-400 text-sm font-bold font-mono group-hover:border-indigo-500 transition-colors">
+                                    {mile.year}
                                 </div>
-                            </Transition>
+                                
+                                {/* Text Details */}
+                                <div className="mt-0 md:mt-4 text-left">
+                                    <h4 className="text-sm font-bold text-white leading-tight">{mile.title}</h4>
+                                    <p className="text-xs text-neutral-500 font-semibold mt-1">{mile.desc}</p>
+                                </div>
+
+                            </div>
                         ))}
                     </div>
                 </div>
+            </section>
 
-                {/* Tab Buttons */}
-                <div className="flex flex-nowrap sm:flex-wrap justify-start sm:justify-center gap-2 overflow-x-auto pb-4 sm:pb-0 hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
-                    {tabs.map((tab, index) => (
-                        <button
-                            key={index}
-                            className={`m-1.5 inline-flex justify-center items-center gap-2.5 rounded-full px-5 py-2.5 text-sm whitespace-nowrap shadow-sm transition-colors duration-150 focus-visible:ring focus-visible:ring-cyan-300 focus-visible:outline-none sm:px-6 sm:py-3 sm:text-base ${activeTab === index
-                                ? "bg-cyan-500 text-white shadow-cyan-950/10 font-semibold"
-                                : "bg-white dark:bg-neutral-800 text-cyan-900 dark:text-cyan-100 hover:bg-cyan-100 dark:hover:bg-neutral-700"
-                                }`}
-                            onClick={() => {
-                                setActiveTab(index);
-                                if (index !== 2) setSelectedCategory(null);
-                            }}
-                        >
-                            {tab.id === 'education' && <GraduationCap className="w-5 h-5" />}
-                            {tab.id === 'journey' && <Briefcase className="w-5 h-5" />}
-                            {tab.id === 'experience' && <Rocket className="w-5 h-5" />}
-                            <span>{tab.label}</span>
-                        </button>
-                    ))}
-                </div>
-            </div>
-
-            {/* Tab Content */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <AnimatePresence mode="wait">
-                    {/* Education Tab */}
-                    {activeTab === 0 && (
-                        <motion.div
-                            key="education"
-                            initial={{ opacity: 0, y: isLowPowerMode ? 0 : 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: isLowPowerMode ? 0 : -20 }}
-                            transition={{ duration: 0.4 }}
-                        >
-                            <ExperienceStickyScroll />
-                            <div className="pb-[clamp(40px,10vh,120px)]" />
-                            <ExperienceHighlightSection type="education" />
-                        </motion.div>
-                    )}
-
-                    {/* Journey Tab */}
-                    {activeTab === 1 && (
-                        <motion.div
-                            key="journey"
-                            initial={{ opacity: 0, y: isLowPowerMode ? 0 : 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: isLowPowerMode ? 0 : -20 }}
-                            transition={{ duration: 0.4 }}
-                        >
-                            <ExperienceTimeline isLowPowerMode={isLowPowerMode} />
-                            <div className="pb-[clamp(40px,10vh,120px)]" />
-                            <ExperienceHighlightSection type="journey" />
-                        </motion.div>
-                    )}
-
-                    {/* Experience Tab */}
-                    {activeTab === 2 && (
-                        <motion.div
-                            key="experience"
-                            initial={{ opacity: 0, y: isLowPowerMode ? 0 : 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: isLowPowerMode ? 0 : -20 }}
-                            transition={{ duration: 0.4 }}
-                            className="space-y-12"
-                        >
-                            <AnimatePresence mode="wait">
-                                {!selectedCategory ? (
-                                    <motion.div
-                                        key="cta-selection"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0, x: -20 }}
-                                        className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:min-h-[600px] items-center"
-                                    >
-                                        {/* Left Description */}
-                                        <div className="lg:col-span-5 space-y-8">
-                                            <motion.div
-                                                initial={{ opacity: 0, x: -20 }}
-                                                animate={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: 0.2 }}
-                                            >
-                                                <h2 className="text-5xl md:text-7xl font-black text-neutral-900 dark:text-white tracking-tighter mb-6 leading-[0.9]">
-                                                    SELECT <br />
-                                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 via-neutral-600 to-neutral-400 dark:from-white dark:via-neutral-200 dark:to-neutral-500">
-                                                        SECTOR
-                                                    </span>
-                                                </h2>
-                                                <p className="text-xl text-neutral-500 dark:text-neutral-400 max-w-md leading-relaxed">
-                                                    Filter the experience database to inspect specific segments of my technical work.
-                                                </p>
-                                            </motion.div>
-
-                                            <div className="hidden lg:block w-24 h-1 bg-gradient-to-r from-neutral-900 to-neutral-400 dark:from-white dark:to-neutral-600 rounded-full" />
-                                        </div>
-
-                                        {/* Right Selection List */}
-                                        <div className="lg:col-span-7 flex flex-col gap-4">
-                                            {categories.map((cat, idx) => (
-                                                <motion.button
-                                                    key={cat.id}
-                                                    initial={{ opacity: 0, x: 20 }}
-                                                    animate={{ opacity: 1, x: 0 }}
-                                                    transition={{ delay: 0.1 * idx }}
-                                                    onClick={() => setSelectedCategory(cat.id)}
-                                                    className="group relative flex items-center gap-6 p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50 hover:bg-white dark:hover:bg-neutral-850 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:hover:shadow-neutral-950/30 text-left overflow-hidden"
-                                                >
-                                                    <div className={cn(
-                                                        "absolute inset-0 opacity-0 group-hover:opacity-[0.03] dark:group-hover:opacity-[0.05] transition-opacity duration-500",
-                                                        cat.color
-                                                    )} />
-
-                                                    <div className={cn(
-                                                        "w-14 h-14 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-110 transition-transform duration-500",
-                                                        cat.color
-                                                    )}>
-                                                        <cat.icon className="w-7 h-7" />
-                                                    </div>
-
-                                                    <div className="flex-1 relative z-10">
-                                                        <h4 className="text-xl font-bold text-neutral-900 dark:text-white mb-0.5 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
-                                                            {cat.label}
-                                                        </h4>
-                                                        <p className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
-                                                            Explore projects in the {cat.label.toLowerCase()} category
-                                                        </p>
-                                                    </div>
-
-                                                    <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white group-hover:border-neutral-400 dark:group-hover:border-neutral-600 transition-all duration-300">
-                                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-                                                    </div>
-                                                </motion.button>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                ) : (
-                                    <motion.div
-                                        key="ledger-view"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-32"
-                                    >
-                                        {/* Sticky Filters Sidebar */}
-                                        <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit space-y-8">
-                                            <button
-                                                onClick={() => setSelectedCategory(null)}
-                                                className="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-black dark:hover:text-white transition-colors px-4 py-2 -ml-4 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800/50 w-fit"
-                                            >
-                                                <ArrowRight className="w-4 h-4 rotate-180 group-hover:-translate-x-1 transition-transform" />
-                                                <span>Back to Sectors</span>
-                                            </button>
-
-                                            <div className="space-y-2">
-                                                <h3 className="text-4xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tighter leading-tight font-sans">
-                                                    {categories.find(c => c.id === selectedCategory)?.label}
-                                                </h3>
-                                                <div className="h-1.5 w-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-md" />
-                                            </div>
-
-                                            <div className="hidden lg:flex flex-col gap-2">
-                                                <p className="text-[10px] font-black uppercase text-neutral-400 dark:text-neutral-500 tracking-widest mb-2 pl-4">
-                                                    Filter View
-                                                </p>
-                                                {categories.map(cat => (
-                                                    <button
-                                                        key={cat.id}
-                                                        onClick={() => setSelectedCategory(cat.id)}
-                                                        className={cn(
-                                                            "text-left px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-300 border border-transparent",
-                                                            selectedCategory === cat.id
-                                                                ? "bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-lg border-neutral-200/80 dark:border-neutral-700/80"
-                                                                : "text-neutral-400 hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 hover:text-neutral-950 dark:hover:text-neutral-300"
-                                                        )}
-                                                    >
-                                                        {cat.label}
-                                                    </button>
-                                                ))}
-                                            </div>
-                                        </div>
-
-                                        {/* Scrollable Content Stream */}
-                                        <div className="lg:col-span-8 space-y-6">
-                                            {filteredExperiences.map((exp, idx) => (
-                                                <CollapsibleExperienceCard 
-                                                    key={exp.id} 
-                                                    exp={exp} 
-                                                    idx={idx} 
-                                                    isLowPowerMode={isLowPowerMode} 
-                                                    defaultExpanded={true} // Expand all items by default in filtered view
-                                                />
-                                            ))}
-
-                                            {filteredExperiences.length === 0 && (
-                                                <div className="flex flex-col items-center justify-center py-20 text-neutral-400">
-                                                    <p>No records found in this sector.</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                            <div className="pb-[clamp(40px,10vh,120px)]" />
-                            <ExperienceHighlightSection type="experience" />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
-        </div>
-    );
-}
-
-import { SmoothScrollHero } from '@/components/sections/SmoothScrollHero';
-
-export default function ExperiencePage() {
-    const { isLowPowerMode } = usePerformance();
-
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="bg-background text-foreground relative"
-        >
-            <SmoothScrollHero />
-
-            <FloatingShape
-                className="w-[min(500px,80vw)] h-[min(500px,80vw)] -top-20 -right-40"
-                gradient="radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%)"
-                isLowPowerMode={isLowPowerMode}
-            />
-            <FloatingShape
-                className="w-[min(400px,70vw)] h-[min(400px,70vw)] bottom-40 -left-20"
-                gradient="radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%)"
-                delay={3}
-                isLowPowerMode={isLowPowerMode}
-            />
-
-            <motion.div
-                initial={{ opacity: 0, y: isLowPowerMode ? 0 : 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20"
-            >
-                {/* 1. Work Experience Gallery Marquee */}
-                <div className="w-screen relative left-1/2 -translate-x-1/2 mb-20 -mt-10 md:-mt-20">
-                    <ExperienceMarquee />
-                </div>
-
-                {/* 2. Tab Slider Section */}
-                <ExperienceTabSlider isLowPowerMode={isLowPowerMode} />
-            </motion.div>
-        </motion.div>
-    );
-}
-
-function CollapsibleExperienceCard({ 
-    exp, 
-    idx, 
-    isLowPowerMode,
-    defaultExpanded = false
-}: { 
-    exp: Experience; 
-    idx: number; 
-    isLowPowerMode: boolean;
-    defaultExpanded?: boolean;
-}) {
-    const [isExpanded, setIsExpanded] = useState(defaultExpanded);
-    const t = useTranslations('experience');
-
-    // Helper to calculate duration in months/years
-    const getDuration = (start: string, end?: string | null) => {
-        const startDate = new Date(start);
-        const endDate = end ? new Date(end) : new Date();
-        const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-        const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44));
-
-        if (diffMonths < 12) return `${diffMonths} ${t('months')}`;
-        const years = Math.floor(diffMonths / 12);
-        const months = diffMonths % 12;
-        if (months === 0) return `${years} ${t(years === 1 ? 'year' : 'years')}`;
-        return `${years} ${t('year')} ${months} ${t('months')}`;
-    };
-
-    const handleKeyDown = (e: React.KeyboardEvent) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            setIsExpanded(!isExpanded);
-        }
-    };
-
-    return (
-        <article
-            className={cn(
-                "group relative bg-white/40 dark:bg-neutral-900/30 backdrop-blur-xl border rounded-[2rem] transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl dark:hover:shadow-neutral-950/80 hover:-translate-y-1 hover:border-blue-500/20 dark:hover:border-blue-500/20",
-                isExpanded 
-                    ? "border-blue-500/30 dark:border-blue-500/30 ring-1 ring-blue-500/10 shadow-xl" 
-                    : "border-neutral-200/80 dark:border-neutral-800/80"
-            )}
-        >
-            {/* Ambient hover glow background */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/[0.02] group-hover:to-purple-500/[0.02] transition-all duration-700 pointer-events-none" />
-
-            {/* Glowing active card edge border overlay */}
-            {isExpanded && (
-                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-md" />
-            )}
-
-            <div 
-                className="p-6 md:p-8 cursor-pointer select-none" 
-                onClick={() => setIsExpanded(!isExpanded)}
-                onKeyDown={handleKeyDown}
-                tabIndex={0}
-                role="button"
-                aria-expanded={isExpanded}
-            >
-                <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
-                    {/* Logo (Left Side) */}
-                    <div className="w-14 h-14 md:w-16 md:h-16 bg-neutral-100 dark:bg-neutral-855 rounded-2xl flex items-center justify-center shrink-0 border border-neutral-200/50 dark:border-neutral-700/50 p-2 shadow-sm transition-transform group-hover:scale-105 duration-300">
-                        {exp.logo ? (
-                            <Image 
-                                src={exp.logo} 
-                                alt={exp.company} 
-                                width={48} 
-                                height={48} 
-                                className="object-contain" 
-                                unoptimized 
-                                loading="lazy" 
-                            />
-                        ) : (
-                            <Briefcase className="w-7 h-7 text-neutral-400 dark:text-neutral-500" />
-                        )}
-                    </div>
-
-                    {/* Header Text Content */}
-                    <div className="flex-1 min-w-0">
-                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
-                            <h3 className="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white leading-tight truncate group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors font-sans tracking-tight">
-                                {exp.position}
-                            </h3>
-                            {exp.type && (
-                                <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-mono">
-                                    {t(`type.${exp.type}`)}
-                                </span>
-                            )}
+            {/* Main Content Sections */}
+            <main className="relative z-10 max-w-6xl mx-auto px-6 space-y-32 mt-12">
+                
+                {/* 1. Academic Journey */}
+                <section className="space-y-10">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-2xl text-blue-400 shadow-lg shadow-blue-500/5">
+                            <GraduationCap className="w-6 h-6" />
                         </div>
-
-                        <div className="text-sm md:text-base font-semibold text-neutral-600 dark:text-neutral-400 flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                            <span>{exp.company}</span>
-                            {exp.location && (
-                                <>
-                                    <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                                    <span className="text-neutral-500 font-medium">{exp.location}</span>
-                                </>
-                            )}
-                        </div>
-
-                        {/* Metadata Tagline Row */}
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-400 dark:text-neutral-500 font-semibold mt-2">
-                            <span className="flex items-center gap-1 font-mono text-neutral-600 dark:text-neutral-400">
-                                <Calendar className="w-3.5 h-3.5" />
-                                {formatDate(exp.startDate)} — {exp.endDate ? formatDate(exp.endDate) : t('present')}
-                            </span>
-                            <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
-                            <span className="font-mono text-neutral-500">
-                                {getDuration(exp.startDate, exp.endDate)}
-                            </span>
+                        <div>
+                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Academic Journey</h2>
+                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Degrees & Credentials</p>
                         </div>
                     </div>
 
-                    {/* Expand Chevron */}
-                    <div className="self-end sm:self-center ml-auto">
-                        <div className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-800 flex items-center justify-center text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white group-hover:border-neutral-400 dark:group-hover:border-neutral-700 transition-colors">
-                            <ChevronDown className={cn("w-4 h-4 transition-transform duration-300", isExpanded && "rotate-180")} />
-                        </div>
-                    </div>
-                </div>
-
-                {/* Short bio preview */}
-                <p className="text-neutral-600 dark:text-neutral-300 mt-4 leading-relaxed text-sm md:text-base font-medium">
-                    {exp.description}
-                </p>
-
-                {/* Tech stack badges */}
-                <div className="flex flex-wrap gap-1.5 mt-4">
-                    {exp.skills.map((skill, i) => (
-                        <span 
-                            key={i} 
-                            className="px-2.5 py-0.5 rounded-lg text-[9px] font-bold tracking-wider bg-neutral-50 dark:bg-neutral-800/80 text-neutral-500 dark:text-neutral-400 border border-neutral-200/50 dark:border-neutral-700/50 font-mono uppercase"
-                        >
-                            {skill}
-                        </span>
-                    ))}
-                </div>
-            </div>
-
-            {/* Collapsible Details Panel */}
-            <AnimatePresence initial={false}>
-                {isExpanded && (
-                    <motion.div
-                        key="content"
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        className="overflow-hidden"
-                    >
-                        <div className="px-6 md:px-8 pb-8 pt-4 space-y-6 border-t border-neutral-100 dark:border-neutral-800/50 bg-neutral-50/[0.1] dark:bg-neutral-900/[0.1]">
-                            {/* Responsibilities */}
-                            {exp.responsibilities && exp.responsibilities.length > 0 && (
-                                <div className="space-y-3">
-                                    <h4 className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em] flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                        Responsibilities & Projects
-                                    </h4>
-                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 pl-1">
-                                        {exp.responsibilities.map((task, i) => (
-                                            <li key={i} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-300">
-                                                <ChevronRight className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                                                <span>{task}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-
-                            {/* Achievements & Impact */}
-                            {exp.impact && exp.impact.length > 0 && (
-                                <div className="space-y-3">
-                                    <h4 className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em] flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                                        Key Achievements & Metrics
-                                    </h4>
-                                    <ul className="space-y-2.5 pl-1">
-                                        {exp.impact.map((imp, i) => (
-                                            <li key={i} className="flex items-center gap-3 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
-                                                <div className="w-7 h-7 rounded-xl bg-emerald-100/50 dark:bg-emerald-900/20 flex items-center justify-center shrink-0 border border-emerald-500/20">
-                                                    <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                                                </div>
-                                                <span>{imp}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-
-                            {/* Key Learnings */}
-                            {exp.keyLearnings && exp.keyLearnings.length > 0 && (
-                                <div className="space-y-3">
-                                    <h4 className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em] flex items-center gap-2">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
-                                        Core Learnings
-                                    </h4>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        {exp.keyLearnings.map((learn, i) => (
-                                            <div 
-                                                key={i} 
-                                                className="p-3.5 rounded-xl bg-neutral-100/30 dark:bg-neutral-800/30 border border-neutral-200/50 dark:border-neutral-700/50"
-                                            >
-                                                <p className="text-sm text-neutral-600 dark:text-neutral-300 font-medium leading-relaxed animate-none">
-                                                    {learn}
-                                                </p>
-                                            </div>
-                                        ))}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {educationData.map((edu, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                                className="group relative flex flex-col justify-between p-6 rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-blue-500/20 hover:shadow-[0_0_20px_rgba(59,130,246,0.05)] transition-all duration-300 hover:scale-[1.01]"
+                            >
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-start gap-2">
+                                        <span className="text-[10px] font-bold font-mono px-2.5 py-1 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                                            {edu.period}
+                                        </span>
+                                        <span className="text-[10px] font-bold text-neutral-400 font-mono">
+                                            {edu.metrics}
+                                        </span>
+                                    </div>
+                                    
+                                    <div className="flex gap-4 items-center pt-2">
+                                        {/* Styled Logo Placeholder */}
+                                        <div className={cn(
+                                            "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br font-black font-sans shadow-lg",
+                                            edu.logoColor
+                                        )}>
+                                            {edu.logoLetters}
+                                        </div>
+                                        <div>
+                                            <h3 className="text-base font-bold text-white group-hover:text-blue-400 transition-colors leading-tight">
+                                                {edu.degree}
+                                            </h3>
+                                            <p className="text-xs font-semibold text-neutral-500 mt-0.5">
+                                                {edu.institution}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            )}
-
-                            {/* Gallery Attachments */}
-                            <TimelineGallery
-                                images={exp.galleryImages || []}
-                                id={exp.id}
-                                title={exp.position}
-                                externalLink={exp.externalLink}
-                                logo={exp.logo}
-                            />
-
-                            {/* Collapse Trigger */}
-                            <div className="flex justify-end pt-2">
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIsExpanded(false);
-                                    }}
-                                    className="px-5 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-xs font-bold text-neutral-500 hover:text-neutral-800 dark:hover:text-white transition-colors"
-                                >
-                                    Hide Details
-                                </button>
-                            </div>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </article>
-    );
-}
-
-const slugify = (text: string) => {
-    return text
-        .split('(')[0]
-        .toLowerCase()
-        .replace(/[^\w]/g, '');
-};
-
-const LinkPreviewCard = ({ url, title, id, logo }: { url: string; title?: string; id: string; logo?: string }) => {
-    const domain = useMemo(() => {
-        try {
-            return new URL(url).hostname;
-        } catch {
-            return 'external-link.com';
-        }
-    }, [url]);
-
-    return (
-        <motion.a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            layoutId={`${id}-link-card`}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="group relative flex flex-col justify-center p-4 bg-white/40 dark:bg-neutral-900/40 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 rounded-2xl h-24 md:h-32 w-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-blue-500/30"
-        >
-            <div className="flex items-center gap-4 relative z-10 w-full">
-                <div className="flex-1 flex flex-col overflow-hidden">
-                    <div className="flex items-center gap-2 mb-1 overflow-hidden">
-                        <div className="p-1 rounded bg-blue-500/10 text-blue-500 shrink-0">
-                            <Link2 className="w-2.5 h-2.5" />
-                        </div>
-                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest truncate">{domain}</span>
-                    </div>
-                    <h4 className="text-xs font-bold text-neutral-900 dark:text-white line-clamp-1 leading-tight mb-0.5">
-                        {title || "Project Resource"}
-                    </h4>
-                    <p className="text-[9px] text-neutral-500 line-clamp-2 leading-relaxed opacity-80">
-                        View documentation and project details on {domain}.
-                    </p>
-                </div>
-                {logo && (
-                    <div className="shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 overflow-hidden p-2">
-                        <Image src={logo} alt="Logo" width={64} height={64} className="w-full h-full object-contain lowercase" unoptimized loading="lazy" />
-                    </div>
-                )}
-            </div>
-
-            {/* Hover Overlay */}
-            <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
-                <div className="w-10 h-10 rounded-full bg-black/80 dark:bg-white/90 flex items-center justify-center backdrop-blur-sm transform scale-90 group-hover:scale-100 transition-transform duration-300">
-                    <ExternalLink className="w-5 h-5 text-white dark:text-black" />
-                </div>
-            </div>
-
-            <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors" />
-        </motion.a>
-    );
-};
-
-function TimelineGallery({ images, id, title, externalLink, logo }: { images: string[]; id: string; title?: string; externalLink?: string; logo?: string }) {
-    const [isExpanded, setIsExpanded] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<string | null>(null);
-    const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
-
-    const handleImageError = (index: number) => {
-        setFailedImages(prev => {
-            const next = new Set(prev);
-            next.add(index);
-            return next;
-        });
-    };
-
-    const [verifiedImages, setVerifiedImages] = useState<string[]>([]);
-
-    useEffect(() => {
-        const checkImages = async () => {
-            if (images.length > 0) {
-                setVerifiedImages(images);
-                return;
-            }
-
-            if (!title) {
-                setVerifiedImages([]);
-                return;
-            }
-
-            const baseSlug = slugify(title);
-
-            try {
-                const results = await getJourneyImages(baseSlug);
-                setVerifiedImages(results);
-            } catch (error) {
-                console.error("Failed to verify images", error);
-                setVerifiedImages([]);
-            }
-        };
-
-        checkImages();
-    }, [images, title]);
-
-    const allImages = verifiedImages.map((src, i) => ({ src, index: i, type: 'image' as const }));
-    const validImages = allImages.filter(img => !failedImages.has(img.index));
-
-    const galleryItems = [
-        ...validImages,
-        ...(externalLink ? [{ type: 'link' as const, src: externalLink, index: validImages.length }] : [])
-    ];
-
-    const visibleItems = isExpanded ? galleryItems.slice(0, 4) : galleryItems.slice(0, 2);
-
-    if (galleryItems.length === 0) return null;
-
-    return (
-        <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-                <AnimatePresence mode="popLayout">
-                    {visibleItems.map((item) => (
-                        item.type === 'image' ? (
-                            <motion.div
-                                key={`${id}-gallery-${item.index}`}
-                                layoutId={`${id}-gallery-${item.index}`}
-                                layout
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.2 }}
-                                onClick={() => setSelectedImage(item.src)}
-                                className="relative h-24 md:h-32 w-full group rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 bg-neutral-100 dark:bg-neutral-800 cursor-zoom-in border border-neutral-200/50 dark:border-neutral-700/50"
-                            >
-                                <Image
-                                    src={item.src}
-                                    alt={`experience gallery ${item.index}`}
-                                    fill
-                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                                    unoptimized
-                                    loading="lazy"
-                                    onError={() => handleImageError(item.index)}
-                                />
+                                <div className="mt-6 border-t border-neutral-900/60 pt-4 space-y-3">
+                                    <span className="inline-block text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-blue-500/10 text-blue-400 border border-blue-500/20 font-mono">
+                                        {edu.badge}
+                                    </span>
+                                    <p className="text-neutral-400 text-xs leading-relaxed font-medium">
+                                        {edu.details}
+                                    </p>
+                                </div>
                             </motion.div>
-                        ) : (
-                            <LinkPreviewCard
-                                key={`${id}-link-preview`}
-                                url={item.src}
-                                title={title}
-                                id={id}
-                                logo={logo}
-                            />
-                        )
-                    ))}
-                </AnimatePresence>
-            </div>
-            {galleryItems.length > 2 && (
-                <button
-                    onClick={() => setIsExpanded(!isExpanded)}
-                    className="flex items-center gap-1.5 text-xs font-bold text-neutral-500 hover:text-blue-500 transition-colors uppercase tracking-widest pl-1"
-                >
-                    {isExpanded ? (
-                        <>Show Less <ChevronDown className="w-3 h-3 rotate-180" /></>
-                    ) : (
-                        <>+{galleryItems.length - 2} More Attachments <ChevronDown className="w-3 h-3" /></>
-                    )}
-                </button>
-            )}
+                        ))}
+                    </div>
+                </section>
 
-            {/* Lightbox Overlay */}
+                {/* 2. Professional Experience */}
+                <section className="space-y-10">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-purple-500/10 border border-purple-500/20 rounded-2xl text-purple-400 shadow-lg shadow-purple-500/5">
+                            <Briefcase className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Professional Experience</h2>
+                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Research, Assistantships & Leadership</p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {experienceData.map((exp, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                                className="group p-6 md:p-8 rounded-[2rem] border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-purple-500/20 hover:shadow-[0_0_20px_rgba(168,85,247,0.05)] transition-all duration-300 hover:scale-[1.01] flex flex-col justify-between"
+                            >
+                                <div className="space-y-4">
+                                    <div className="flex items-start gap-4">
+                                        {/* Styled Logo Placeholder */}
+                                        <div className={cn(
+                                            "w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-gradient-to-br font-black font-sans shadow-lg shrink-0",
+                                            exp.logoColor
+                                        )}>
+                                            {exp.logoLetters}
+                                        </div>
+                                        <div className="min-w-0 flex-1">
+                                            <div className="flex flex-wrap items-center justify-between gap-2">
+                                                <h3 className="text-lg font-bold text-white group-hover:text-purple-400 transition-colors leading-tight truncate">
+                                                    {exp.role}
+                                                </h3>
+                                                <span className="text-[9px] font-bold font-mono px-2 py-0.5 rounded bg-neutral-900 text-neutral-400 border border-neutral-800">
+                                                    {exp.period}
+                                                </span>
+                                            </div>
+                                            <p className="text-xs font-semibold text-neutral-500 mt-1">
+                                                {exp.company}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <p className="text-neutral-400 text-xs leading-relaxed font-medium pt-2">
+                                        {exp.description}
+                                    </p>
+                                </div>
+                                
+                                <div className="flex flex-wrap gap-1.5 mt-6 border-t border-neutral-900/60 pt-4">
+                                    {exp.tech.map((t, i) => (
+                                        <span key={i} className="px-2 py-0.5 rounded bg-neutral-900 text-[9px] font-bold font-mono text-neutral-500 uppercase">
+                                            {t}
+                                        </span>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* 3. Certifications */}
+                <section className="space-y-10">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-rose-500/10 border border-rose-500/20 rounded-2xl text-rose-400 shadow-lg shadow-rose-500/5">
+                            <Award className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Certifications</h2>
+                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Industry Credentials ({certificationsData.length} total)</p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {certificationsData.map((cert, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.4, delay: idx * 0.1 }}
+                                className="group flex flex-col justify-between rounded-3xl border border-neutral-900 bg-neutral-950/40 backdrop-blur-md hover:border-rose-500/20 transition-all duration-300 hover:shadow-2xl overflow-hidden cursor-pointer"
+                                onClick={() => setSelectedImage(cert.image)}
+                            >
+                                <div className="relative h-40 bg-neutral-900 overflow-hidden border-b border-neutral-900">
+                                    <Image
+                                        src={cert.image}
+                                        alt={cert.title}
+                                        fill
+                                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                        sizes="(max-w-768px) 100vw, 25vw"
+                                        unoptimized
+                                    />
+                                    {/* Hover Preview Overlay */}
+                                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white">
+                                            <Maximize2 className="w-4 h-4" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="p-5 flex-1 flex flex-col justify-between space-y-4">
+                                    <div>
+                                        <h3 className="text-sm font-bold text-white group-hover:text-rose-400 transition-colors line-clamp-2 leading-tight">
+                                            {cert.title}
+                                        </h3>
+                                        <p className="text-[9px] font-bold font-mono text-rose-500 uppercase mt-1">
+                                            {cert.issuer}
+                                        </p>
+                                    </div>
+                                    <p className="text-neutral-400 text-xs leading-relaxed font-medium line-clamp-3">
+                                        {cert.description}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* 4. Achievements & Projects */}
+                <section className="space-y-10">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-amber-400 shadow-lg shadow-amber-500/5">
+                            <Sparkles className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Achievements & Flagship Projects</h2>
+                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Applied AI & Software Engineering Outcomes</p>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {projectsData.map((project, idx) => {
+                            const IconComponent = project.icon;
+                            return (
+                                <motion.div
+                                    key={idx}
+                                    initial={{ opacity: 0, y: 15 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.4, delay: idx * 0.05 }}
+                                    className="group p-6 rounded-3xl border border-neutral-900 bg-neutral-950/20 hover:bg-neutral-950/40 hover:border-amber-500/20 transition-all duration-300 flex flex-col justify-between"
+                                >
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <span className="text-[9px] font-bold font-mono text-amber-500 uppercase bg-amber-500/10 border border-amber-500/10 px-2 py-0.5 rounded">
+                                                {project.type}
+                                            </span>
+                                            <div className="flex gap-2">
+                                                {project.github && (
+                                                    <a 
+                                                        href={project.github} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer" 
+                                                        className="p-1 rounded bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800"
+                                                    >
+                                                        <Github className="w-3.5 h-3.5" />
+                                                    </a>
+                                                )}
+                                                {project.demo && (
+                                                    <a 
+                                                        href={project.demo} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer" 
+                                                        className="p-1 rounded bg-neutral-900 text-neutral-400 hover:text-white border border-neutral-800"
+                                                    >
+                                                        <ExternalLink className="w-3.5 h-3.5" />
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="flex gap-3 items-center pt-2">
+                                            <div className="p-2.5 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 group-hover:text-amber-400 group-hover:border-amber-500/10 transition-colors">
+                                                <IconComponent className="w-5 h-5" />
+                                            </div>
+                                            <h3 className="text-base font-bold text-white group-hover:text-amber-400 transition-colors leading-tight">
+                                                {project.name}
+                                            </h3>
+                                        </div>
+                                        
+                                        <p className="text-neutral-400 text-xs leading-relaxed font-medium pt-2">
+                                            {project.desc}
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                </section>
+
+                {/* 5. Technical Universe (Floating Skills Pills, Loop-Free, Performance Safe) */}
+                <section className="space-y-10">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl text-emerald-400 shadow-lg shadow-emerald-500/5">
+                            <Layers className="w-6 h-6" />
+                        </div>
+                        <div>
+                            <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-white">Technical Universe</h2>
+                            <p className="text-xs text-neutral-500 font-semibold uppercase tracking-wider mt-0.5 font-mono">Competency Matrix & Frameworks</p>
+                        </div>
+                    </div>
+
+                    <div className="p-8 rounded-[2rem] border border-neutral-900 bg-neutral-950/40 backdrop-blur-md flex flex-wrap justify-center gap-3 relative overflow-hidden">
+                        <div className="absolute inset-0 pointer-events-none opacity-5 bg-[radial-gradient(circle_at_center,var(--primary)_0%,transparent_70%)] blur-3xl" />
+                        
+                        {memoizedSkills.map((skill, idx) => (
+                            <motion.div
+                                key={idx}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true }}
+                                animate={{ y: [0, -4, 0] }}
+                                transition={{
+                                    default: { duration: 0.3, delay: (idx % 10) * 0.03 },
+                                    y: {
+                                        duration: 4 + (idx % 4),
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        delay: (idx % 3) * 0.4
+                                    }
+                                }}
+                                className="px-4 py-2 rounded-2xl bg-neutral-900/60 hover:bg-neutral-900 border border-neutral-800/80 hover:border-emerald-500/30 text-xs font-bold font-mono text-neutral-400 hover:text-emerald-400 shadow-sm hover:shadow-[0_0_15px_rgba(16,185,129,0.08)] cursor-default transition-all duration-300"
+                            >
+                                {skill}
+                            </motion.div>
+                        ))}
+                    </div>
+                </section>
+            </main>
+
+            {/* Lightbox / Certificate Preview Overlay (AnimatePresence supported) */}
             <AnimatePresence>
                 {selectedImage && (
                     <motion.div
@@ -860,51 +755,24 @@ function TimelineGallery({ images, id, title, externalLink, logo }: { images: st
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                            className="absolute inset-0 bg-black/90 backdrop-blur-md"
                         />
                         <motion.div
                             initial={{ scale: 0.95, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.95, opacity: 0 }}
-                            className="relative max-w-4xl w-[90vw] md:w-auto h-fit max-h-[80vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10"
+                            className="relative max-w-4xl w-[90vw] md:w-auto h-fit max-h-[85vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <img
                                 src={selectedImage}
-                                alt="Gallery expanded"
-                                className="w-full h-full object-contain"
+                                alt="Certificate Expanded Preview"
+                                className="w-full h-full object-contain max-h-[80vh]"
                             />
                         </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
-    );
-}
-
-function ExperienceTimeline({ isLowPowerMode }: { isLowPowerMode: boolean }) {
-    // Sort experiences in reverse chronological order (newest first)
-    const sortedExperiences = useMemo(() => {
-        return [...portfolioData.experiences].sort(
-            (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
-        );
-    }, []);
-
-    const timelineData = sortedExperiences.map((exp, idx) => ({
-        title: formatTimelineDate(exp.startDate, exp.endDate),
-        content: (
-            <CollapsibleExperienceCard 
-                exp={exp} 
-                idx={idx} 
-                isLowPowerMode={isLowPowerMode} 
-                defaultExpanded={idx === 0} // Expand first card by default for landing preview
-            />
-        )
-    }));
-
-    return (
-        <div className="w-full">
-            <Timeline data={timelineData} />
         </div>
     );
 }

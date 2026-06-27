@@ -1,0 +1,916 @@
+'use client';
+
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from "next/image";
+import { useTranslations } from 'next-intl';
+import { Transition } from "@headlessui/react";
+import {
+    Calendar,
+    ChevronDown,
+    ChevronRight,
+    Briefcase,
+    GraduationCap,
+    Rocket,
+    Award,
+    Heart,
+    Users,
+    ExternalLink,
+    ArrowRight,
+    Link2,
+    BookOpen,
+    Sparkles
+} from 'lucide-react';
+import { cn, formatDate } from '@/lib/utils';
+import { portfolioData } from '@/data/portfolio';
+import dynamic from 'next/dynamic';
+import { Experience } from '@/types';
+
+const ExperienceMarquee = dynamic(() => import('../../components/sections/ExperienceMarquee'), { ssr: true });
+const ExperienceStickyScroll = dynamic(() => import('../../components/sections/ExperienceStickyScroll'), { ssr: true });
+import { Timeline } from '@/components/ui/timeline';
+import { InnovativeExperienceHero } from '@/components/sections/InnovativeExperienceHero';
+
+const EMPTY_ARRAY: string[] = [];
+
+type TabType = 'education' | 'journey' | 'experience';
+
+const highlightContent = {
+    education: {
+        title: "Building the Future",
+        highlight: "Through Knowledge",
+        description: "Every line of code starts with understanding. My academic journey at Sage University shapes how I approach complex problems with systematic thinking."
+    },
+    journey: {
+        title: "Crafting Experiences",
+        highlight: "That Matter",
+        description: "From internships to leadership roles, each step has been a lesson in collaboration, innovation, and pushing boundaries."
+    },
+    experience: {
+        title: "Turning Ideas",
+        highlight: "Into Reality",
+        description: "Real-world projects that solve real problems. Building solutions that make a difference."
+    }
+};
+
+import { usePerformance } from '@/hooks/usePerformance';
+import { getJourneyImages } from '@/app/actions/getJourneyImages';
+
+const formatTimelineDate = (start: string, end?: string | null) => {
+    const format = (dateStr: string) => {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString("en-US", {
+            month: "short",
+            year: "numeric",
+        });
+    };
+    return `${format(start)} — ${end ? format(end) : 'Present'}`;
+};
+
+function ExperienceHighlightSection({ type }: { type: TabType }) {
+    const content = highlightContent[type];
+
+    return (
+        <div className="mt-6">
+            <InnovativeExperienceHero 
+                type={type}
+                title={content.title}
+                highlight={content.highlight}
+                description={content.description}
+            />
+        </div>
+    );
+}
+
+function FloatingShape({ className, gradient, delay = 0, isLowPowerMode }: { className?: string; gradient: string; delay?: number; isLowPowerMode: boolean }) {
+    return (
+        <motion.div
+            className={`absolute rounded-full blur-3xl opacity-20 pointer-events-none ${className}`}
+            style={{ background: gradient }}
+            animate={isLowPowerMode ? {} : { y: [0, -20, 0], scale: [1, 1.05, 1] }}
+            transition={{ duration: 8, repeat: Infinity, delay }}
+        />
+    );
+}
+
+interface TabItem {
+    id: TabType;
+    label: string;
+    description: string;
+}
+
+function ExperienceTabSlider({ isLowPowerMode }: { isLowPowerMode: boolean }) {
+    const contentRef = useRef<HTMLDivElement>(null);
+    const [activeTab, setActiveTab] = useState<number>(1);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+    const tabs: TabItem[] = [
+        { id: 'education', label: 'Education', description: 'Building strong foundations through academic excellence at Sage University.' },
+        { id: 'journey', label: 'Journey', description: 'A timeline of roles, responsibilities, and professional growth across various organizations.' },
+        { id: 'experience', label: 'Experience', description: 'Detailed breakdown of work experiences with project highlights and achievements.' },
+    ];
+
+    const categories = [
+        { id: 'ai-ml', label: 'AI & Machine Learning', icon: Briefcase, color: 'bg-blue-600', ids: ['exp-ai', 'exp-ml'] },
+        { id: 'products', label: 'Products & Software', icon: Rocket, color: 'bg-purple-600', ids: ['exp-products'] },
+        { id: 'research', label: 'Research', icon: GraduationCap, color: 'bg-orange-500', ids: ['exp-research'] },
+        { id: 'open-source', label: 'Open Source', icon: Heart, color: 'bg-emerald-500', ids: ['exp-open-source'] },
+        { id: 'internships', label: 'Internships', icon: Users, color: 'bg-yellow-500', ids: ['exp-research'] },
+        { id: 'academic', label: 'Academic', icon: BookOpen, color: 'bg-pink-600', ids: ['exp-research'] },
+    ];
+
+    const heightFix = () => {
+        if (contentRef.current && contentRef.current.parentElement)
+            contentRef.current.parentElement.style.height = `${contentRef.current.clientHeight}px`;
+    };
+
+    useEffect(() => {
+        heightFix();
+    }, [activeTab, selectedCategory]);
+
+    const filteredExperiences = useMemo(() => {
+        if (!selectedCategory) return [];
+        const cat = categories.find(c => c.id === selectedCategory);
+        if (!cat) return [];
+        return portfolioData.experiences.filter(exp => cat.ids.includes(exp.id));
+    }, [selectedCategory]);
+
+    return (
+        <div className="mb-24">
+            {/* Header with Orb Hemisphere */}
+            <div className="mx-auto w-full max-w-5xl px-8 text-center sm:px-12 mb-12">
+                <div className="relative h-28 sm:h-36">
+                    <div className="pointer-events-none absolute top-0 left-1/2 h-[400px] w-[400px] -translate-x-1/2 before:absolute before:inset-0 before:-z-10 before:rounded-full before:bg-gradient-to-b before:from-cyan-500/25 before:via-cyan-500/5 before:via-25% before:to-cyan-500/0 before:to-75% sm:h-[560px] sm:w-[560px]">
+                        <div className="h-24 [mask-image:_linear-gradient(0deg,transparent,theme(colors.white)_20%,theme(colors.white))] sm:h-32">
+                            {tabs.map((tab, index) => (
+                                <Transition
+                                    as="div"
+                                    key={index}
+                                    show={activeTab === index}
+                                    className="absolute inset-0 -z-10 h-full flex items-center justify-center"
+                                    enter="transition ease-out duration-700 order-first"
+                                    enterFrom="opacity-0 -rotate-[60deg]"
+                                    enterTo="opacity-100 rotate-0"
+                                    leave="transition ease-out duration-700"
+                                    leaveFrom="opacity-100 rotate-0"
+                                    leaveTo="opacity-0 rotate-[60deg]"
+                                >
+                                    <div className="relative top-8 sm:top-11 w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-purple-500 shadow-lg shadow-cyan-500/30" />
+                                </Transition>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Description Text */}
+                <div className="mb-6 transition-all delay-300 duration-150 ease-in-out sm:mb-9 min-h-[100px]">
+                    <div className="relative flex flex-col" ref={contentRef}>
+                        {tabs.map((tab, index) => (
+                            <Transition
+                                key={index}
+                                show={activeTab === index}
+                                enter="transition ease-out duration-300 delay-150 relative"
+                                enterFrom="opacity-0 blur-sm translate-y-4"
+                                enterTo="opacity-100 blur-0 translate-y-0"
+                                leave="transition ease-in duration-150 absolute top-0 left-0 w-full"
+                                leaveFrom="opacity-100 blur-0 translate-y-0"
+                                leaveTo="opacity-0 blur-sm -translate-y-4"
+                                beforeEnter={() => heightFix()}
+                            >
+                                <div className="px-4 text-xl font-bold text-foreground sm:px-0 sm:text-2xl lg:text-3xl font-sans tracking-tight">
+                                    &ldquo;{tab.description}&rdquo;
+                                </div>
+                            </Transition>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Tab Buttons */}
+                <div className="flex flex-nowrap sm:flex-wrap justify-start sm:justify-center gap-2 overflow-x-auto pb-4 sm:pb-0 hide-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0">
+                    {tabs.map((tab, index) => (
+                        <button
+                            key={index}
+                            className={`m-1.5 inline-flex justify-center items-center gap-2.5 rounded-full px-5 py-2.5 text-sm whitespace-nowrap shadow-sm transition-colors duration-150 focus-visible:ring focus-visible:ring-cyan-300 focus-visible:outline-none sm:px-6 sm:py-3 sm:text-base ${activeTab === index
+                                ? "bg-cyan-500 text-white shadow-cyan-950/10 font-semibold"
+                                : "bg-white dark:bg-neutral-800 text-cyan-900 dark:text-cyan-100 hover:bg-cyan-100 dark:hover:bg-neutral-700"
+                                }`}
+                            onClick={() => {
+                                setActiveTab(index);
+                                if (index !== 2) setSelectedCategory(null);
+                            }}
+                        >
+                            {tab.id === 'education' && <GraduationCap className="w-5 h-5" />}
+                            {tab.id === 'journey' && <Briefcase className="w-5 h-5" />}
+                            {tab.id === 'experience' && <Rocket className="w-5 h-5" />}
+                            <span>{tab.label}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Tab Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <AnimatePresence mode="wait">
+                    {/* Education Tab */}
+                    {activeTab === 0 && (
+                        <motion.div
+                            key="education"
+                            initial={{ opacity: 0, y: isLowPowerMode ? 0 : 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: isLowPowerMode ? 0 : -20 }}
+                            transition={{ duration: 0.4 }}
+                        >
+                            <ExperienceStickyScroll />
+                            <div className="pb-[clamp(40px,10vh,120px)]" />
+                            <ExperienceHighlightSection type="education" />
+                        </motion.div>
+                    )}
+
+                    {/* Journey Tab */}
+                    {activeTab === 1 && (
+                        <motion.div
+                            key="journey"
+                            initial={{ opacity: 0, y: isLowPowerMode ? 0 : 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: isLowPowerMode ? 0 : -20 }}
+                            transition={{ duration: 0.4 }}
+                        >
+                            <ExperienceTimeline isLowPowerMode={isLowPowerMode} />
+                            <div className="pb-[clamp(40px,10vh,120px)]" />
+                            <ExperienceHighlightSection type="journey" />
+                        </motion.div>
+                    )}
+
+                    {/* Experience Tab */}
+                    {activeTab === 2 && (
+                        <motion.div
+                            key="experience"
+                            initial={{ opacity: 0, y: isLowPowerMode ? 0 : 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: isLowPowerMode ? 0 : -20 }}
+                            transition={{ duration: 0.4 }}
+                            className="space-y-12"
+                        >
+                            <AnimatePresence mode="wait">
+                                {!selectedCategory ? (
+                                    <motion.div
+                                        key="cta-selection"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0, x: -20 }}
+                                        className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:min-h-[600px] items-center"
+                                    >
+                                        {/* Left Description */}
+                                        <div className="lg:col-span-5 space-y-8">
+                                            <motion.div
+                                                initial={{ opacity: 0, x: -20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: 0.2 }}
+                                            >
+                                                <h2 className="text-5xl md:text-7xl font-black text-neutral-900 dark:text-white tracking-tighter mb-6 leading-[0.9]">
+                                                    SELECT <br />
+                                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-neutral-900 via-neutral-600 to-neutral-400 dark:from-white dark:via-neutral-200 dark:to-neutral-500">
+                                                        SECTOR
+                                                    </span>
+                                                </h2>
+                                                <p className="text-xl text-neutral-500 dark:text-neutral-400 max-w-md leading-relaxed">
+                                                    Filter the experience database to inspect specific segments of my technical work.
+                                                </p>
+                                            </motion.div>
+
+                                            <div className="hidden lg:block w-24 h-1 bg-gradient-to-r from-neutral-900 to-neutral-400 dark:from-white dark:to-neutral-600 rounded-full" />
+                                        </div>
+
+                                        {/* Right Selection List */}
+                                        <div className="lg:col-span-7 flex flex-col gap-4">
+                                            {categories.map((cat, idx) => (
+                                                <motion.button
+                                                    key={cat.id}
+                                                    initial={{ opacity: 0, x: 20 }}
+                                                    animate={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: 0.1 * idx }}
+                                                    onClick={() => setSelectedCategory(cat.id)}
+                                                    className="group relative flex items-center gap-6 p-6 rounded-3xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900/50 hover:bg-white dark:hover:bg-neutral-850 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:hover:shadow-neutral-950/30 text-left overflow-hidden"
+                                                >
+                                                    <div className={cn(
+                                                        "absolute inset-0 opacity-0 group-hover:opacity-[0.03] dark:group-hover:opacity-[0.05] transition-opacity duration-500",
+                                                        cat.color
+                                                    )} />
+
+                                                    <div className={cn(
+                                                        "w-14 h-14 rounded-2xl flex items-center justify-center text-white shrink-0 shadow-md group-hover:scale-110 transition-transform duration-500",
+                                                        cat.color
+                                                    )}>
+                                                        <cat.icon className="w-7 h-7" />
+                                                    </div>
+
+                                                    <div className="flex-1 relative z-10">
+                                                        <h4 className="text-xl font-bold text-neutral-900 dark:text-white mb-0.5 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors">
+                                                            {cat.label}
+                                                        </h4>
+                                                        <p className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 group-hover:text-neutral-600 dark:group-hover:text-neutral-400 transition-colors">
+                                                            Explore projects in the {cat.label.toLowerCase()} category
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="w-10 h-10 rounded-full bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex items-center justify-center text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white group-hover:border-neutral-400 dark:group-hover:border-neutral-600 transition-all duration-300">
+                                                        <ArrowRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
+                                                    </div>
+                                                </motion.button>
+                                            ))}
+                                        </div>
+                                    </motion.div>
+                                ) : (
+                                    <motion.div
+                                        key="ledger-view"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        className="grid grid-cols-1 lg:grid-cols-12 gap-8 pb-32"
+                                    >
+                                        {/* Sticky Filters Sidebar */}
+                                        <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit space-y-8">
+                                            <button
+                                                onClick={() => setSelectedCategory(null)}
+                                                className="group flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-neutral-500 hover:text-black dark:hover:text-white transition-colors px-4 py-2 -ml-4 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800/50 w-fit"
+                                            >
+                                                <ArrowRight className="w-4 h-4 rotate-180 group-hover:-translate-x-1 transition-transform" />
+                                                <span>Back to Sectors</span>
+                                            </button>
+
+                                            <div className="space-y-2">
+                                                <h3 className="text-4xl md:text-5xl font-black text-neutral-900 dark:text-white tracking-tighter leading-tight font-sans">
+                                                    {categories.find(c => c.id === selectedCategory)?.label}
+                                                </h3>
+                                                <div className="h-1.5 w-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full shadow-md" />
+                                            </div>
+
+                                            <div className="hidden lg:flex flex-col gap-2">
+                                                <p className="text-[10px] font-black uppercase text-neutral-400 dark:text-neutral-500 tracking-widest mb-2 pl-4">
+                                                    Filter View
+                                                </p>
+                                                {categories.map(cat => (
+                                                    <button
+                                                        key={cat.id}
+                                                        onClick={() => setSelectedCategory(cat.id)}
+                                                        className={cn(
+                                                            "text-left px-4 py-3 rounded-2xl text-sm font-bold transition-all duration-300 border border-transparent",
+                                                            selectedCategory === cat.id
+                                                                ? "bg-white dark:bg-neutral-800 text-neutral-900 dark:text-white shadow-lg border-neutral-200/80 dark:border-neutral-700/80"
+                                                                : "text-neutral-400 hover:bg-neutral-100/50 dark:hover:bg-neutral-900/50 hover:text-neutral-950 dark:hover:text-neutral-300"
+                                                        )}
+                                                    >
+                                                        {cat.label}
+                                                    </button>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Scrollable Content Stream */}
+                                        <div className="lg:col-span-8 space-y-6">
+                                            {filteredExperiences.map((exp, idx) => (
+                                                <CollapsibleExperienceCard 
+                                                    key={exp.id} 
+                                                    exp={exp} 
+                                                    idx={idx} 
+                                                    isLowPowerMode={isLowPowerMode} 
+                                                    defaultExpanded={true} // Expand all items by default in filtered view
+                                                />
+                                            ))}
+
+                                            {filteredExperiences.length === 0 && (
+                                                <div className="flex flex-col items-center justify-center py-20 text-neutral-400">
+                                                    <p>No records found in this sector.</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                            <div className="pb-[clamp(40px,10vh,120px)]" />
+                            <ExperienceHighlightSection type="experience" />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+        </div>
+    );
+}
+
+import { SmoothScrollHero } from '@/components/sections/SmoothScrollHero';
+
+export default function ExperiencePage() {
+    const { isLowPowerMode } = usePerformance();
+
+    return (
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="bg-background text-foreground relative"
+        >
+            <SmoothScrollHero />
+
+            <FloatingShape
+                className="w-[min(500px,80vw)] h-[min(500px,80vw)] -top-20 -right-40"
+                gradient="radial-gradient(circle, rgba(139, 92, 246, 0.25) 0%, transparent 70%)"
+                isLowPowerMode={isLowPowerMode}
+            />
+            <FloatingShape
+                className="w-[min(400px,70vw)] h-[min(400px,70vw)] bottom-40 -left-20"
+                gradient="radial-gradient(circle, rgba(236, 72, 153, 0.2) 0%, transparent 70%)"
+                delay={3}
+                isLowPowerMode={isLowPowerMode}
+            />
+
+            <motion.div
+                initial={{ opacity: 0, y: isLowPowerMode ? 0 : 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-20"
+            >
+                {/* 1. Work Experience Gallery Marquee */}
+                <div className="w-screen relative left-1/2 -translate-x-1/2 mb-20 -mt-10 md:-mt-20">
+                    <ExperienceMarquee />
+                </div>
+
+                {/* 2. Tab Slider Section */}
+                <ExperienceTabSlider isLowPowerMode={isLowPowerMode} />
+            </motion.div>
+        </motion.div>
+    );
+}
+
+function CollapsibleExperienceCard({ 
+    exp, 
+    idx, 
+    isLowPowerMode,
+    defaultExpanded = false
+}: { 
+    exp: Experience; 
+    idx: number; 
+    isLowPowerMode: boolean;
+    defaultExpanded?: boolean;
+}) {
+    const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+    const t = useTranslations('experience');
+
+    // Helper to calculate duration in months/years
+    const getDuration = (start: string, end?: string | null) => {
+        const startDate = new Date(start);
+        const endDate = end ? new Date(end) : new Date();
+        const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
+        const diffMonths = Math.ceil(diffTime / (1000 * 60 * 60 * 24 * 30.44));
+
+        if (diffMonths < 12) return `${diffMonths} ${t('months')}`;
+        const years = Math.floor(diffMonths / 12);
+        const months = diffMonths % 12;
+        if (months === 0) return `${years} ${t(years === 1 ? 'year' : 'years')}`;
+        return `${years} ${t('year')} ${months} ${t('months')}`;
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setIsExpanded(!isExpanded);
+        }
+    };
+
+    return (
+        <article
+            className={cn(
+                "group relative bg-white/40 dark:bg-neutral-900/30 backdrop-blur-xl border rounded-[2rem] transition-all duration-500 overflow-hidden shadow-sm hover:shadow-2xl dark:hover:shadow-neutral-950/80 hover:-translate-y-1 hover:border-blue-500/20 dark:hover:border-blue-500/20",
+                isExpanded 
+                    ? "border-blue-500/30 dark:border-blue-500/30 ring-1 ring-blue-500/10 shadow-xl" 
+                    : "border-neutral-200/80 dark:border-neutral-800/80"
+            )}
+        >
+            {/* Ambient hover glow background */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/0 via-purple-500/0 to-pink-500/0 group-hover:from-blue-500/[0.02] group-hover:to-purple-500/[0.02] transition-all duration-700 pointer-events-none" />
+
+            {/* Glowing active card edge border overlay */}
+            {isExpanded && (
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 shadow-md" />
+            )}
+
+            <div 
+                className="p-6 md:p-8 cursor-pointer select-none" 
+                onClick={() => setIsExpanded(!isExpanded)}
+                onKeyDown={handleKeyDown}
+                tabIndex={0}
+                role="button"
+                aria-expanded={isExpanded}
+            >
+                <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
+                    {/* Logo (Left Side) */}
+                    <div className="w-14 h-14 md:w-16 md:h-16 bg-neutral-100 dark:bg-neutral-855 rounded-2xl flex items-center justify-center shrink-0 border border-neutral-200/50 dark:border-neutral-700/50 p-2 shadow-sm transition-transform group-hover:scale-105 duration-300">
+                        {exp.logo ? (
+                            <Image 
+                                src={exp.logo} 
+                                alt={exp.company} 
+                                width={48} 
+                                height={48} 
+                                className="object-contain" 
+                                unoptimized 
+                                loading="lazy" 
+                            />
+                        ) : (
+                            <Briefcase className="w-7 h-7 text-neutral-400 dark:text-neutral-500" />
+                        )}
+                    </div>
+
+                    {/* Header Text Content */}
+                    <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mb-1">
+                            <h3 className="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white leading-tight truncate group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors font-sans tracking-tight">
+                                {exp.position}
+                            </h3>
+                            {exp.type && (
+                                <span className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 font-mono">
+                                    {t(`type.${exp.type}`)}
+                                </span>
+                            )}
+                        </div>
+
+                        <div className="text-sm md:text-base font-semibold text-neutral-600 dark:text-neutral-400 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                            <span>{exp.company}</span>
+                            {exp.location && (
+                                <>
+                                    <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                                    <span className="text-neutral-500 font-medium">{exp.location}</span>
+                                </>
+                            )}
+                        </div>
+
+                        {/* Metadata Tagline Row */}
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-neutral-400 dark:text-neutral-500 font-semibold mt-2">
+                            <span className="flex items-center gap-1 font-mono text-neutral-600 dark:text-neutral-400">
+                                <Calendar className="w-3.5 h-3.5" />
+                                {formatDate(exp.startDate)} — {exp.endDate ? formatDate(exp.endDate) : t('present')}
+                            </span>
+                            <span className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-700" />
+                            <span className="font-mono text-neutral-500">
+                                {getDuration(exp.startDate, exp.endDate)}
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Expand Chevron */}
+                    <div className="self-end sm:self-center ml-auto">
+                        <div className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-800 flex items-center justify-center text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-white group-hover:border-neutral-400 dark:group-hover:border-neutral-700 transition-colors">
+                            <ChevronDown className={cn("w-4 h-4 transition-transform duration-300", isExpanded && "rotate-180")} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Short bio preview */}
+                <p className="text-neutral-600 dark:text-neutral-300 mt-4 leading-relaxed text-sm md:text-base font-medium">
+                    {exp.description}
+                </p>
+
+                {/* Tech stack badges */}
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                    {exp.skills.map((skill, i) => (
+                        <span 
+                            key={i} 
+                            className="px-2.5 py-0.5 rounded-lg text-[9px] font-bold tracking-wider bg-neutral-50 dark:bg-neutral-800/80 text-neutral-500 dark:text-neutral-400 border border-neutral-200/50 dark:border-neutral-700/50 font-mono uppercase"
+                        >
+                            {skill}
+                        </span>
+                    ))}
+                </div>
+            </div>
+
+            {/* Collapsible Details Panel */}
+            <AnimatePresence initial={false}>
+                {isExpanded && (
+                    <motion.div
+                        key="content"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                    >
+                        <div className="px-6 md:px-8 pb-8 pt-4 space-y-6 border-t border-neutral-100 dark:border-neutral-800/50 bg-neutral-50/[0.1] dark:bg-neutral-900/[0.1]">
+                            {/* Responsibilities */}
+                            {exp.responsibilities && exp.responsibilities.length > 0 && (
+                                <div className="space-y-3">
+                                    <h4 className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                        Responsibilities & Projects
+                                    </h4>
+                                    <ul className="grid grid-cols-1 md:grid-cols-2 gap-3 pl-1">
+                                        {exp.responsibilities.map((task, i) => (
+                                            <li key={i} className="flex items-start gap-2 text-sm text-neutral-600 dark:text-neutral-300">
+                                                <ChevronRight className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                                                <span>{task}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                            {/* Achievements & Impact */}
+                            {exp.impact && exp.impact.length > 0 && (
+                                <div className="space-y-3">
+                                    <h4 className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                                        Key Achievements & Metrics
+                                    </h4>
+                                    <ul className="space-y-2.5 pl-1">
+                                        {exp.impact.map((imp, i) => (
+                                            <li key={i} className="flex items-center gap-3 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+                                                <div className="w-7 h-7 rounded-xl bg-emerald-100/50 dark:bg-emerald-900/20 flex items-center justify-center shrink-0 border border-emerald-500/20">
+                                                    <Award className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                                                </div>
+                                                <span>{imp}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                            {/* Key Learnings */}
+                            {exp.keyLearnings && exp.keyLearnings.length > 0 && (
+                                <div className="space-y-3">
+                                    <h4 className="text-[10px] font-black text-neutral-400 dark:text-neutral-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                                        Core Learnings
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        {exp.keyLearnings.map((learn, i) => (
+                                            <div 
+                                                key={i} 
+                                                className="p-3.5 rounded-xl bg-neutral-100/30 dark:bg-neutral-800/30 border border-neutral-200/50 dark:border-neutral-700/50"
+                                            >
+                                                <p className="text-sm text-neutral-600 dark:text-neutral-300 font-medium leading-relaxed animate-none">
+                                                    {learn}
+                                                </p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Gallery Attachments */}
+                            <TimelineGallery
+                                images={exp.galleryImages || EMPTY_ARRAY}
+                                id={exp.id}
+                                title={exp.position}
+                                externalLink={exp.externalLink}
+                                logo={exp.logo}
+                            />
+
+                            {/* Collapse Trigger */}
+                            <div className="flex justify-end pt-2">
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setIsExpanded(false);
+                                    }}
+                                    className="px-5 py-2 rounded-xl bg-neutral-100 hover:bg-neutral-200 dark:bg-neutral-800 dark:hover:bg-neutral-700 text-xs font-bold text-neutral-500 hover:text-neutral-800 dark:hover:text-white transition-colors"
+                                >
+                                    Hide Details
+                                </button>
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </article>
+    );
+}
+
+const slugify = (text: string) => {
+    return text
+        .split('(')[0]
+        .toLowerCase()
+        .replace(/[^\w]/g, '');
+};
+
+const LinkPreviewCard = ({ url, title, id, logo }: { url: string; title?: string; id: string; logo?: string }) => {
+    const domain = useMemo(() => {
+        try {
+            return new URL(url).hostname;
+        } catch {
+            return 'external-link.com';
+        }
+    }, [url]);
+
+    return (
+        <motion.a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            layoutId={`${id}-link-card`}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="group relative flex flex-col justify-center p-4 bg-white/40 dark:bg-neutral-900/40 backdrop-blur-md border border-neutral-200 dark:border-neutral-800 rounded-2xl h-24 md:h-32 w-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-blue-500/30"
+        >
+            <div className="flex items-center gap-4 relative z-10 w-full">
+                <div className="flex-1 flex flex-col overflow-hidden">
+                    <div className="flex items-center gap-2 mb-1 overflow-hidden">
+                        <div className="p-1 rounded bg-blue-500/10 text-blue-500 shrink-0">
+                            <Link2 className="w-2.5 h-2.5" />
+                        </div>
+                        <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-widest truncate">{domain}</span>
+                    </div>
+                    <h4 className="text-xs font-bold text-neutral-900 dark:text-white line-clamp-1 leading-tight mb-0.5">
+                        {title || "Project Resource"}
+                    </h4>
+                    <p className="text-[9px] text-neutral-500 line-clamp-2 leading-relaxed opacity-80">
+                        View documentation and project details on {domain}.
+                    </p>
+                </div>
+                {logo && (
+                    <div className="shrink-0 w-12 h-12 md:w-16 md:h-16 rounded-xl bg-white dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-700 overflow-hidden p-2">
+                        <Image src={logo} alt="Logo" width={64} height={64} className="w-full h-full object-contain lowercase" unoptimized loading="lazy" />
+                    </div>
+                )}
+            </div>
+
+            {/* Hover Overlay */}
+            <div className="absolute inset-0 bg-black/5 dark:bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-20">
+                <div className="w-10 h-10 rounded-full bg-black/80 dark:bg-white/90 flex items-center justify-center backdrop-blur-sm transform scale-90 group-hover:scale-100 transition-transform duration-300">
+                    <ExternalLink className="w-5 h-5 text-white dark:text-black" />
+                </div>
+            </div>
+
+            <div className="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-colors" />
+        </motion.a>
+    );
+};
+
+function TimelineGallery({ images, id, title, externalLink, logo }: { images: string[]; id: string; title?: string; externalLink?: string; logo?: string }) {
+    const [isExpanded, setIsExpanded] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [failedImages, setFailedImages] = useState<Set<number>>(new Set());
+
+    const handleImageError = (index: number) => {
+        setFailedImages(prev => {
+            const next = new Set(prev);
+            next.add(index);
+            return next;
+        });
+    };
+
+    const [verifiedImages, setVerifiedImages] = useState<string[]>([]);
+
+    const imagesSerialized = useMemo(() => (images ? images.join(',') : ''), [images]);
+
+    useEffect(() => {
+        const checkImages = async () => {
+            if (images && images.length > 0) {
+                setVerifiedImages(images);
+                return;
+            }
+
+            if (!title) {
+                setVerifiedImages([]);
+                return;
+            }
+
+            const baseSlug = slugify(title);
+
+            try {
+                const results = await getJourneyImages(baseSlug);
+                setVerifiedImages(results);
+            } catch (error) {
+                console.error("Failed to verify images", error);
+                setVerifiedImages([]);
+            }
+        };
+
+        checkImages();
+    }, [imagesSerialized, title]);
+
+    const allImages = verifiedImages.map((src, i) => ({ src, index: i, type: 'image' as const }));
+    const validImages = allImages.filter(img => !failedImages.has(img.index));
+
+    const galleryItems = [
+        ...validImages,
+        ...(externalLink ? [{ type: 'link' as const, src: externalLink, index: validImages.length }] : [])
+    ];
+
+    const visibleItems = isExpanded ? galleryItems.slice(0, 4) : galleryItems.slice(0, 2);
+
+    if (galleryItems.length === 0) return null;
+
+    return (
+        <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+                <AnimatePresence mode="popLayout">
+                    {visibleItems.map((item) => (
+                        item.type === 'image' ? (
+                            <motion.div
+                                key={`${id}-gallery-${item.index}`}
+                                layoutId={`${id}-gallery-${item.index}`}
+                                layout
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.2 }}
+                                onClick={() => setSelectedImage(item.src)}
+                                className="relative h-24 md:h-32 w-full group rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 bg-neutral-100 dark:bg-neutral-800 cursor-zoom-in border border-neutral-200/50 dark:border-neutral-700/50"
+                            >
+                                <Image
+                                    src={item.src}
+                                    alt={`experience gallery ${item.index}`}
+                                    fill
+                                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                    unoptimized
+                                    loading="lazy"
+                                    onError={() => handleImageError(item.index)}
+                                />
+                            </motion.div>
+                        ) : (
+                            <LinkPreviewCard
+                                key={`${id}-link-preview`}
+                                url={item.src}
+                                title={title}
+                                id={id}
+                                logo={logo}
+                            />
+                        )
+                    ))}
+                </AnimatePresence>
+            </div>
+            {galleryItems.length > 2 && (
+                <button
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="flex items-center gap-1.5 text-xs font-bold text-neutral-500 hover:text-blue-500 transition-colors uppercase tracking-widest pl-1"
+                >
+                    {isExpanded ? (
+                        <>Show Less <ChevronDown className="w-3 h-3 rotate-180" /></>
+                    ) : (
+                        <>+{galleryItems.length - 2} More Attachments <ChevronDown className="w-3 h-3" /></>
+                    )}
+                </button>
+            )}
+
+            {/* Lightbox Overlay */}
+            <AnimatePresence>
+                {selectedImage && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setSelectedImage(null)}
+                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12 cursor-zoom-out"
+                    >
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+                        />
+                        <motion.div
+                            initial={{ scale: 0.95, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.95, opacity: 0 }}
+                            className="relative max-w-4xl w-[90vw] md:w-auto h-fit max-h-[80vh] rounded-3xl overflow-hidden shadow-2xl border border-white/10"
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <img
+                                src={selectedImage}
+                                alt="Gallery expanded"
+                                className="w-full h-full object-contain"
+                            />
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </div>
+    );
+}
+
+function ExperienceTimeline({ isLowPowerMode }: { isLowPowerMode: boolean }) {
+    // Sort experiences in reverse chronological order (newest first)
+    const sortedExperiences = useMemo(() => {
+        return [...portfolioData.experiences].sort(
+            (a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+        );
+    }, []);
+
+    const timelineData = useMemo(() => {
+        return sortedExperiences.map((exp, idx) => ({
+            title: formatTimelineDate(exp.startDate, exp.endDate),
+            content: (
+                <CollapsibleExperienceCard 
+                    exp={exp} 
+                    idx={idx} 
+                    isLowPowerMode={isLowPowerMode} 
+                    defaultExpanded={idx === 0} // Expand first card by default for landing preview
+                />
+            )
+        }));
+    }, [sortedExperiences, isLowPowerMode]);
+
+    return (
+        <div className="w-full">
+            <Timeline data={timelineData} />
+        </div>
+    );
+}

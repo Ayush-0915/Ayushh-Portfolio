@@ -280,17 +280,13 @@ export function ProjectPageContent({ project, allProjects, isLowPowerMode }: { p
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.7, delay: 0.2 }}
                     className="relative w-full aspect-video md:aspect-[2/1] rounded-3xl overflow-hidden border border-black/15 dark:border-border/40 shadow-2xl bg-secondary/5 group"
-                    onClick={() => project.image && setSelectedImage(project.image)}
+                    onClick={() => setSelectedImage(project.image || "/project/fallback.png")}
                 >
-                    {project.image ? (
-                        <motion.img
-                            src={project.image}
-                            alt={project.title}
-                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 cursor-zoom-in"
-                        />
-                    ) : (
-                        <ProjectPlaceholder className="rounded-none border-0 bg-transparent pb-0 [&>div.z-10]:scale-125" title="No Image Available" />
-                    )}
+                    <motion.img
+                        src={project.image || "/project/fallback.png"}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 cursor-zoom-in"
+                    />
 
                     {/* Overlay Gradient */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
@@ -672,11 +668,7 @@ export function ProjectPageContent({ project, allProjects, isLowPowerMode }: { p
                                 className="flex-none w-[85vw] md:w-[calc(33.333%-1rem)] snap-center group relative aspect-video rounded-xl overflow-hidden border border-black/30 dark:border-white/10 bg-zinc-200 dark:bg-zinc-900 shadow-md dark:shadow-none"
                             >
                                 {/* Background Layer */}
-                                {p.image ? (
-                                    <img src={p.image} alt={p.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
-                                ) : (
-                                    <ProjectPlaceholder className="absolute inset-0" title="No Preview" />
-                                )}
+                                <img src={p.image || "/project/fallback.png"} alt={p.title} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
 
                                 {/* Gradient Overlay */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-80 transition-opacity group-hover:opacity-90" />

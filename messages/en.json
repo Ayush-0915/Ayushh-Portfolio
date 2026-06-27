@@ -260,7 +260,8 @@
             "freelance": "Freelance",
             "contract": "Contract",
             "apprenticeship": "Apprenticeship",
-            "volunteer": "Volunteer"
+            "volunteer": "Volunteer",
+            "self-employed": "Self-employed"
         },
         "filters": {
             "all": "All",
@@ -516,6 +517,10 @@
         "achievement1": "Microsoft Azure Fundamentals (AZ-900)",
         "achievement2": "Oracle AI Foundations Associate",
         "achievement3": "Building NEXUS AI"
+    },
+    "projectHeader": {
+        "title": "Projects",
+        "subtitle": "A gallery of my technical projects, software systems, and data-driven intelligence experiments."
     },
     "chatbot": {
         "title": "AI Assistant",
