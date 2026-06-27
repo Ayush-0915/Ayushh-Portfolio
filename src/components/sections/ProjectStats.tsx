@@ -1,19 +1,19 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Code2, Award, Sparkles, TrendingUp } from 'lucide-react';
+import { Code2, Award, Sparkles, TrendingUp, Layers } from 'lucide-react';
 import { portfolioData } from '@/data/portfolio';
 import { Counter } from '@/components/ui/Counter';
 
 // Calculate metrics from portfolio data
 const calculateMetrics = () => {
-    const totalProjects = portfolioData.projects?.length || 0;
+    const totalProjects = 10; // Updated to reflect 10+ projects
     const completedProjects = portfolioData.projects?.filter(p => p.status === 'completed').length || 0;
-    const totalTechStack = portfolioData.techStack?.length || 0;
-    const totalTools = portfolioData.tools?.length || 0;
+    const totalTechStack = 40; // Updated to reflect 40+ technologies
+    const totalTools = 0;
 
-    // Calculate years of experience (assuming earliest project start date)
-    const yearsExp = 2; // Hardcoded based on resume/experience
+    // No years of experience; using Fresher designation
+    const yearsExp = 0;
 
     return {
         projects: totalProjects,
@@ -21,8 +21,8 @@ const calculateMetrics = () => {
         techCount: totalTechStack + totalTools,
         yearsExp,
         // Creative metrics
-        impactScore: '12+', // GitHub stars, downloads, or impact metric
-        satisfaction: '98%'   // Client/user satisfaction rate
+        impactScore: '15+', // Updated active deployments
+        satisfaction: '98%'
     };
 };
 
@@ -51,33 +51,28 @@ const StatCard = ({ value, label, icon, delay, gradient, isLowPowerMode }: StatC
             >
                 {/* Card Content */}
                 <div className="relative z-10">
+                    {/* Icon */}
+                    <div className="mb-4">{icon}</div>
                     {/* Value */}
-                    <motion.div
-                        className="text-4xl sm:text-5xl md:text-6xl font-black bg-gradient-to-br from-foreground via-primary to-foreground bg-clip-text text-transparent mb-2"
-                        animate={isLowPowerMode ? {} : {
-                            backgroundPosition: ["0%", "100%", "0%"]
-                        }}
-                        transition={isLowPowerMode ? {} : {
-                            duration: 5,
-                            repeat: Infinity,
-                            ease: "linear"
-                        }}
-                        style={{
-                            backgroundSize: isLowPowerMode ? "100% 100%" : "200% 200%"
-                        }}
-                    >
-                        <Counter
-                            value={parseFloat(value.replace(/[^0-9.]/g, ''))}
-                            decimal={value.includes('.') ? 1 : 0}
-                        />
-                        {value.includes('+') ? '+' : ''}
-                        {value.includes('%') ? '%' : ''}
-                    </motion.div>
-
+                    {/^\d/.test(value) ? (
+                        <motion.div
+                            className="text-4xl sm:text-5xl md:text-6xl font-black bg-gradient-to-br from-foreground via-primary to-foreground bg-clip-text text-transparent mb-2"
+                            animate={isLowPowerMode ? {} : { backgroundPosition: ["0%", "100%", "0%"] }}
+                            transition={isLowPowerMode ? {} : { duration: 5, repeat: Infinity, ease: "linear" }}
+                            style={{ backgroundSize: isLowPowerMode ? "100% 100%" : "200% 200%" }}
+                        >
+                            <Counter
+                                value={parseFloat(value.replace(/[^0-9.]/g, ""))}
+                                decimal={value.includes(".") ? 1 : 0}
+                            />
+                            {value.includes("+") ? "+" : ""}
+                            {value.includes("%") ? "%" : ""}
+                        </motion.div>
+                    ) : (
+                        <span className="text-2xl sm:text-3xl md:text-4xl font-medium text-foreground mb-2">{value}</span>
+                    )}
                     {/* Label */}
-                    <p className="text-sm sm:text-base font-medium text-muted-foreground uppercase tracking-wider">
-                        {label}
-                    </p>
+                    <p className="text-sm sm:text-base font-medium text-muted-foreground uppercase tracking-wider">{label}</p>
                 </div>
 
                 {/* Hover Glow - Subtle */}
@@ -101,25 +96,25 @@ export function ProjectStats({ isLowPowerMode }: { isLowPowerMode?: boolean }) {
         {
             value: `${metrics.projects}+`,
             label: 'Projects Built',
-            icon: <Code2 className="w-6 h-6 text-primary" />,
+            icon: <Code2 className="w-6 h-6" />,
             gradient: 'rgba(59, 130, 246, 0.3), rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3)'
         },
         {
-            value: `${metrics.yearsExp}+`,
-            label: 'Years Experience',
-            icon: <TrendingUp className="w-6 h-6 text-emerald-500" />,
-            gradient: 'rgba(16, 185, 129, 0.3), rgba(6, 182, 212, 0.3), rgba(16, 185, 129, 0.3)'
+            value: 'Fresher',
+            label: '3rd Year AI & ML Student',
+            icon: <TrendingUp className="w-6 h-6" />, 
+            gradient: 'rgba(16, 185, 129, 0.3), rgba(6, 182, 212, 0.3), rgba(16, 185, 129, 0.3)',
         },
         {
             value: `${metrics.techCount}+`,
             label: 'Tech Stack',
-            icon: <Code2 className="w-6 h-6 text-violet-500" />,
+            icon: <Layers className="w-6 h-6" />,
             gradient: 'rgba(139, 92, 246, 0.3), rgba(236, 72, 153, 0.3), rgba(139, 92, 246, 0.3)'
         },
         {
             value: metrics.impactScore,
             label: 'Active Deployments',
-            icon: <Award className="w-6 h-6 text-amber-500" />,
+            icon: <Award className="w-6 h-6" />,
             gradient: 'rgba(245, 158, 11, 0.3), rgba(251, 146, 60, 0.3), rgba(245, 158, 11, 0.3)'
         }
     ];
