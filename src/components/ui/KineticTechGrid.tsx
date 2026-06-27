@@ -105,7 +105,7 @@ export const TECH_CATEGORIES: TechCategory[] = [
                 name: "Next.js",
                 description: "High-performance React applications with server-side rendering.",
                 badge: "Core",
-                icon: "https://cdn.simpleicons.org/nextdotjs"
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg"
             },
             {
                 name: "TypeScript",
@@ -113,13 +113,12 @@ export const TECH_CATEGORIES: TechCategory[] = [
                 badge: "Advanced",
                 icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg"
             },
-                {
-                    name: "Streamlit",
-                    description: "Rapid prototyping and data app deployment with Python.",
-                    badge: "Core",
-                    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/streamlit/streamlit-original.svg"
-                },
-                {
+            {
+                name: "Streamlit",
+                description: "Rapid prototyping and data app deployment with Python.",
+                badge: "Core",
+                icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/streamlit/streamlit-original.svg"
+            },
             {
                 name: "JavaScript (ES6+)",
                 description: "Dynamic frontend engineering and application logic.",
