@@ -379,6 +379,26 @@ This portfolio has been extensively optimized for performance and visual quality
 - **Updated** "Building The Future" stats: `10+` Projects, `40+` Technologies, `15+` Active Deployments
 - **Redesigned** Experience stat to show `Fresher` / `3rd Year AI & ML Student` (no fake years of experience)
 
+### 📧 Resend Contact Form Integration
+- **Created** a Next.js server-side endpoint `/api/contact/route.ts` powered by Resend
+- **Implemented** contact form validation on both client and server side (email pattern, required fields)
+- **Configured** email notifications sent to `ayushofficaluse@gmail.com`
+- **Implemented** a styled auto thank-you email sent back to the visitor
+- **Secured** thank-you dispatch using error-safe wrappers to prevent sandbox limitations from blocking submissions
+- **Added** stateful UI animations for loading, success (`t('form.success')`), and error (`t('form.error')`) directly in the contact page
+
+### 🔒 Social Profile Overhaul
+- **Updated** all social cards with real usernames and URLs
+- **Configured** target="_blank" and rel="noopener noreferrer" for all clickable platform links
+- **Added** special handling for Discord (`ayu_shhh6969`) to display the username while keeping the card non-clickable as requested
+- **Formatted** handle display conditionals (removed `@` prefix for LinkedIn and Discord while keeping handles styled for others)
+
+### 🖼️ Image Audit & Fallback Pass
+- **Resolved** all 19 broken image paths (404 errors) across the gallery, experience pages, certificates, blog avatars, and project thumbnails
+- **Mapped** all missing `/experience/*` assets to existing valid photos
+- **Added** image onError fallback to `/project/fallback.png` on the Projects Detail card
+- **Added** Next.js `sizes` and `unoptimized` attributes to gallery components to fix performance warnings
+
 ---
 
 ## ⚙️ Installation & Local Setup
@@ -416,10 +436,9 @@ Create a `.env.local` file in the project root:
 # WakaTime API (for live coding stats dashboard)
 WAKATIME_API_KEY=waka_your_secure_api_key
 
-# EmailJS (for contact form delivery)
-NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_emailjs_service_id
-NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_emailjs_template_id
-NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
+# Resend API (for contact form email delivery)
+RESEND_API_KEY=re_your_api_key
+CONTACT_EMAIL=ayushofficaluse@gmail.com
 ```
 
 > ⚠️ **Never commit `.env.local` to version control.** It is already listed in `.gitignore`.
@@ -442,19 +461,22 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
 | `lenis` | ^1.3.23 | Smooth scroll provider |
 | `lucide-react` | ^0.309.0 | Icon library |
 | `next-themes` | ^0.2.1 | Dark/light theme support |
-| `nodemailer` | ^8.0.1 | Server-side email delivery |
+| `resend` | ^3.0.0 | Server-side email notifications & autoresponses |
 
 ---
 
 ## 📬 Contact & Connect
 
-| Platform | Link |
-|---|---|
-| 🌐 **Portfolio** | [ayush-singh-portfolio.vercel.app](https://ayush-singh-portfolio.vercel.app/) |
-| 📧 **Email** | [ayushofficaluse@gmail.com](mailto:ayushofficaluse@gmail.com) |
-| 💼 **LinkedIn** | [linkedin.com/in/ayush-singh-0915ap](https://linkedin.com/in/ayush-singh-0915ap) |
-| 🐙 **GitHub** | [github.com/Ayush-0915](https://github.com/Ayush-0915) |
-| 📍 **Location** | Indore, Madhya Pradesh, India |
+| Platform | Handle / Username | Link |
+|---|---|---|
+| 🌐 **Portfolio** | Live | [ayush-singh-portfolio.vercel.app](https://ayush-singh-portfolio.vercel.app/) |
+| 📧 **Email** | ayushofficaluse@gmail.com | [ayushofficaluse@gmail.com](mailto:ayushofficaluse@gmail.com) |
+| 💼 **LinkedIn** | Ayush Singh | [linkedin.com/in/ayush-singh-0915ap](https://www.linkedin.com/in/ayush-singh-0915ap/) |
+| 🐙 **GitHub** | @Ayush-0915 | [github.com/Ayush-0915](https://github.com/Ayush-0915) |
+| 📸 **Instagram** | @AYUSH_XO._ | [instagram.com/ayush_xo._](https://www.instagram.com/ayush_xo._?igsh=MTM5dm1xd3Bwb2Q0bg==) |
+| 🐦 **Twitter (X)** | @Ayush21915 | [x.com/Ayush21915](https://x.com/Ayush21915) |
+| 💬 **Discord** | ayu_shhh6969 | *Locked (Non-clickable)* |
+| 🎵 **Spotify** | @music_lover | [open.spotify.com](https://open.spotify.com/) |
 
 > 💬 *I am actively seeking AI/ML engineering internships, research collaborations, and open-source contributions. Feel free to reach out!*
 
