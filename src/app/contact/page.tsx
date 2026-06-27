@@ -87,7 +87,7 @@ function SocialCard({ item }: { item: any }) {
     );
 }
 
-const InputGroup = ({ label, name, type = "text", value, onChange, required = false }: any) => {
+const InputGroup = ({ label, name, type = "text", value, onChange, required = false, error }: any) => {
     return (
         <div className="group relative z-0 w-full mb-10">
             {type === 'textarea' ? (
@@ -97,7 +97,10 @@ const InputGroup = ({ label, name, type = "text", value, onChange, required = fa
                     onChange={onChange}
                     required={required}
                     rows={1}
-                    className="peer block w-full appearance-none border-0 border-b-2 border-foreground/20 bg-transparent py-2.5 px-0 text-xl font-medium text-foreground focus:border-foreground focus:outline-none focus:ring-0 transition-colors duration-300 resize-y min-h-[50px] max-h-[200px]"
+                    className={cn(
+                        "peer block w-full appearance-none border-0 border-b-2 bg-transparent py-2.5 px-0 text-xl font-medium text-foreground focus:outline-none focus:ring-0 transition-colors duration-300 resize-y min-h-[50px] max-h-[200px]",
+                        error ? "border-red-500/80 focus:border-red-500" : "border-foreground/20 focus:border-foreground"
+                    )}
                     placeholder=" "
                 />
             ) : (
@@ -107,13 +110,25 @@ const InputGroup = ({ label, name, type = "text", value, onChange, required = fa
                     value={value}
                     onChange={onChange}
                     required={required}
-                    className="peer block w-full appearance-none border-0 border-b-2 border-foreground/20 bg-transparent py-2.5 px-0 text-xl font-medium text-foreground focus:border-foreground focus:outline-none focus:ring-0 transition-colors duration-300"
+                    className={cn(
+                        "peer block w-full appearance-none border-0 border-b-2 bg-transparent py-2.5 px-0 text-xl font-medium text-foreground focus:outline-none focus:ring-0 transition-colors duration-300",
+                        error ? "border-red-500/80 focus:border-red-500" : "border-foreground/20 focus:border-foreground"
+                    )}
                     placeholder=" "
                 />
             )}
-            <label className="absolute top-3 -z-10 origin-[0] -translate-y-8 scale-75 transform text-sm font-bold tracking-widest text-muted-foreground duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-8 peer-focus:scale-75 peer-focus:text-foreground">
+            <label className={cn(
+                "absolute top-3 -z-10 origin-[0] -translate-y-8 scale-75 transform text-sm font-bold tracking-widest duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:start-0 peer-focus:-translate-y-8 peer-focus:scale-75",
+                error ? "text-red-500 peer-focus:text-red-500" : "text-muted-foreground peer-focus:text-foreground"
+            )}>
                 {label.toUpperCase()}
             </label>
+            {error && (
+                <p className="text-xs text-red-500 font-mono mt-1.5 flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    {error}
+                </p>
+            )}
         </div>
     );
 };
@@ -122,9 +137,43 @@ function ContactForm() {
     const t = useTranslations('contact');
     const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
     const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const validate = () => {
+        const tempErrors: Record<string, string> = {};
+        let isValid = true;
+
+        if (!formData.name.trim()) {
+            tempErrors.name = 'Name is required';
+            isValid = false;
+        }
+        if (!formData.email.trim()) {
+            tempErrors.email = 'Email is required';
+            isValid = false;
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            tempErrors.email = 'Please enter a valid email address';
+            isValid = false;
+        }
+        if (!formData.subject.trim()) {
+            tempErrors.subject = 'Subject is required';
+            isValid = false;
+        }
+        if (!formData.message.trim()) {
+            tempErrors.message = 'Message is required';
+            isValid = false;
+        }
+
+        setErrors(tempErrors);
+        return isValid;
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setErrorMessage('');
+        
+        if (!validate()) return;
+        
         setStatus('loading');
 
         try {
@@ -136,22 +185,36 @@ function ContactForm() {
                 body: JSON.stringify(formData),
             });
 
+            const data = await response.json();
+
             if (response.ok) {
                 setStatus('success');
                 setFormData({ name: '', email: '', subject: '', message: '' });
+                setErrors({});
             } else {
                 setStatus('error');
+                setErrorMessage(data.error || t('form.error'));
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error('Error submitting form:', error);
             setStatus('error');
+            setErrorMessage(t('form.error'));
         } finally {
-            setTimeout(() => setStatus('idle'), 3000);
+            setTimeout(() => setStatus('idle'), 5000);
         }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+        const { name, value } = e.target;
+        setFormData((prev) => ({ ...prev, [name]: value }));
+        // Clear error as user types
+        if (errors[name]) {
+            setErrors(prev => {
+                const next = { ...prev };
+                delete next[name];
+                return next;
+            });
+        }
     };
 
     return (
@@ -167,17 +230,62 @@ function ContactForm() {
             </div>
 
             <form onSubmit={handleSubmit} className="w-full relative z-10">
-                <InputGroup label={t('form.name')} name="name" value={formData.name} onChange={handleChange} required />
-                <InputGroup label={t('form.email')} name="email" type="email" value={formData.email} onChange={handleChange} required />
-                <InputGroup label={t('form.subject')} name="subject" value={formData.subject} onChange={handleChange} required />
+                <InputGroup 
+                    label={t('form.name')} 
+                    name="name" 
+                    value={formData.name} 
+                    onChange={handleChange} 
+                    error={errors.name}
+                />
+                <InputGroup 
+                    label={t('form.email')} 
+                    name="email" 
+                    type="email" 
+                    value={formData.email} 
+                    onChange={handleChange} 
+                    error={errors.email}
+                />
+                <InputGroup 
+                    label={t('form.subject')} 
+                    name="subject" 
+                    value={formData.subject} 
+                    onChange={handleChange} 
+                    error={errors.subject}
+                />
                 <InputGroup
-                    label={t('form.messagePlaceholder')} // Using placeholder label style
+                    label={t('form.messagePlaceholder')} 
                     name="message"
                     type="textarea"
                     value={formData.message}
                     onChange={handleChange}
-                    required
+                    error={errors.message}
                 />
+
+                {/* Status Messages */}
+                <AnimatePresence>
+                    {status === 'success' && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            className="p-4 mb-6 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm font-medium flex items-center gap-2"
+                        >
+                            <CheckCircle className="w-5 h-5 shrink-0" />
+                            <span>{t('form.success')}</span>
+                        </motion.div>
+                    )}
+                    {status === 'error' && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            className="p-4 mb-6 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium flex items-center gap-2"
+                        >
+                            <AlertCircle className="w-5 h-5 shrink-0" />
+                            <span>{errorMessage || t('form.error')}</span>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 {/* Creative Large Button */}
                 <motion.button
