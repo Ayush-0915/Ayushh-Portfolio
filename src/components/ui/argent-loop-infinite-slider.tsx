@@ -62,7 +62,7 @@ const PROJECT_DATA: ProjectData[] = [
   },
   {
     title: "Healthcare Risk Management",
-    image: "/project/healthcarerisk1.png",
+    image: "/project/healthcareriskmanagement1.png",
     category: "Healthcare AI",
     year: "2026",
     description: "An intelligent healthcare analytics platform designed to assess patient risk using machine learning techniques and interactive dashboards. The system analyzes healthcare data to identify potential risks, support clinical decision-making, and improve predictive healthcare insights through data-driven analytics.",
@@ -75,7 +75,7 @@ const PROJECT_DATA: ProjectData[] = [
   },
   {
     title: "Fake News Detection Using ML",
-    image: "/project/fakenews1.png",
+    image: "/project/fakenewsdetectionusingml1.png",
     category: "Natural Language Processing",
     year: "2026",
     description: "A Natural Language Processing (NLP) project that automatically classifies news articles as genuine or fake using supervised machine learning techniques. The project focuses on text preprocessing, feature engineering, and predictive modeling to combat misinformation through intelligent text classification.",

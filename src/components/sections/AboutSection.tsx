@@ -92,21 +92,14 @@ const showcaseMembers = [
 ];
 
 const GALLERY_IMAGES = [
-    "/gallery/Foto Utama.jpeg",
     "/gallery/FotoSC1.jpeg",
-    "/gallery/FotoSC2.jpeg",
-    "/gallery/FotoSC3.jpeg",
     "/gallery/FotoSC4.jpeg",
-    "/gallery/FotoSC5.jpeg",
-    "/gallery/academicaffairsdivision1.jpg",
-    "/gallery/computernetworkpracticumassistant2.jpg",
+    "/gallery/IMG20241119170921.jpg",
+    "/gallery/IMG20241119171519_01.jpg",
+    "/gallery/Gajendra verma .jpg",
+    "/gallery/bhool chuk maaf.jpg",
     "/gallery/dataentryassistant1.jpg",
-    "/gallery/delegateaiesecfutureleaders20241.jpg",
-    "/gallery/environmentalhygieneteam1.jpg",
-    "/gallery/environmentalhygieneteam2.jpg",
-    "/gallery/logisticsoperatorcampusexpo20242.jpg",
-    "/gallery/researchassistant1.jpg",
-    "/gallery/researchassistant2.jpg"
+    "/gallery/images.jpg",
 ];
 
 const AboutLeadInImageStack = () => {
@@ -409,21 +402,14 @@ const AuditFunnel = () => {
 
     useEffect(() => {
         const galleryItems = [
-            "/gallery/Foto Utama.jpeg",
             "/gallery/FotoSC1.jpeg",
-            "/gallery/FotoSC2.jpeg",
-            "/gallery/FotoSC3.jpeg",
             "/gallery/FotoSC4.jpeg",
-            "/gallery/FotoSC5.jpeg",
-            "/gallery/academicaffairsdivision1.jpg",
-            "/gallery/computernetworkpracticumassistant2.jpg",
+            "/gallery/IMG20241119170921.jpg",
+            "/gallery/IMG20241119171519_01.jpg",
+            "/gallery/Gajendra verma .jpg",
+            "/gallery/bhool chuk maaf.jpg",
             "/gallery/dataentryassistant1.jpg",
-            "/gallery/delegateaiesecfutureleaders20241.jpg",
-            "/gallery/environmentalhygieneteam1.jpg",
-            "/gallery/environmentalhygieneteam2.jpg",
-            "/gallery/logisticsoperatorcampusexpo20242.jpg",
-            "/gallery/researchassistant1.jpg",
-            "/gallery/researchassistant2.jpg"
+            "/gallery/images.jpg",
         ];
         // Shuffle and pick 8 random images for the trail to avoid overwhelming the DOM
         const shuffled = [...galleryItems].sort(() => 0.5 - Math.random());

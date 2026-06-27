@@ -26,21 +26,14 @@ export default function StatsSection({ scrollYProgress, showOnly }: { scrollYPro
 
     useEffect(() => {
         const galleryImages = [
-            { src: '/gallery/Foto Utama.jpeg', alt: 'Foto Utama' },
             { src: '/gallery/FotoSC1.jpeg', alt: 'Foto SC1' },
-            { src: '/gallery/FotoSC2.jpeg', alt: 'Foto SC2' },
-            { src: '/gallery/FotoSC3.jpeg', alt: 'Foto SC3' },
             { src: '/gallery/FotoSC4.jpeg', alt: 'Foto SC4' },
-            { src: '/gallery/FotoSC5.jpeg', alt: 'Foto SC5' },
-            { src: '/gallery/academicaffairsdivision1.jpg', alt: 'Academic Affairs' },
-            { src: '/gallery/computernetworkpracticumassistant2.jpg', alt: 'Computer Network' },
-            { src: '/gallery/dataentryassistant1.jpg', alt: 'Data Entry' },
-            { src: '/gallery/delegateaiesecfutureleaders20241.jpg', alt: 'AIESEC' },
-            { src: '/gallery/environmentalhygieneteam1.jpg', alt: 'Hygiene Team 1' },
-            { src: '/gallery/environmentalhygieneteam2.jpg', alt: 'Hygiene Team 2' },
-            { src: '/gallery/logisticsoperatorcampusexpo20242.jpg', alt: 'Logistics' },
-            { src: '/gallery/researchassistant1.jpg', alt: 'Research Assistant 1' },
-            { src: '/gallery/researchassistant2.jpg', alt: 'Research Assistant 2' },
+            { src: '/gallery/IMG20241119170921.jpg', alt: 'Campus Event' },
+            { src: '/gallery/IMG20241119171519_01.jpg', alt: 'Campus Event 2' },
+            { src: '/gallery/Gajendra verma .jpg', alt: 'Gajendra Verma' },
+            { src: '/gallery/bhool chuk maaf.jpg', alt: 'Event' },
+            { src: '/gallery/dataentryassistant1.jpg', alt: 'Data Entry Assistant' },
+            { src: '/gallery/images.jpg', alt: 'Memories' },
         ];
         // Shuffle images randomly
         const shuffledImages = [...galleryImages].sort(() => 0.5 - Math.random());

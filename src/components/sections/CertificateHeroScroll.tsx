@@ -52,7 +52,7 @@ const CERTIFICATE_POOL = [
     "Ayushh AWS_Machine_Learning_Foundations__.pdf",
     "EDUSKILL AWS INTERNSHIP.png",
     "AZ900.png",
-    "Offer_Letter_880010_1279888.pdf"
+    "AI-Powered Cloud Engineer Virtual Internship.pdf"
 ];
 
 const CertificateHeroScroll: FC<CertificateHeroScrollProps> = ({ onDownloadClick, isLowPowerMode: isLowPowerModeProp }) => {

@@ -268,6 +268,7 @@ export function ProjectDetail({ project, onClose, isLowPowerMode }: { project: P
                                 initial={{ scale: 1.1 }}
                                 animate={{ scale: 1 }}
                                 loading="eager"
+                                onError={(e) => { e.currentTarget.src = "/project/fallback.png"; }}
                             />
                         ) : (
                             <div className="w-full h-full bg-gradient-to-br from-indigo-900 via-purple-900 to-background animate-gradient" />

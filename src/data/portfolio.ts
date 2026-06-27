@@ -828,7 +828,7 @@ export const portfolioData: PortfolioData = {
             issuer: 'EduSkills Academy',
             date: '2025-10-01',
             category: 'recognition',
-            image: '/certificate/Offer_Letter_880010_1279888.pdf',
+            image: '/certificate/AI-Powered Cloud Engineer Virtual Internship.pdf',
             credentialId: 'EDU-OFFER-880010',
             credentialUrl: 'https://eduskillsfoundation.org',
             description: 'Official recognition and offer letter for the virtual cloud engineering program at EduSkills.'
@@ -899,7 +899,7 @@ export const portfolioData: PortfolioData = {
             date: '2026-03-20',
             category: 'applied-ai',
             tags: ['RAG', 'ChromaDB', 'LLM'],
-            author: { name: 'Ayush Singh', avatar: '/about/ayush.jpeg' },
+            author: { name: 'Ayush Singh', avatar: '/about/ayush.png' },
             readTime: '6'
         },
         {
@@ -912,7 +912,7 @@ export const portfolioData: PortfolioData = {
             date: '2026-02-15',
             category: 'applied-ai',
             tags: ['ML', 'Classifiers', 'Python'],
-            author: { name: 'Ayush Singh', avatar: '/about/ayush.jpeg' },
+            author: { name: 'Ayush Singh', avatar: '/about/ayush.png' },
             readTime: '8'
         }
     ],
